@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "470120917570",
+    "project_id": "flexihome-1ccf6",
+    "storage_bucket": "flexihome-1ccf6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470120917570:android:7d64919356247482b61bdb",
+        "android_client_info": {
+          "package_name": "com.codifypro.flexihome"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtYWxaZQANgQgO9Bib4qJltcSf0JORmpA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
