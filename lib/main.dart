@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flexihome/firebase_options.dart';
 import 'package:flexihome/src/config/routes/app_pages.dart';
+import 'package:flexihome/src/config/themes/app_theme.dart';
+import 'package:flexihome/src/core/bindings/auth_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,8 +17,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(debugShowCheckedModeBanner: false,
-    getPages: AppPages.pages,
-    initialRoute: AppRoutes.SPLASH,);
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      getPages: AppPages.pages,
+      initialRoute: AppRoutes.SPLASH,
+      theme: AppTheme.themeData,
+      initialBinding: AuthBinding(),
+    );
   }
 }

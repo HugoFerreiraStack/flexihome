@@ -1,0 +1,65 @@
+
+
+import 'package:flexihome/src/features/app/domain/entities/unidade.dart';
+import 'package:flexihome/src/features/app/domain/entities/user_type_enum.dart';
+
+class Host {
+  Host({
+     this.blocked,
+     this.email,
+    this.id,
+     this.name,
+     this.phone,
+    this.cnpj,
+    this.fantasyName,
+    this.socialReason,
+     this.userType,
+    this.unidades,
+  });
+  late final bool? blocked;
+  late final String? email;
+  late String? id;
+  late final String? name;
+  late final String? phone;
+  late final String? cnpj;
+  late final String? fantasyName;
+  late final String? socialReason;
+  late final UserTypeEnum? userType;
+  late List<Unidade>? unidades;
+
+  Host.fromJson(Map<String, dynamic> json) {
+    blocked = json['blocked'];
+    email = json['email'];
+    id = json['id'];
+    name = json['name'];
+    phone = json['phone'];
+    cnpj = json['cnpj'];
+    fantasyName = json['fantasyName'];
+    socialReason = json['socialReason'];
+    userType = userTypeEnumFromJson(json['userType']);
+    if (json['unidades'] != null) {
+      unidades = <Unidade>[];
+      json['unidades'].forEach((v) {
+        unidades!.add(Unidade.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['blocked'] = blocked;
+    _data['email'] = email;
+    _data['id'] = id;
+    _data['name'] = name;
+    _data['phone'] = phone;
+    _data['cnpj'] = cnpj;
+    _data['fantasyName'] = fantasyName;
+    _data['socialReason'] = socialReason;
+    _data['userType'] = userType!.name;
+    if (unidades != null) {
+      _data['unidades'] = unidades!.map((v) => v.toJson()).toList();
+    }
+
+    return _data;
+  }
+}

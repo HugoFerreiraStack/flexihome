@@ -24,17 +24,14 @@ class SplashController extends GetxController
       }
     });
     animationController!.forward();
+
+    
   }
 
   @override
   void onInit() {
     startAnimation();
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
   }
 
   @override

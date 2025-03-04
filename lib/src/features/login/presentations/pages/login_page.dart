@@ -1,4 +1,5 @@
 import 'package:flexihome/src/config/themes/app_assets.dart';
+import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flexihome/src/features/login/presentations/controllers/login_controller.dart';
 import 'package:flexihome/src/features/login/presentations/widgets/login_form.dart';
 import 'package:flutter/material.dart';
@@ -37,11 +38,72 @@ class LoginPage extends GetView<LoginController> {
                     letterSpacing: 0.5,
                   ),
                 ),
-              ),SizedBox(height: 40),
+              ),
+              SizedBox(height: 40),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: LoginForm(),
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Obx(
+                          () => Checkbox(
+                            checkColor: AppColors.primary,
+                            fillColor: WidgetStateProperty.all(Colors.white),
+                            value: controller.rememberMe,
+                            onChanged: (bool? value) {
+                              controller.rememberMe = value!;
+                            },
+                          ),
+                        ),
+                        Text(
+                          'Manter logado',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Text(
+                        'Esqueci a senha',
+                        style: TextStyle(
+                          color: Colors.white,
+                          decoration: TextDecoration.underline,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 40),
+              ElevatedButton(
+                onPressed: () {controller.login();},
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 150, vertical: 15),
+                  textStyle: TextStyle(fontSize: 18),
+                ),
+                child: Text('Acessar'),
+              ),
+              const SizedBox(height: 50),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Text(
+                  'Não possui uma conta? Clique aqui e entre em contato para saber mais sobre a maior rede de gerenciamento de casas e apartamentos ágeis.', 
+                  style: TextStyle(color: Colors.white),textAlign: TextAlign.center,
+                ),
+              ),
             ],
           ),
         ),
