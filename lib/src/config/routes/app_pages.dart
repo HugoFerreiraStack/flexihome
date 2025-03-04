@@ -1,3 +1,4 @@
+import 'package:flexihome/src/features/login/presentations/bindings/login_binding.dart';
 import 'package:flexihome/src/features/login/presentations/pages/login_page.dart';
 import 'package:flexihome/src/features/splash/presentations/bindings/splash_binding.dart';
 import 'package:flexihome/src/features/splash/presentations/pages/splash_page.dart';
@@ -12,6 +13,10 @@ abstract class AppPages {
       page: () => SplashPage(),
       binding: SplashBinding(),
     ),
-    GetPage(name: AppRoutes.LOGIN, page: () => LoginPage()),
+    GetPage(
+      name: AppRoutes.LOGIN,
+      page: () => LoginPage(),
+      binding: LoginBinding(),
+    ),
   ];
 }

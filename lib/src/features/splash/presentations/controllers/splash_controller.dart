@@ -17,9 +17,10 @@ class SplashController extends GetxController
     animation = CurvedAnimation(
       parent: animationController!,
       curve: Curves.easeIn,
-    )..addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-      //  Get.offNamed(AppRoutes.LOGIN);
+    );
+    animationController!.addListener(() {
+      if (animationController!.status == AnimationStatus.completed) {
+        Get.offNamed(AppRoutes.LOGIN);
       }
     });
     animationController!.forward();
@@ -34,7 +35,6 @@ class SplashController extends GetxController
   @override
   void onReady() {
     super.onReady();
-  //  Get.offNamed(AppRoutes.LOGIN);
   }
 
   @override

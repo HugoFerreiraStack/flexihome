@@ -1,5 +1,7 @@
 abstract class AppAssets {
 
-  static const String logo = 'assets/images/logo.png';
+  static const String logo = 'assets/icons/logo.png';
   static const String splash = 'assets/icons/splash.png';
+  static const String bg = 'assets/bg.png';
+  static const String appLogo = 'assets/icons/logo_icon.png';
 }
