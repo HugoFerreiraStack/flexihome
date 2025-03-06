@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flexihome/src/config/routes/app_pages.dart';
 import 'package:flexihome/src/core/services/auth/auth_service.dart';
 import 'package:flexihome/src/features/app/domain/entities/host.dart';
 import 'package:flexihome/src/features/login/domain/usecases/login_usecase.dart';
@@ -31,7 +32,10 @@ class LoginController extends GetxController {
     );
 
     if (user != null) {
-      AuthService.to.host = await getUserData(user.uid);
+      AuthService.to.host = await getUserData(user.uid).then((value) {
+        Get.offAllNamed(AppRoutes.APP);
+        return null;
+      });
     }
   }
 
@@ -49,5 +53,15 @@ class LoginController extends GetxController {
         return r;
       },
     );
+  }
+
+  void checkStateUser() {
+    AuthService.to.checkStateUser();
+  }
+
+  @override
+  void onInit() {
+    checkStateUser();
+    super.onInit();
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flexihome/src/config/routes/app_pages.dart';
 import 'package:flexihome/src/features/app/domain/entities/host.dart';
 import 'package:get/get.dart';
 
@@ -20,6 +21,7 @@ class AuthService extends GetxService {
       if (user == null) {
         log('User is currently signed out!');
       } else {
+        Get.offAllNamed(AppRoutes.APP);
         log('User is signed in!');
       }
     });
