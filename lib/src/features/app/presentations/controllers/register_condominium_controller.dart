@@ -9,6 +9,7 @@ import 'package:flexihome/src/features/app/domain/usecases/cep_usecase.dart';
 import 'package:flexihome/src/features/app/domain/usecases/register_condominium_usecase.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 
 class RegisterCondominiumController extends GetxController {
   static RegisterCondominiumController get to => Get.find();
@@ -20,6 +21,9 @@ class RegisterCondominiumController extends GetxController {
     required this.cepUsecase,
     required this.setCondominioUsecase,
   });
+
+  final formkey = GlobalKey<FormState>();
+  final FocusNode cepFocus = FocusNode();
 
   final _condominium = Condominio().obs;
   Condominio get condominium => _condominium.value;
@@ -53,7 +57,8 @@ class RegisterCondominiumController extends GetxController {
 
   Future<void> searchCep() async {
     isloading = true;
-    final response = await cepUsecase.execute(cepController.text);
+    String cep = cepController.text.replaceAll('.', '').replaceAll('-', '');
+    final response = await cepUsecase.execute(cep);
 
     response.fold(
       (error) {
@@ -61,17 +66,22 @@ class RegisterCondominiumController extends GetxController {
       },
       ((info) {
         endereco = Endereco.fromCep(info.toJson());
+
         streetController.text = endereco.logradouro!;
         neighborhoodController.text = endereco.bairro!;
         cityController.text = endereco.cidade!;
         cepController.text = endereco.cep!;
         stateController.text = endereco.estado!;
+        condominium.endereco = endereco;
+
         isloading = false;
       }),
     );
   }
 
   Future<void> registerCondominium() async {
+    condominium.name = nameController.text;
+    condominium.id = Uuid().v4();
     final params = SetCondominiumParams(condominio: condominium);
     if (AuthService.to.host?.userType == UserTypeEnum.IMOBILIARIA) {
       params.idImobiliaria = AuthService.to.host?.id;
@@ -91,5 +101,15 @@ class RegisterCondominiumController extends GetxController {
         isloading = false;
       },
     );
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    cepFocus.addListener(() {
+      if (!cepFocus.hasFocus) {
+        searchCep();
+      }
+    });
   }
 }

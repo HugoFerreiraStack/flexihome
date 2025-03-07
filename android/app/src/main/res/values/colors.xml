@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Definição de cores -->
+    <color name="launch_background">#142533</color>
+    <color name="white">#FFFFFF</color> <!-- Exemplo adicional -->
+    <color name="black">#000000</color> <!-- Exemplo adicional -->
+    <color name="primary">#3F51B5</color> <!-- Exemplo adicional -->
+    <color name="primary_dark">#303F9F</color> <!-- Exemplo adicional -->
+    <color name="accent">#FF4081</color> <!-- Exemplo adicional -->
+</resources>
+

@@ -15,8 +15,8 @@ class AuthService extends GetxService {
   Host? get host => _host.value;
   set host(Host? value) => _host.value = value!;
 
-
   Future<User?> checkStateUser() async {
+ 
     _auth.authStateChanges().listen((User? user) {
       if (user == null) {
         log('User is currently signed out!');

@@ -18,7 +18,7 @@ class LoginController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  final _rememberMe = false.obs;
+  final _rememberMe = true.obs;
   bool get rememberMe => _rememberMe.value;
   set rememberMe(bool value) => _rememberMe.value = value;
 

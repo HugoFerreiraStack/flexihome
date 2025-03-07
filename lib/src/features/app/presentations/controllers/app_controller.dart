@@ -1,3 +1,4 @@
+import 'package:flexihome/src/features/app/presentations/pages/register_condominium_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -11,7 +12,7 @@ class AppController extends GetxController {
   List<Widget> pages = [
     Container(color: Colors.blue),
     Container(color: Colors.blue),
-    Container(color: Colors.blue),
+    RegisterCondominiumPage()
   ];
 
   List<BottomNavigationBarItem> bottomNavitems = [

@@ -11,21 +11,22 @@ class LoginPage extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox.expand(
+      body: SingleChildScrollView(
         child: Container(
+          height: Get.height,
+          width: Get.width,
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage(AppAssets.bg),
-              fit: BoxFit.cover,
-            ),
-          ),
+              gradient: LinearGradient(colors: [
+            AppColors.terciary,
+            AppColors.primary,
+            AppColors.secondary
+          ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
           child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 100),
                 child: Image.asset(AppAssets.appLogo, width: 120),
               ),
-
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Text(
@@ -89,7 +90,9 @@ class LoginPage extends GetView<LoginController> {
               ),
               const SizedBox(height: 40),
               ElevatedButton(
-                onPressed: () {controller.login();},
+                onPressed: () {
+                  controller.login();
+                },
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 150, vertical: 15),
                   textStyle: TextStyle(fontSize: 18),
@@ -99,9 +102,21 @@ class LoginPage extends GetView<LoginController> {
               const SizedBox(height: 50),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: Text(
-                  'Não possui uma conta? Clique aqui e entre em contato para saber mais sobre a maior rede de gerenciamento de casas e apartamentos ágeis.', 
-                  style: TextStyle(color: Colors.white),textAlign: TextAlign.center,
+                child: RichText(
+                  text: const TextSpan(
+                    text: 'Não possui uma conta? ',
+                    children: [
+                      TextSpan(
+                        text: 'Clique aqui',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(
+                          text:
+                              ' e entre em contato para saber mais sobre a maior rede de gerenciamento de casas e apartamentos ágeis.'),
+                    ],
+                  ),
                 ),
               ),
             ],
