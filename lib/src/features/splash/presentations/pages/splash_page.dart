@@ -12,7 +12,7 @@ class SplashPage extends GetView<SplashController> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-gradient: LinearGradient(colors: [AppColors.terciary,AppColors.primary, AppColors.secondary],begin: Alignment.bottomLeft, end: Alignment.topRight)        ),
+gradient: LinearGradient(colors: [AppColors.tertiary,AppColors.primary, AppColors.secondary],begin: Alignment.bottomLeft, end: Alignment.topRight)        ),
         child: Center(
           child: FadeTransition(
             opacity: controller.animation!,

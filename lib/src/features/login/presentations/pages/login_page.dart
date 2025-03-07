@@ -17,7 +17,7 @@ class LoginPage extends GetView<LoginController> {
           width: Get.width,
           decoration: BoxDecoration(
               gradient: LinearGradient(colors: [
-            AppColors.terciary,
+            AppColors.tertiary,
             AppColors.primary,
             AppColors.secondary
           ], begin: Alignment.bottomLeft, end: Alignment.topRight)),

@@ -10,37 +10,38 @@ class RegisterCondominiumPage extends GetView<RegisterCondominiumController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+     body: Container(
         width: double.infinity,
         height: Get.height,
         decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
-          AppColors.terciary,
+          AppColors.tertiary,
           AppColors.primary,
           AppColors.secondary
         ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Text(
-                      'Cadastro de Condomínio',
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+          Row(
+            children: [
+              IconButton(onPressed: () => Get.back(), icon: Icon(Icons.chevron_left_rounded, color: Colors.white,)),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Text(
+                  'Cadastrar Condomínio',
+                  style: TextStyle(
+                    fontSize: 36,
+                    color: Colors.white,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 20),
-                  RegisterCondominioForm(),
-                ],
+                ),
               ),
-            ),
+            ],
+          ),
+              RegisterCondominioForm(),
+            ],
           ),
         ),
       ),
