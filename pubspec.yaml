@@ -18,6 +18,8 @@ dependencies:
   firebase_auth: ^5.5.0
   flutter_svg: ^2.0.17
   cloud_firestore: ^5.6.5
+  brasil_fields: ^1.17.0
+  search_cep: ^4.0.2
  
 
 dev_dependencies:

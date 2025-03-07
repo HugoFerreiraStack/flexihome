@@ -1,14 +1,14 @@
 import 'package:flexihome/src/features/app/domain/entities/endereco.dart';
 
 class Condominio {
-  late final String id;
-  late final String name;
-  late final Endereco endereco;
+  late  String? id;
+  late  String? name;
+  late  Endereco? endereco;
 
   Condominio({
-    required this.id,
-    required this.name,
-    required this.endereco,
+     this.id,
+     this.name,
+     this.endereco,
   });
 
   factory Condominio.fromJson(Map<String, dynamic> json) {
@@ -20,6 +20,6 @@ class Condominio {
   }
 
   Map<String, dynamic> toJson() {
-    return {'id': id, 'name': name, 'endereco': endereco.toJson()};
+    return {'id': id, 'name': name, 'endereco': endereco?.toJson()};
   }
 }

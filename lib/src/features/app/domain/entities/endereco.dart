@@ -1,17 +1,17 @@
 class Endereco {
-  final String cep;
-  final String logradouro;
-  final String bairro;
-  final String cidade;
-  final String estado;
-  final String? complemento;
+  String? cep;
+  String? logradouro;
+  String? bairro;
+  String? cidade;
+  String? estado;
+  String? complemento;
 
   Endereco({
-    required this.cep,
-    required this.logradouro,
-    required this.bairro,
-    required this.cidade,
-    required this.estado,
+    this.cep,
+    this.logradouro,
+    this.bairro,
+    this.cidade,
+    this.estado,
     this.complemento,
   });
 
@@ -24,6 +24,15 @@ class Endereco {
       estado: json['estado'],
       complemento: json['complemento'],
     );
+  }
+
+  Endereco.fromCep(Map<String, dynamic> json) {
+    cep = json['cep'];
+    logradouro = json['logradouro'];
+    bairro = json['bairro'];
+    cidade = json['localidade'];
+    estado = json['uf'];
+    complemento = json['complemento'];
   }
 
   Map<String, dynamic> toJson() {
