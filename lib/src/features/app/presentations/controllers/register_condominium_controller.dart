@@ -1,10 +1,8 @@
 import 'dart:developer';
-
-import 'package:flexihome/src/core/services/auth/auth_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flexihome/src/core/extensions/constants.dart';
 import 'package:flexihome/src/features/app/domain/entities/condominio.dart';
 import 'package:flexihome/src/features/app/domain/entities/endereco.dart';
-import 'package:flexihome/src/features/app/domain/entities/set_condominium_params.dart';
-import 'package:flexihome/src/features/app/domain/entities/user_type_enum.dart';
 import 'package:flexihome/src/features/app/domain/usecases/cep_usecase.dart';
 import 'package:flexihome/src/features/app/domain/usecases/register_condominium_usecase.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +23,10 @@ class RegisterCondominiumController extends GetxController {
   final formkey = GlobalKey<FormState>();
   final FocusNode cepFocus = FocusNode();
 
+  final _condominiums = <Condominio>[].obs;
+  List<Condominio> get condominiums => _condominiums;
+  set condominiums(List<Condominio> value) => _condominiums.value = value;
+
   final _condominium = Condominio().obs;
   Condominio get condominium => _condominium.value;
   set condominium(Condominio value) => _condominium.value = value;
@@ -44,6 +46,26 @@ class RegisterCondominiumController extends GetxController {
   final neighborhoodController = TextEditingController();
   final cityController = TextEditingController();
   final stateController = TextEditingController();
+
+  Future<void> getCondominiums() async {
+    condominiums.clear();
+    try {
+      CollectionReference condominiosColection =
+          FirebaseFirestore.instance.collection(
+        Constants.collectionCondominio,
+      );
+
+      QuerySnapshot querySnapshot = await condominiosColection.get();
+
+      for (var element in querySnapshot.docs) {
+        condominiums.add(Condominio.fromJson(
+          element.data() as Map<String, dynamic>,
+        ));
+      }
+    } catch (e) {
+      log('Error: $e');
+    }
+  }
 
   void clearFields() {
     nameController.clear();
@@ -92,6 +114,7 @@ class RegisterCondominiumController extends GetxController {
       (r) {
         log('Success: $r');
         clearFields();
+        getCondominiums();
         isloading = false;
       },
     );
@@ -99,6 +122,7 @@ class RegisterCondominiumController extends GetxController {
 
   @override
   void onInit() {
+    getCondominiums();
     super.onInit();
     cepFocus.addListener(() {
       if (!cepFocus.hasFocus) {
