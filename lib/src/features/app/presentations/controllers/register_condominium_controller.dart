@@ -82,14 +82,8 @@ class RegisterCondominiumController extends GetxController {
   Future<void> registerCondominium() async {
     condominium.name = nameController.text;
     condominium.id = Uuid().v4();
-    final params = SetCondominiumParams(condominio: condominium);
-    if (AuthService.to.host?.userType == UserTypeEnum.IMOBILIARIA) {
-      params.idImobiliaria = AuthService.to.host?.id;
-    } else {
-      params.idHost = AuthService.to.host?.id;
-    }
 
-    final response = await setCondominioUsecase.execute(params);
+    final response = await setCondominioUsecase.execute(condominium);
     response.fold(
       (l) {
         log('Error: $l');
