@@ -39,6 +39,7 @@ class RegisterCondominiumController extends GetxController {
   final numberController = TextEditingController();
   final neighborhoodController = TextEditingController();
   final cityController = TextEditingController();
+  final stateController = TextEditingController();
 
   void clearFields() {
     nameController.clear();
@@ -47,6 +48,7 @@ class RegisterCondominiumController extends GetxController {
     numberController.clear();
     neighborhoodController.clear();
     cityController.clear();
+    stateController.clear();
   }
 
   Future<void> searchCep() async {
@@ -63,6 +65,7 @@ class RegisterCondominiumController extends GetxController {
         neighborhoodController.text = endereco.bairro!;
         cityController.text = endereco.cidade!;
         cepController.text = endereco.cep!;
+        stateController.text = endereco.estado!;
         isloading = false;
       }),
     );
