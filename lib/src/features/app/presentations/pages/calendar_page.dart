@@ -1,24 +1,14 @@
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/app_controller.dart';
-import 'package:flexihome/src/features/app/presentations/controllers/register_condominium_controller.dart';
-import 'package:flexihome/src/features/app/presentations/pages/register_condominium_page.dart';
-import 'package:flexihome/src/features/app/presentations/widgets/card_condominium.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends GetView<AppController> {
   const CalendarPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ElevatedButton(
-        onPressed: () => Get.to(RegisterCondominiumPage()),
-        onLongPress: () => Get.snackbar('Botão', 'Adicionar Condomínio', snackPosition: SnackPosition.BOTTOM),
-        style: ElevatedButton.styleFrom(
-          shape: CircleBorder(),
-          backgroundColor: AppColors.primary,
-          padding: EdgeInsets.all(24)),
-        child: Icon(Icons.add, color: Colors.white,)),
       body: Container(
         width: double.infinity,
         height: Get.height,
@@ -36,7 +26,7 @@ class CalendarPage extends GetView<AppController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Text(
-                    'Condomínios',
+                    'Calendário',
                     style: TextStyle(
                       fontSize: 36,
                       color: Colors.white,
@@ -45,7 +35,17 @@ class CalendarPage extends GetView<AppController> {
                     ),
                   ),
                 ),
-               
+                Container( 
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10)
+                    ,color: Colors.white,),
+                    child:     
+                  TableCalendar(
+                    firstDay: DateTime.utc(2010, 10, 16),
+                    lastDay: DateTime.utc(2030, 3, 14),
+                    focusedDay: DateTime.now(),
+                  )
+                )
               ],
             ),
           ),
