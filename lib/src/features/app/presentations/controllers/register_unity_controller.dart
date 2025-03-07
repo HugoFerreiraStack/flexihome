@@ -26,6 +26,10 @@ class RegisterUnityController extends GetxController {
   final formkey = GlobalKey<FormState>();
   final FocusNode cepFocus = FocusNode();
 
+  final _unitys = <Unidade>[].obs;
+  List<Unidade> get unitys => _unitys;
+  set unitys(List<Unidade> value) => _unitys.value = value;
+
   final _condominiums = <Condominio>[].obs;
   List<Condominio> get condominiums => _condominiums;
   set condominiums(List<Condominio> value) => _condominiums.value = value;
@@ -63,6 +67,26 @@ class RegisterUnityController extends GetxController {
     selectedCondominium = value;
     cepController.text = value.endereco!.cep!;
     searchCep();
+  }
+
+  Future<void> getUnitys()async{
+    unitys.clear();
+    try {
+      CollectionReference unitysColection =
+          FirebaseFirestore.instance.collection(
+        Constants.collectionUnidade,
+      );
+
+      QuerySnapshot querySnapshot = await unitysColection.get();
+
+      for (var element in querySnapshot.docs) {
+        unitys.add(Unidade.fromJson(
+          element.data() as Map<String, dynamic>,
+        ));
+      }
+    } catch (e) {
+      log('Error: $e');
+    }
   }
 
   Future<void> getCondominiums() async {
@@ -136,6 +160,7 @@ class RegisterUnityController extends GetxController {
       (r) {
         log('Success: $r');
         clearFields();
+        getUnitys();
         isloading = false;
       },
     );
@@ -145,5 +170,6 @@ class RegisterUnityController extends GetxController {
   void onInit() {
     super.onInit();
     getCondominiums();
+    getUnitys();
   }
 }

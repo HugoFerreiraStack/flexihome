@@ -11,13 +11,17 @@ class UnitiesPage extends GetView<RegisterUnityController> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: ElevatedButton(
-        onPressed: () => Get.to(RegisterUnityPage()),
-        onLongPress: () => Get.snackbar('Botão', 'Adicionar Unidade', snackPosition: SnackPosition.BOTTOM),
-        style: ElevatedButton.styleFrom(
-          shape: CircleBorder(),
-          backgroundColor: AppColors.primary,
-          padding: EdgeInsets.all(24)),
-        child: Icon(Icons.add, color: Colors.white,)),
+          onPressed: () => Get.to(RegisterUnityPage()),
+          onLongPress: () => Get.snackbar('Botão', 'Adicionar Unidade',
+              snackPosition: SnackPosition.BOTTOM),
+          style: ElevatedButton.styleFrom(
+              shape: CircleBorder(),
+              backgroundColor: AppColors.primary,
+              padding: EdgeInsets.all(24)),
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          )),
       body: Container(
         width: double.infinity,
         height: Get.height,
@@ -33,56 +37,55 @@ class UnitiesPage extends GetView<RegisterUnityController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                SizedBox(height: 40),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Text(
                     'Unidades',
                     style: TextStyle(
-                      fontSize: 36,
+                      fontSize: 24,
                       color: Colors.white,
                       decorationColor: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-              TextFormField(
-                controller: controller.searchController,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  labelText: 'Procure uma unidade',
-                  hintText: 'Digite o nome da unidade',
-                  hintStyle: TextStyle(color: AppColors.flexGrey),
-                  labelStyle: TextStyle(color: Colors.white),
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.3),
-                  enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide.none, 
-                ),
-                ),
-                style: TextStyle(color: Colors.white),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira a unidade';
-                  }
-                  return null;
-                },
-                // FUNC GET UNIDADE
-                onChanged: null,
-              ),
-                // lista unidades
-                ListView.builder(
-                  itemCount: 4,
-                  shrinkWrap: true,
-                  itemBuilder: (_, index){
-                    return CardUnity();     
+                TextFormField(
+                  controller: controller.searchController,
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                    labelText: 'Procure uma unidade',
+                    hintText: 'Digite o nome da unidade',
+                    hintStyle: TextStyle(color: AppColors.flexGrey),
+                    labelStyle: TextStyle(color: Colors.white),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.3),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira a unidade';
+                    }
+                    return null;
                   },
-                )
-
-            
+                  // FUNC GET UNIDADE
+                  onChanged: null,
+                ),
+                // lista unidades
+                Obx(() => ListView.builder(
+                    itemCount: controller.unitys.length,
+                    shrinkWrap: true,
+                    itemBuilder: (_, index) {
+                      return CardUnity(title: controller.unitys[index].endereco?.logradouro,);
+                    },
+                  ))
               ],
             ),
           ),
