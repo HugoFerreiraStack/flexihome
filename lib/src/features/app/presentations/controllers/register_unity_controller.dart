@@ -52,6 +52,9 @@ class RegisterUnityController extends GetxController {
   final stateController = TextEditingController();
   final complementoController = TextEditingController();
 
+  final searchController = TextEditingController();
+
+
   final _isloading = false.obs;
   bool get isloading => _isloading.value;
   set isloading(bool value) => _isloading.value = value;

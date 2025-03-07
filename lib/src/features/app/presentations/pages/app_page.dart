@@ -19,7 +19,7 @@ class AppPage extends GetView<AppController> {
         () => BottomNavigationBar(
           items: controller.bottomNavitems,
           currentIndex: controller.currentIndex,
-          selectedItemColor: AppColors.primary,
+          selectedItemColor: AppColors.secondary,
           onTap: (value) {
             controller.currentIndex = value;
           },

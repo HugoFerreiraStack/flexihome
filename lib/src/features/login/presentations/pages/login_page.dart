@@ -104,17 +104,18 @@ class LoginPage extends GetView<LoginController> {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: RichText(
                   text: const TextSpan(
-                    text: 'Não possui uma conta? ',
+                    text: 'Não possui uma conta? ', style: TextStyle(color: Colors.white),
                     children: [
                       TextSpan(
                         text: 'Clique aqui',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          color: Colors.white
                         ),
                       ),
                       TextSpan(
                           text:
-                              ' e entre em contato para saber mais sobre a maior rede de gerenciamento de casas e apartamentos ágeis.'),
+                              ' e entre em contato para saber mais sobre a maior rede de gerenciamento de casas e apartamentos ágeis.', style: TextStyle(color: Colors.white)),
                     ],
                   ),
                 ),

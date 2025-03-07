@@ -20,28 +20,30 @@ class RegisterCondominiumPage extends GetView<RegisterCondominiumController> {
           AppColors.secondary
         ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-          Row(
-            children: [
-              IconButton(onPressed: () => Get.back(), icon: Icon(Icons.chevron_left_rounded, color: Colors.white,)),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Text(
-                  'Cadastrar Condomínio',
-                  style: TextStyle(
-                    fontSize: 36,
-                    color: Colors.white,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.white,
-                    fontWeight: FontWeight.bold,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+            Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Row( 
+                children: [
+                  IconButton(onPressed: () => Get.back(), icon: Icon(Icons.chevron_left_rounded, color: Colors.white,)),
+                  Text(
+                    'Cadastrar Condomínio',
+                    style: TextStyle(
+                      fontSize: 36,
+                      color: Colors.white,
+                      decorationColor: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-              RegisterCondominioForm(),
-            ],
+            ),
+                RegisterCondominioForm(),
+              ],
+            ),
           ),
         ),
       ),

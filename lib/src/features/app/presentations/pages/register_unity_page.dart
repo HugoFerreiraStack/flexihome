@@ -15,31 +15,34 @@ class RegisterUnityPage extends GetView<RegisterUnityController> {
         height: Get.height,
         decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
-          AppColors.terciary,
+          AppColors.tertiary,
           AppColors.primary,
           AppColors.secondary
         ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
-        child: Padding(
-          padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Text(
-                      'Cadastro de Unidade',
-                      style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  child: Row(
+                    children: [
+                      IconButton(onPressed: () => Get.back(), icon: Icon(Icons.chevron_left_rounded, color: Colors.white,)),
+                      Text(
+                        'Cadastrar Unidade',
+                        style: TextStyle(
+                          fontSize: 36,
+                          color: Colors.white,
+                          decorationColor: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  const SizedBox(height: 20),
-                  RegisterUnityForm(),
-                ],
-              ),
+                ),
+                RegisterUnityForm(),
+              ],
             ),
           ),
         ),
