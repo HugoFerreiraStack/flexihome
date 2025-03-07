@@ -23,12 +23,13 @@ class CalendarPage extends GetView<AppController> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
+                SizedBox(height: 40),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Text(
                     'Calendário',
                     style: TextStyle(
-                      fontSize: 36,
+                      fontSize: 24,
                       color: Colors.white,
                       decorationColor: Colors.white,
                       fontWeight: FontWeight.bold,

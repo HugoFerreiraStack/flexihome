@@ -90,6 +90,7 @@ class RegisterUnityController extends GetxController {
   }
 
   Future<void> getCondominiums() async {
+    condominiums.clear();
     try {
       CollectionReference condominiosColection =
           FirebaseFirestore.instance.collection(

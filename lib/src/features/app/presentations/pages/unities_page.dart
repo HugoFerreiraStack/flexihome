@@ -11,7 +11,10 @@ class UnitiesPage extends GetView<RegisterUnityController> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: ElevatedButton(
-          onPressed: () => Get.to(RegisterUnityPage()),
+          onPressed: () {
+            controller.getCondominiums();
+            Get.to(RegisterUnityPage());
+          },
           onLongPress: () => Get.snackbar('Botão', 'Adicionar Unidade',
               snackPosition: SnackPosition.BOTTOM),
           style: ElevatedButton.styleFrom(
