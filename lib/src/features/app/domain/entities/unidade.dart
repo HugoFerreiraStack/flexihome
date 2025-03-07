@@ -7,6 +7,8 @@ class Unidade {
   Condominio? condominio;
   String? idImobiliaria;
   String? idHost;
+  int? qtdQuartos;
+  int? qtdBanheiros;
 
   Unidade({
     this.id,
@@ -14,6 +16,8 @@ class Unidade {
     this.condominio,
     this.idImobiliaria,
     this.idHost,
+    this.qtdQuartos,
+    this.qtdBanheiros,
   });
 
   factory Unidade.fromJson(Map<String, dynamic> json) {
@@ -23,6 +27,8 @@ class Unidade {
       condominio: Condominio.fromJson(json['condominio']),
       idImobiliaria: json['idImobiliaria'],
       idHost: json['idHost'],
+      qtdBanheiros: json['qtdBanheiros'],
+      qtdQuartos: json['qtdQuartos'],
     );
   }
 
@@ -33,6 +39,8 @@ class Unidade {
       'condominio': condominio?.toJson(),
       'idImobiliaria': idImobiliaria,
       'idHost': idHost,
+      'qtdQuartos': qtdQuartos,
+      'qtdBanheiros': qtdBanheiros,
     };
   }
 }
