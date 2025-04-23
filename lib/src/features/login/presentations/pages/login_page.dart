@@ -40,7 +40,7 @@ class LoginPage extends GetView<LoginController> {
                   ),
                 ),
               ),
-              SizedBox(height: 40),
+              SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: LoginForm(),
@@ -88,7 +88,7 @@ class LoginPage extends GetView<LoginController> {
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
                   controller.login();
@@ -99,27 +99,28 @@ class LoginPage extends GetView<LoginController> {
                 ),
                 child: Text('Acessar'),
               ),
-              const SizedBox(height: 50),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                child: RichText(
-                  text: const TextSpan(
-                    text: 'Não possui uma conta? ', style: TextStyle(color: Colors.white),
-                    children: [
-                      TextSpan(
-                        text: 'Clique aqui',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white
-                        ),
-                      ),
-                      TextSpan(
-                          text:
-                              ' e entre em contato para saber mais sobre a maior rede de gerenciamento de casas e apartamentos ágeis.', style: TextStyle(color: Colors.white)),
-                    ],
-                  ),
-                ),
-              ),
+              // TODO COMENTADO ENQUANTO NÃO TEM O ACESSO PARA CRIAR UM NOVO USUÁRIO
+              // const SizedBox(height: 50),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 30),
+              //   child: RichText(
+              //     text: const TextSpan(
+              //       text: 'Não possui uma conta? ', style: TextStyle(color: Colors.white),
+              //       children: [
+              //         TextSpan(
+              //           text: 'Clique aqui',
+              //           style: TextStyle(
+              //             fontWeight: FontWeight.bold,
+              //             color: Colors.white
+              //           ),
+              //         ),
+              //         TextSpan(
+              //             text:
+              //                 ' e entre em contato para saber mais sobre a maior rede de gerenciamento de casas e apartamentos ágeis.', style: TextStyle(color: Colors.white)),
+              //       ],
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

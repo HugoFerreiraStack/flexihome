@@ -34,7 +34,7 @@ class LoginForm extends GetView<LoginController> {
             },
           ),
 
-          SizedBox(height: 60),
+          SizedBox(height: 20),
 
           TextFormField(
             controller: controller.passwordController,
