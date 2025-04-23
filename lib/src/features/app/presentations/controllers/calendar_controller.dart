@@ -1,3 +1,4 @@
+import 'package:flexihome/src/features/app/presentations/pages/add_schedule.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -42,23 +43,25 @@ class CalendarController extends GetxController {
   }
 
   void openOverlayScreen() {
-    Get.bottomSheet(
-      Container(
-        height: 300,
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Get.theme.cardColor,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Center(
-          child: Text(
-            'Tela sobreposta (aqui pode vir um formulário, etc)',
-            style: TextStyle(fontSize: 16),
-          ),
-        ),
-      ),
-      isScrollControlled: true,
-    );
+      Get.to(() => AddSchedulePage());
+
+    // Get.bottomSheet(
+    //   Container(
+    //     height: 300,
+    //     padding: const EdgeInsets.all(20),
+    //     decoration: BoxDecoration(
+    //       color: Get.theme.cardColor,
+    //       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    //     ),
+    //     child: Center(
+    //       child: Text(
+    //         'Tela sobreposta (aqui pode vir um formulário, etc)',
+    //         style: TextStyle(fontSize: 16),
+    //       ),
+    //     ),
+    //   ),
+    //   isScrollControlled: true,
+    // );
   }
 }
 
