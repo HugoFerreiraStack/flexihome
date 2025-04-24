@@ -1,8 +1,10 @@
+// calendar_page.dart
+import 'dart:math';
+import 'package:flexihome/src/features/app/domain/entities/event.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/calendar_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'dart:math';
 
 class CalendarPage extends StatefulWidget {
   @override
@@ -11,50 +13,38 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMixin {
   final CalendarController controller = Get.put(CalendarController());
-  final ValueNotifier<bool> _isExpanded = ValueNotifier(false);
+  final DraggableScrollableController _draggableController = DraggableScrollableController();
   late AnimationController _iconController;
 
   @override
   void initState() {
     super.initState();
-    _iconController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 300),
-    );
+    _iconController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    controller.isBottomSheetExpanded.listen((isExpanded) {
+      final targetExtent = isExpanded ? 0.85 : 0.35;
+      _draggableController.animateTo(
+        targetExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+      isExpanded ? _iconController.forward() : _iconController.reverse();
+    });
   }
 
   @override
   void dispose() {
     _iconController.dispose();
-    _isExpanded.dispose();
     super.dispose();
   }
 
   void _toggleExpand() {
-    _isExpanded.value = !_isExpanded.value;
-    if (_isExpanded.value) {
-      _iconController.forward();
-    } else {
-      _iconController.reverse();
-    }
+    controller.isBottomSheetExpanded.value = !controller.isBottomSheetExpanded.value;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Calendário'),
-        actions: [
-          PopupMenuButton<CalendarFormat>(
-            onSelected: controller.onFormatChanged,
-            itemBuilder: (context) => [
-              PopupMenuItem(value: CalendarFormat.twoWeeks, child: Text('Quinzenal')),
-              PopupMenuItem(value: CalendarFormat.month, child: Text('Mensal')),
-              PopupMenuItem(value: CalendarFormat.week, child: Text('Semanal')),
-            ],
-          ),
-        ],
-      ),
+      appBar: AppBar(title: Text('Calendário')),
       body: Obx(() => Stack(
             children: [
               Column(
@@ -63,8 +53,7 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
                     firstDay: DateTime.utc(2020, 1, 1),
                     lastDay: DateTime.utc(2030, 12, 31),
                     focusedDay: controller.focusedDay.value,
-                    selectedDayPredicate: (day) =>
-                        isSameDay(controller.selectedDay.value, day),
+                    selectedDayPredicate: (day) => isSameDay(controller.selectedDay.value, day),
                     calendarFormat: controller.calendarFormat.value,
                     eventLoader: controller.getEventsForDay,
                     onDaySelected: controller.onDaySelected,
@@ -78,7 +67,7 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
                               padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
                                 color: Colors.blueAccent,
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
                                 '${events.length}',
@@ -91,68 +80,130 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
                       },
                     ),
                   ),
-                  Expanded(child: SizedBox()), // Preencher o espaço abaixo do calendário
+                  Expanded(child: SizedBox()),
                 ],
               ),
-              // Draggable Sheet com controle de altura e animação
-              ValueListenableBuilder<bool>(
-                valueListenable: _isExpanded,
-                builder: (context, isExpanded, child) {
-                  return DraggableScrollableSheet(
-                    initialChildSize: isExpanded ? 0.85 : 0.35,
-                    minChildSize: 0.2,
-                    maxChildSize: 0.85,
-                    builder: (_, scrollController) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xFFE0EAF7),
-                          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              NotificationListener<DraggableScrollableNotification>(
+  onNotification: (notification) {
+    // Anima a seta com base no extent (entre 0.2 e 0.85)
+    final percent = ((notification.extent - 0.2) / (0.85 - 0.2)).clamp(0.0, 1.0);
+    _iconController.value = percent;
+
+    // Atualiza o estado para manter coerência no toggle (caso queira expandir/contrair via código depois)
+    controller.isBottomSheetExpanded.value = notification.extent > 0.5;
+
+    return true;
+  },
+  child: Obx(() => DraggableScrollableSheet(
+        controller: _draggableController,
+        initialChildSize: controller.isBottomSheetExpanded.value ? 0.85 : 0.35,
+        minChildSize: 0.2,
+        maxChildSize: 0.85,
+        builder: (_, scrollController) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Color(0xFFE0EAF7),
+              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+            ),
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: _toggleExpand,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: AnimatedBuilder(
+                      animation: _iconController,
+                      builder: (_, __) => Transform.rotate(
+                        angle: _iconController.value * pi,
+                        child: Icon(Icons.keyboard_arrow_up, size: 28),
+                      ),
+                    ),
+                  ),
+                ),
+                Text(
+                  '${controller.selectedDay.value.day.toString().padLeft(2, '0')} de ${_monthName(controller.selectedDay.value.month)} de ${controller.selectedDay.value.year}',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    controller: scrollController,
+                    itemCount: controller.getEventsForDay(controller.selectedDay.value).length,
+                    itemBuilder: (context, index) {
+                      final event = controller.getEventsForDay(controller.selectedDay.value)[index];
+                      final color = _getStatusColor(event.status);
+                      final icon = _getStatusIcon(event.status);
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: color,
+                          child: Icon(icon, color: Colors.white),
                         ),
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              onTap: _toggleExpand,
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: AnimatedBuilder(
-                                  animation: _iconController,
-                                  builder: (_, child) => Transform.rotate(
-                                    angle: _iconController.value * pi,
-                                    child: Icon(Icons.keyboard_arrow_up, size: 28),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Text(
-                              '${controller.selectedDay.value.day.toString().padLeft(2, '0')} de ${_monthName(controller.selectedDay.value.month)} de ${controller.selectedDay.value.year}',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            Expanded(
-                              child: ListView.builder(
-                                controller: scrollController,
-                                itemCount: controller.getEventsForDay(controller.selectedDay.value).length,
-                                itemBuilder: (context, index) {
-                                  final event = controller.getEventsForDay(controller.selectedDay.value)[index];
-                                  final color = _getStatusColor(event.status);
-                                  final icon = _getStatusIcon(event.status);
-                                  return ListTile(
-                                    leading: CircleAvatar(
-                                      backgroundColor: color,
-                                      child: Icon(icon, color: Colors.white),
-                                    ),
-                                    title: Text(event.title),
-                                    subtitle: Text('${event.time} - ${event.status}'),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
+                        title: Text(event.title),
+                        subtitle: Text('${event.time} - ${event.status}\nUnidade: ${event.unidade}'),
                       );
                     },
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      )),
+),
+
+              // Obx(() => DraggableScrollableSheet(
+              //       controller: _draggableController,
+              //       initialChildSize: controller.isBottomSheetExpanded.value ? 0.85 : 0.35,
+              //       minChildSize: 0.2,
+              //       maxChildSize: 0.85,
+              //       builder: (_, scrollController) {
+              //         return Container(
+              //           decoration: BoxDecoration(
+              //             color: Color(0xFFE0EAF7),
+              //             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              //           ),
+              //           child: Column(
+              //             children: [
+              //               GestureDetector(
+              //                 onTap: _toggleExpand,
+              //                 child: Padding(
+              //                   padding: const EdgeInsets.all(12.0),
+              //                   child: AnimatedBuilder(
+              //                     animation: _iconController,
+              //                     builder: (_, __) => Transform.rotate(
+              //                       angle: _iconController.value * pi,
+              //                       child: Icon(Icons.keyboard_arrow_up, size: 28),
+              //                     ),
+              //                   ),
+              //                 ),
+              //               ),
+              //               Text(
+              //                 '${controller.selectedDay.value.day.toString().padLeft(2, '0')} de ${_monthName(controller.selectedDay.value.month)} de ${controller.selectedDay.value.year}',
+              //                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              //               ),
+              //               Expanded(
+              //                 child: ListView.builder(
+              //                   controller: scrollController,
+              //                   itemCount: controller.getEventsForDay(controller.selectedDay.value).length,
+              //                   itemBuilder: (context, index) {
+              //                     final event = controller.getEventsForDay(controller.selectedDay.value)[index];
+              //                     final color = _getStatusColor(event.status);
+              //                     final icon = _getStatusIcon(event.status);
+              //                     return ListTile(
+              //                       leading: CircleAvatar(
+              //                         backgroundColor: color,
+              //                         child: Icon(icon, color: Colors.white),
+              //                       ),
+              //                       title: Text(event.title),
+              //                       subtitle: Text('${event.time} - ${event.status}\nUnidade: ${event.unidade}'),
+              //                     );
+              //                   },
+              //                 ),
+              //               ),
+              //             ],
+              //           ),
+              //         );
+              //       },
+              //     )),
             ],
           )),
       floatingActionButton: FloatingActionButton(

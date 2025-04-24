@@ -18,7 +18,6 @@ class AuthService extends GetxService {
   Future<User?> checkStateUser() async {
  
     _auth.authStateChanges().listen((User? user) {
-      // TODO DESCOMENTAR PRA VOLTAR O LOGIN
       // if (user == null) {
       //   log('User is currently signed out!');
       // } else {

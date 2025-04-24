@@ -1,13 +1,21 @@
-import 'package:flexihome/src/features/app/presentations/controllers/add_schedule_controller.dart';
+// add_schedule.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import '../controllers/add_schedule_controller.dart';
 
 class AddSchedulePage extends StatelessWidget {
-  final AddScheduleController controller = Get.put(AddScheduleController());
+  final DateTime initialDate;
+
+  AddSchedulePage({required this.initialDate, Key? key}) : super(key: key) {
+    final controller = Get.put(AddScheduleController());
+    controller.selectedDate.value = initialDate;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<AddScheduleController>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Adicione um agendamento'),
@@ -31,7 +39,7 @@ class AddSchedulePage extends StatelessWidget {
             ),
             SizedBox(height: 16),
             Obx(() => DropdownButtonFormField<String>(
-                  value: controller.selectedUnit.value == ''
+                  value: controller.selectedUnit.value.isEmpty
                       ? null
                       : controller.selectedUnit.value,
                   items: controller.unidades
@@ -56,9 +64,7 @@ class AddSchedulePage extends StatelessWidget {
                       firstDate: DateTime(2020),
                       lastDate: DateTime(2030),
                     );
-                    if (picked != null) {
-                      controller.selectedDate.value = picked;
-                    }
+                    if (picked != null) controller.selectedDate.value = picked;
                   },
                 )),
             Obx(() => ListTile(
@@ -69,16 +75,12 @@ class AddSchedulePage extends StatelessWidget {
                       context: context,
                       initialTime: controller.selectedTime.value,
                     );
-                    if (picked != null) {
-                      controller.selectedTime.value = picked;
-                    }
+                    if (picked != null) controller.selectedTime.value = picked;
                   },
                 )),
             SizedBox(height: 16),
             Obx(() => DropdownButtonFormField<String>(
-                  value: controller.repeatOption.value == ''
-                      ? 'Nenhum'
-                      : controller.repeatOption.value,
+                  value: controller.repeatOption.value,
                   onChanged: (val) {
                     if (val != null) controller.setRepeatOption(val);
                   },

@@ -1,5 +1,7 @@
+// calendar_controller.dart
+
+import 'package:flexihome/src/features/app/domain/entities/event.dart';
 import 'package:flexihome/src/features/app/presentations/pages/add_schedule.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -7,35 +9,18 @@ class CalendarController extends GetxController {
   var selectedDay = DateTime.now().obs;
   var focusedDay = DateTime.now().obs;
   var calendarFormat = CalendarFormat.month.obs;
+  var isBottomSheetExpanded = false.obs;
 
-  // Mapa de eventos simulados (mock), prontos para serem substituídos por dados do banco
-  final Map<DateTime, List<Event>> _events = {
-    DateTime.utc(2025, 3, 8): [
-      Event('Reunião - Genebra, 403', '10:00 - 11:30', 'Concluído'),
-      Event('Limpeza - Genebra, 401', '13:00 - 14:30', 'Em progresso'),
-    ],
-    DateTime.utc(2025, 3, 15): [
-      Event('Planejamento Sprint', '09:00 - 10:00', 'Pendente'),
-      Event('Revisão QA', '11:00 - 12:00', 'Concluído'),
-      Event('Deploy Produção', '15:00 - 16:00', 'Pendente'),
-    ],
-    DateTime.utc(2025, 3, 30): [
-      Event('Relatório Mensal', '08:00 - 09:00', 'Concluído'),
-      Event('Call com cliente', '10:30 - 11:30', 'Concluído'),
-      Event('Apresentação externa', '14:00 - 15:00', 'Pendente'),
-      Event('Entrega documento', '16:00 - 17:00', 'Em progresso'),
-    ],
-  };
+  final Map<DateTime, List<Event>> events = {};
 
   List<Event> getEventsForDay(DateTime day) {
     final key = DateTime.utc(day.year, day.month, day.day);
-    return _events[key] ?? [];
+    return events[key] ?? [];
   }
 
   void onDaySelected(DateTime selected, DateTime focused) {
     selectedDay.value = selected;
     focusedDay.value = focused;
-    // openOverlayScreen(); // Abre a tela sobreposta ao clicar na data
   }
 
   void onFormatChanged(CalendarFormat format) {
@@ -43,32 +28,24 @@ class CalendarController extends GetxController {
   }
 
   void openOverlayScreen() {
-      Get.to(() => AddSchedulePage());
-
-    // Get.bottomSheet(
-    //   Container(
-    //     height: 300,
-    //     padding: const EdgeInsets.all(20),
-    //     decoration: BoxDecoration(
-    //       color: Get.theme.cardColor,
-    //       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-    //     ),
-    //     child: Center(
-    //       child: Text(
-    //         'Tela sobreposta (aqui pode vir um formulário, etc)',
-    //         style: TextStyle(fontSize: 16),
-    //       ),
-    //     ),
-    //   ),
-    //   isScrollControlled: true,
-    // );
+    Get.to(() => AddSchedulePage(initialDate: selectedDay.value));
   }
+
+  void addEvent(DateTime date, Event event) {
+    final normalized = DateTime.utc(date.year, date.month, date.day);
+    if (events.containsKey(normalized)) {
+      events[normalized]!.add(event);
+    } else {
+      events[normalized] = [event];
+    }
+    update(); // Atualiza o Obx
+    selectedDay.value = date;
+    focusedDay.value = date;
+    isBottomSheetExpanded.value = true; // Força expansão após salvar
+  }
+
+  void refreshEvents() {
+  // Isso vai forçar o Obx no calendário a ser atualizado
+  selectedDay.refresh();
 }
-
-class Event {
-  final String title;
-  final String time;
-  final String status;
-
-  Event(this.title, this.time, this.status);
 }
