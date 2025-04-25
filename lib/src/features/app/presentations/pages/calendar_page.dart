@@ -50,6 +50,7 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
               Column(
                 children: [
                   TableCalendar<Event>(
+                    locale: 'pt_BR',
                     firstDay: DateTime.utc(2020, 1, 1),
                     lastDay: DateTime.utc(2030, 12, 31),
                     focusedDay: controller.focusedDay.value,
@@ -84,71 +85,71 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
                 ],
               ),
               NotificationListener<DraggableScrollableNotification>(
-  onNotification: (notification) {
-    // Anima a seta com base no extent (entre 0.2 e 0.85)
-    final percent = ((notification.extent - 0.2) / (0.85 - 0.2)).clamp(0.0, 1.0);
-    _iconController.value = percent;
+                onNotification: (notification) {
+                  // Anima a seta com base no extent (entre 0.2 e 0.85)
+                  final percent = ((notification.extent - 0.2) / (0.85 - 0.2)).clamp(0.0, 1.0);
+                  _iconController.value = percent;
 
-    // Atualiza o estado para manter coerência no toggle (caso queira expandir/contrair via código depois)
-    controller.isBottomSheetExpanded.value = notification.extent > 0.5;
+                  // Atualiza o estado para manter coerência no toggle (caso queira expandir/contrair via código depois)
+                  controller.isBottomSheetExpanded.value = notification.extent > 0.5;
 
-    return true;
-  },
-  child: Obx(() => DraggableScrollableSheet(
-        controller: _draggableController,
-        initialChildSize: controller.isBottomSheetExpanded.value ? 0.85 : 0.35,
-        minChildSize: 0.2,
-        maxChildSize: 0.85,
-        builder: (_, scrollController) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Color(0xFFE0EAF7),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            ),
-            child: Column(
-              children: [
-                GestureDetector(
-                  onTap: _toggleExpand,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: AnimatedBuilder(
-                      animation: _iconController,
-                      builder: (_, __) => Transform.rotate(
-                        angle: _iconController.value * pi,
-                        child: Icon(Icons.keyboard_arrow_up, size: 28),
-                      ),
-                    ),
-                  ),
+                  return true;
+                  },
+                  child: Obx(() => DraggableScrollableSheet(
+                        controller: _draggableController,
+                        initialChildSize: controller.isBottomSheetExpanded.value ? 0.85 : 0.35,
+                        minChildSize: 0.2,
+                        maxChildSize: 0.85,
+                        builder: (_, scrollController) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Color(0xFFE0EAF7),
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                            ),
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: _toggleExpand,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: AnimatedBuilder(
+                                      animation: _iconController,
+                                      builder: (_, __) => Transform.rotate(
+                                        angle: _iconController.value * pi,
+                                        child: Icon(Icons.keyboard_arrow_up, size: 28),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '${controller.selectedDay.value.day.toString().padLeft(2, '0')} de ${_monthName(controller.selectedDay.value.month)} de ${controller.selectedDay.value.year}',
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                ),
+                                Expanded(
+                                  child: ListView.builder(
+                                    controller: scrollController,
+                                    itemCount: controller.getEventsForDay(controller.selectedDay.value).length,
+                                    itemBuilder: (context, index) {
+                                      final event = controller.getEventsForDay(controller.selectedDay.value)[index];
+                                      final color = _getStatusColor(event.status);
+                                      final icon = _getStatusIcon(event.status);
+                                      return ListTile(
+                                        leading: CircleAvatar(
+                                          backgroundColor: color,
+                                          child: Icon(icon, color: Colors.white),
+                                        ),
+                                        title: Text(event.title),
+                                        subtitle: Text('${event.time} - ${event.status}\nUnidade: ${event.unidade}'),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      )),
                 ),
-                Text(
-                  '${controller.selectedDay.value.day.toString().padLeft(2, '0')} de ${_monthName(controller.selectedDay.value.month)} de ${controller.selectedDay.value.year}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: controller.getEventsForDay(controller.selectedDay.value).length,
-                    itemBuilder: (context, index) {
-                      final event = controller.getEventsForDay(controller.selectedDay.value)[index];
-                      final color = _getStatusColor(event.status);
-                      final icon = _getStatusIcon(event.status);
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: color,
-                          child: Icon(icon, color: Colors.white),
-                        ),
-                        title: Text(event.title),
-                        subtitle: Text('${event.time} - ${event.status}\nUnidade: ${event.unidade}'),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      )),
-),
 
               // Obx(() => DraggableScrollableSheet(
               //       controller: _draggableController,

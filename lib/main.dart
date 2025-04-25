@@ -5,12 +5,14 @@ import 'package:flexihome/src/config/themes/app_theme.dart';
 import 'package:flexihome/src/core/bindings/auth_binding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await initializeDateFormatting('pt_BR', null); // Aguarda corretamente a formatação de datas
 
-  runApp(const MyApp());
+  runApp(const MyApp()); // Só roda após a formatação estar pronta
 }
 
 class MyApp extends StatelessWidget {

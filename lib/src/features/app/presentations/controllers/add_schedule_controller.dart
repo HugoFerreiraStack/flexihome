@@ -46,53 +46,70 @@ void saveSchedule() {
   final int interval = repeatInterval.value;
 
   final DateTime now = DateTime.now();
-  final DateTime initialDate = selectedDate.value;
   final DateTime today = DateTime(now.year, now.month, now.day);
-  final DateTime baseDate = initialDate.isBefore(today) ? today : initialDate;
+  final DateTime selected = DateTime(
+    selectedDate.value.year,
+    selectedDate.value.month,
+    selectedDate.value.day,
+  );
+
+  // Use selectedDate como ponto de partida, SEMPRE
+  DateTime startDate = selected.isBefore(today) ? today : selected;
 
   List<DateTime> datesToAdd = [];
 
+  DateTime nextValidDate(int year, int month, int day) {
+    try {
+      return DateTime(year, month, day);
+    } catch (_) {
+      final lastDay = DateTime(year, month + 1, 0).day;
+      return DateTime(year, month, lastDay);
+    }
+  }
+
   switch (repeat) {
     case 'Nenhum':
-      datesToAdd.add(baseDate);
+      datesToAdd.add(startDate);
       break;
 
     case 'Diariamente':
       for (int i = 0; i < 30; i++) {
-        final date = baseDate.add(Duration(days: i));
+        final date = startDate.add(Duration(days: i));
         datesToAdd.add(date);
       }
       break;
 
     case 'Semanalmente':
-      DateTime date = baseDate;
-      final targetWeekday = initialDate.weekday;
-      final endDate = baseDate.add(Duration(days: 360));
+      DateTime date = startDate;
+      final targetWeekday = selected.weekday;
 
-      while (date.isBefore(endDate)) {
-        if (date.weekday == targetWeekday) {
-          datesToAdd.add(date);
-        }
+      // Avança para o próximo dia da semana correspondente
+      while (date.weekday != targetWeekday) {
         date = date.add(Duration(days: 1));
+      }
+
+      final endDate = startDate.add(Duration(days: 360));
+      while (!date.isAfter(endDate)) {
+        datesToAdd.add(date);
+        date = date.add(Duration(days: 7));
       }
       break;
 
     case 'Mensalmente':
-      DateTime date = DateTime(baseDate.year, baseDate.month, initialDate.day);
-      final endDate = DateTime(baseDate.year + 3, baseDate.month, baseDate.day);
+      DateTime date = nextValidDate(startDate.year, startDate.month, selected.day);
+      final endDate = DateTime(startDate.year + 3, startDate.month, 1);
 
-      while (date.isBefore(endDate)) {
-        if (date.isAfter(today) || date.isAtSameMomentAs(today)) {
-          datesToAdd.add(date);
-        }
-        date = DateTime(date.year, date.month + interval, date.day);
+      while (!date.isAfter(endDate)) {
+        datesToAdd.add(date);
+        final nextMonth = DateTime(date.year, date.month + interval, 1);
+        date = nextValidDate(nextMonth.year, nextMonth.month, selected.day);
       }
       break;
 
     case 'Anualmente':
       for (int i = 0; i < 3; i++) {
-        final date = DateTime(baseDate.year + i, initialDate.month, initialDate.day);
-        if (date.isAfter(today) || date.isAtSameMomentAs(today)) {
+        final date = nextValidDate(startDate.year + i, selected.month, selected.day);
+        if (!date.isBefore(startDate)) {
           datesToAdd.add(date);
         }
       }
@@ -107,5 +124,6 @@ void saveSchedule() {
   calendarController.refreshEvents();
   Get.back();
 }
+
 
 }

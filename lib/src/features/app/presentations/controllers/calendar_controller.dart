@@ -1,7 +1,7 @@
 // calendar_controller.dart
 
 import 'package:flexihome/src/features/app/domain/entities/event.dart';
-import 'package:flexihome/src/features/app/presentations/pages/add_schedule.dart';
+import 'package:flexihome/src/features/app/presentations/pages/add_schedule_page.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
