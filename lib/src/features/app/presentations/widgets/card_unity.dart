@@ -16,7 +16,7 @@ class CardUnity extends StatelessWidget {
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(20),
       child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
           child: InkWell(
             onTap: () {},
             // todo ajustar cor no dispositivo

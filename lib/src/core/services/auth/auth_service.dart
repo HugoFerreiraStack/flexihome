@@ -18,12 +18,12 @@ class AuthService extends GetxService {
   Future<User?> checkStateUser() async {
  
     _auth.authStateChanges().listen((User? user) {
-      // if (user == null) {
-      //   log('User is currently signed out!');
-      // } else {
+      if (user == null) {
+        log('User is currently signed out!');
+      } else {
         Get.offAllNamed(AppRoutes.APP);
         log('User is signed in!');
-      // }
+      }
     });
     return _auth.currentUser;
   }

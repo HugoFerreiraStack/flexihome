@@ -14,7 +14,7 @@ class CardCondominium extends StatelessWidget {
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(20),
       child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
           child: InkWell(
             onTap: () {
               //    Get.snackbar('title', 'sub');

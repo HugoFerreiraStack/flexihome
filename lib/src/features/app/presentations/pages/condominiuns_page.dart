@@ -31,14 +31,13 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
           AppColors.primary,
           AppColors.secondary
         ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
-        child: SingleChildScrollView(
+        child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal:  16.0),
             child: Column(
               children: [
-                SizedBox(height: 40),
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  padding: const EdgeInsets.only(bottom: 6.0),
                   child: Text(
                     'Condomínios',
                     style: TextStyle(
@@ -49,45 +48,50 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
                     ),
                   ),
                 ),
-                TextFormField(
-                  controller: null,
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    labelText: 'Procure um condomínio',
-                    hintText: 'Digite o nome do condomínio',
-                    hintStyle: TextStyle(color: AppColors.flexGrey),
-                    labelStyle: TextStyle(color: Colors.white),
-                    filled: true,
-                    fillColor: Colors.white.withOpacity(0.3),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 6.0),
+                  child: TextFormField(
+                    controller: null,
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                      labelText: 'Procure um condomínio',
+                      hintText: 'Digite o nome do condomínio',
+                      hintStyle: TextStyle(color: AppColors.flexGrey),
+                      labelStyle: TextStyle(color: Colors.white),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.3),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
+                    style: TextStyle(color: Colors.white),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor, insira a unidade';
+                      }
+                      return null;
+                    },
+                    // FUNC GET UNIDADE
+                    onChanged: null,
                   ),
-                  style: TextStyle(color: Colors.white),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Por favor, insira a unidade';
-                    }
-                    return null;
-                  },
-                  // FUNC GET UNIDADE
-                  onChanged: null,
                 ),
                 // todo lista condominios
-                Obx(() => ListView.builder(
-                    itemCount: controller.condominiums.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return CardCondominium(
-                        title: controller.condominiums[index].name,
-                        address: controller.condominiums[index].endereco?.logradouro,  
-                      );
-                    },
-                  ))
+                Obx(() => Expanded(
+                  child: ListView.builder(
+                      itemCount: controller.condominiums.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return CardCondominium(
+                          title: controller.condominiums[index].name,
+                          address: controller.condominiums[index].endereco?.logradouro,  
+                        );
+                      },
+                    ),
+                ))
               ],
             ),
           ),
