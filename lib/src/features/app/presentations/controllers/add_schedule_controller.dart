@@ -1,129 +1,210 @@
-// add_schedule_controller.dart
-import 'package:get/get.dart';
+// controllers/add_schedule_controller.dart
 import 'package:flutter/material.dart';
-import 'calendar_controller.dart';
+import 'package:get/get.dart';
 import '../../domain/entities/event.dart';
+import 'calendar_controller.dart';
+import '../widgets/error_dialog.dart';
+import '../widgets/end_date_dialog.dart';
 
 class AddScheduleController extends GetxController {
   final titleController = TextEditingController();
   final selectedUnit = ''.obs;
   final selectedDate = DateTime.now().obs;
   final selectedTime = TimeOfDay.now().obs;
-  final repeatOption = 'Nenhum'.obs;
-  final repeatInterval = 1.obs;
+  final repeatOption = ''.obs;
+  final endOption = ''.obs;
+  final endDate = Rxn<DateTime>();
 
   final List<String> unidades = ['unidade1', 'uni2', 'uni3'];
-  final List<String> repeatOptions = ['Nenhum', 'Diariamente', 'Semanalmente', 'Mensalmente', 'Anualmente'];
+  final List<String> endOptions = ['Nunca', 'Na data...'];
+
+  final repeatOptions = <String>[].obs;
+  bool get isSingleDateOnly =>
+      repeatOption.value.startsWith('Somente');
+
+  @override
+  void onInit() {
+    super.onInit();
+    _buildRepeatOptions();
+  }
+
+  void _buildRepeatOptions() {
+    final date = selectedDate.value;
+    final formattedDate =
+        '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+
+    repeatOptions.assignAll([
+      'Somente $formattedDate',
+      'Todos os Dias',
+      'Todas as Semanas',
+      'A cada 2 Semanas',
+      'Todos os Meses',
+      'Todos os Anos',
+    ]);
+
+    repeatOption.value = repeatOptions.first;
+  }
 
   void setRepeatOption(String value) {
     repeatOption.value = value;
-    if (value != 'Mensalmente') {
-      repeatInterval.value = 1;
+    if (isSingleDateOnly) {
+      endOption.value = '';
+      endDate.value = null;
     }
   }
 
-  // void saveSchedule() {
-  //   final calendarController = Get.find<CalendarController>();
-
-  //   final newEvent = Event(
-  //     titleController.text,
-  //     selectedTime.value.format(Get.context!),
-  //     repeatOption.value,
-  //     selectedUnit.value,
-  //   );
-
-  //   calendarController.addEvent(selectedDate.value, newEvent);
-  //   Get.back();
-  // }
-
-void saveSchedule() {
-  final calendarController = Get.find<CalendarController>();
-
-  final String title = titleController.text;
-  final String time = selectedTime.value.format(Get.context!);
-  final String unidade = selectedUnit.value;
-  final String repeat = repeatOption.value;
-  final int interval = repeatInterval.value;
-
-  final DateTime now = DateTime.now();
-  final DateTime today = DateTime(now.year, now.month, now.day);
-  final DateTime selected = DateTime(
-    selectedDate.value.year,
-    selectedDate.value.month,
-    selectedDate.value.day,
-  );
-
-  // Use selectedDate como ponto de partida, SEMPRE
-  DateTime startDate = selected.isBefore(today) ? today : selected;
-
-  List<DateTime> datesToAdd = [];
-
-  DateTime nextValidDate(int year, int month, int day) {
-    try {
-      return DateTime(year, month, day);
-    } catch (_) {
-      final lastDay = DateTime(year, month + 1, 0).day;
-      return DateTime(year, month, lastDay);
+  void setEndOption(String value) {
+    endOption.value = value;
+    if (value == 'Nunca') {
+      endDate.value = null;
     }
   }
 
-  switch (repeat) {
-    case 'Nenhum':
-      datesToAdd.add(startDate);
-      break;
+  Future<void> pickEndDate() async {
+    final maxSelectableDate =
+        selectedDate.value.add(Duration(days: 365 * 3 + 60)); // 3 anos + 2 meses
 
-    case 'Diariamente':
-      for (int i = 0; i < 30; i++) {
-        final date = startDate.add(Duration(days: i));
-        datesToAdd.add(date);
+    final picked = await showDatePicker(
+      context: Get.context!,
+      initialDate: selectedDate.value,
+      firstDate: selectedDate.value,
+      lastDate: maxSelectableDate,
+    );
+
+    if (picked != null) {
+      // Validação específica
+      if (repeatOption.value == 'Todos os Dias' &&
+          picked.isAfter(selectedDate.value.add(Duration(days: 95)))) {
+        showErrorDialog(
+            'Eventos diários podem ser agendados no máximo para 95 dias.');
+        return;
       }
-      break;
 
-    case 'Semanalmente':
-      DateTime date = startDate;
-      final targetWeekday = selected.weekday;
-
-      // Avança para o próximo dia da semana correspondente
-      while (date.weekday != targetWeekday) {
-        date = date.add(Duration(days: 1));
+      final limitForValidation =
+          selectedDate.value.add(Duration(days: 365 * 3)); // 3 anos "visuais"
+      if (picked.isAfter(limitForValidation)) {
+        showErrorDialog(
+            'Eventos podem ser agendados no máximo para 3 anos.');
+        return;
       }
 
-      final endDate = startDate.add(Duration(days: 360));
-      while (!date.isAfter(endDate)) {
-        datesToAdd.add(date);
-        date = date.add(Duration(days: 7));
+      final confirmed = await showEndDateDialog(
+        titleController.text.isEmpty ? 'Agendamento' : titleController.text,
+        repeatOption.value,
+        picked,
+      );
+
+      if (confirmed) {
+        endDate.value = picked;
       }
-      break;
+    }
+  }
 
-    case 'Mensalmente':
-      DateTime date = nextValidDate(startDate.year, startDate.month, selected.day);
-      final endDate = DateTime(startDate.year + 3, startDate.month, 1);
+  void saveSchedule() {
+    final calendarController = Get.find<CalendarController>();
 
-      while (!date.isAfter(endDate)) {
-        datesToAdd.add(date);
-        final nextMonth = DateTime(date.year, date.month + interval, 1);
-        date = nextValidDate(nextMonth.year, nextMonth.month, selected.day);
+    if (titleController.text.trim().isEmpty ||
+        selectedUnit.value.isEmpty ||
+        repeatOption.value.isEmpty ||
+        (!isSingleDateOnly && endOption.value.isEmpty)) {
+      showErrorDialog('Preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    final String title = titleController.text.trim();
+    final String time = selectedTime.value.format(Get.context!);
+    final String unidade = selectedUnit.value;
+    final String repeat = repeatOption.value;
+
+    DateTime startDate = selectedDate.value;
+    DateTime? limitDate;
+
+    // Regras para limite de data
+    if (isSingleDateOnly) {
+      limitDate = startDate;
+    } else if (endOption.value == 'Nunca') {
+      if (repeat == 'Todos os Dias') {
+        limitDate = startDate.add(Duration(days: 95));
+      } else {
+        limitDate = startDate.add(Duration(days: 365 * 3 + 60));
       }
-      break;
+    } else if (endOption.value == 'Na data...' && endDate.value != null) {
+      if (repeat == 'Todos os Dias' &&
+          endDate.value!.isAfter(startDate.add(Duration(days: 95)))) {
+        showErrorDialog(
+            'Eventos diários podem ser agendados no máximo para 95 dias.');
+        return;
+      }
 
-    case 'Anualmente':
-      for (int i = 0; i < 3; i++) {
-        final date = nextValidDate(startDate.year + i, selected.month, selected.day);
-        if (!date.isBefore(startDate)) {
+      if (endDate.value!.isAfter(startDate.add(Duration(days: 365 * 3 + 60)))) {
+        showErrorDialog(
+            'Eventos podem ser agendados no máximo para 3 anos.');
+        return;
+      }
+
+      limitDate = endDate.value;
+    } else {
+      showErrorDialog('Selecione uma data final válida.');
+      return;
+    }
+
+    // Gerar lista de datas
+    List<DateTime> datesToAdd = [];
+
+    DateTime nextValidDate(int year, int month, int day) {
+      try {
+        return DateTime(year, month, day);
+      } catch (_) {
+        final lastDay = DateTime(year, month + 1, 0).day;
+        return DateTime(year, month, lastDay);
+      }
+    }
+
+    DateTime date = startDate;
+
+    switch (repeat) {
+      case 'Todos os Dias':
+        while (!date.isAfter(limitDate!)) {
           datesToAdd.add(date);
+          date = date.add(Duration(days: 1));
         }
-      }
-      break;
+        break;
+      case 'Todas as Semanas':
+        while (!date.isAfter(limitDate!)) {
+          datesToAdd.add(date);
+          date = date.add(Duration(days: 7));
+        }
+        break;
+      case 'A cada 2 Semanas':
+        while (!date.isAfter(limitDate!)) {
+          datesToAdd.add(date);
+          date = date.add(Duration(days: 14));
+        }
+        break;
+      case 'Todos os Meses':
+        while (!date.isAfter(limitDate!)) {
+          datesToAdd.add(date);
+          date = nextValidDate(date.year, date.month + 1, date.day);
+        }
+        break;
+      case 'Todos os Anos':
+        while (!date.isAfter(limitDate!)) {
+          datesToAdd.add(date);
+          date = DateTime(date.year + 1, date.month, date.day);
+        }
+        break;
+      default:
+        // Caso seja "Somente [data]", adiciona só a data selecionada
+        datesToAdd.add(startDate);
+        break;
+    }
+
+    for (var d in datesToAdd) {
+      final event = Event(title, time, repeat, unidade);
+      calendarController.addEvent(d, event);
+    }
+
+    calendarController.refreshEvents();
+    Get.back();
   }
-
-  for (var date in datesToAdd) {
-    final event = Event(title, time, repeat, unidade);
-    calendarController.addEvent(date, event);
-  }
-
-  calendarController.refreshEvents();
-  Get.back();
-}
-
-
 }

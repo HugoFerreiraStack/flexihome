@@ -53,7 +53,10 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
                     locale: 'pt_BR',
                     firstDay: DateTime.utc(2020, 1, 1),
                     lastDay: DateTime.utc(2030, 12, 31),
-                    focusedDay: controller.focusedDay.value,
+
+                    // Garante que o focusedDay está dentro dos limites permitidos
+                    focusedDay: _clampDate(controller.focusedDay.value, DateTime.utc(2020, 1, 1), DateTime.utc(2030, 12, 31)),
+
                     selectedDayPredicate: (day) => isSameDay(controller.selectedDay.value, day),
                     calendarFormat: controller.calendarFormat.value,
                     eventLoader: controller.getEventsForDay,
@@ -81,6 +84,39 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
                       },
                     ),
                   ),
+
+                  // TableCalendar<Event>(
+                  //   locale: 'pt_BR',
+                  //   firstDay: DateTime.utc(2020, 1, 1),
+                  //   lastDay: DateTime.utc(2030, 12, 31),
+                  //   focusedDay: controller.focusedDay.value,
+                  //   selectedDayPredicate: (day) => isSameDay(controller.selectedDay.value, day),
+                  //   calendarFormat: controller.calendarFormat.value,
+                  //   eventLoader: controller.getEventsForDay,
+                  //   onDaySelected: controller.onDaySelected,
+                  //   onFormatChanged: controller.onFormatChanged,
+                  //   calendarBuilders: CalendarBuilders(
+                  //     markerBuilder: (context, date, events) {
+                  //       if (events.isNotEmpty) {
+                  //         return Positioned(
+                  //           bottom: 1,
+                  //           child: Container(
+                  //             padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  //             decoration: BoxDecoration(
+                  //               color: Colors.blueAccent,
+                  //               borderRadius: BorderRadius.circular(4),
+                  //             ),
+                  //             child: Text(
+                  //               '${events.length}',
+                  //               style: TextStyle(color: Colors.white, fontSize: 10),
+                  //             ),
+                  //           ),
+                  //         );
+                  //       }
+                  //       return SizedBox();
+                  //     },
+                  //   ),
+                  // ),
                   Expanded(child: SizedBox()),
                 ],
               ),
@@ -248,3 +284,10 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
     return months[month];
   }
 }
+
+DateTime _clampDate(DateTime date, DateTime min, DateTime max) {
+  if (date.isBefore(min)) return min;
+  if (date.isAfter(max)) return max;
+  return date;
+}
+

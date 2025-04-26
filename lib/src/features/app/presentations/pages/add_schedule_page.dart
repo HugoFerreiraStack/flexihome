@@ -1,8 +1,8 @@
-// add_schedule.dart
+// pages/add_schedule_page.dart
+import 'package:flexihome/src/features/app/presentations/controllers/add_schedule_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../controllers/add_schedule_controller.dart';
 
 class AddSchedulePage extends StatelessWidget {
   final DateTime initialDate;
@@ -18,7 +18,7 @@ class AddSchedulePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Adicione um agendamento'),
+        title: Text('Novo Agendamento'),
         actions: [
           IconButton(
             icon: Icon(Icons.close),
@@ -30,14 +30,17 @@ class AddSchedulePage extends StatelessWidget {
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
+            // Título
             TextFormField(
               controller: controller.titleController,
               decoration: InputDecoration(
-                labelText: 'Agendamento',
-                hintText: 'O que você está agendando?',
+                labelText: 'Agendamento:',
+                hintText: 'Como se chama o agendamento?',
               ),
             ),
             SizedBox(height: 16),
+
+            // Unidade
             Obx(() => DropdownButtonFormField<String>(
                   value: controller.selectedUnit.value.isEmpty
                       ? null
@@ -51,9 +54,14 @@ class AddSchedulePage extends StatelessWidget {
                   onChanged: (val) {
                     if (val != null) controller.selectedUnit.value = val;
                   },
-                  decoration: InputDecoration(labelText: 'Unidades'),
+                  decoration: InputDecoration(
+                    labelText: 'Unidade:',
+                    hintText: 'Selecione uma unidade',
+                  ),
                 )),
             SizedBox(height: 16),
+
+            // Data
             Obx(() => ListTile(
                   title: Text('Data: ${DateFormat('dd/MM/yyyy').format(controller.selectedDate.value)}'),
                   trailing: Icon(Icons.calendar_today),
@@ -61,12 +69,14 @@ class AddSchedulePage extends StatelessWidget {
                     final picked = await showDatePicker(
                       context: context,
                       initialDate: controller.selectedDate.value,
-                      firstDate: DateTime(2020),
-                      lastDate: DateTime(2030),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2100),
                     );
                     if (picked != null) controller.selectedDate.value = picked;
                   },
                 )),
+
+            // Hora
             Obx(() => ListTile(
                   title: Text('Horário: ${controller.selectedTime.value.format(context)}'),
                   trailing: Icon(Icons.access_time),
@@ -79,44 +89,70 @@ class AddSchedulePage extends StatelessWidget {
                   },
                 )),
             SizedBox(height: 16),
+
+            // Repetir
             Obx(() => DropdownButtonFormField<String>(
-                  value: controller.repeatOption.value,
-                  onChanged: (val) {
-                    if (val != null) controller.setRepeatOption(val);
-                  },
+                  value: controller.repeatOption.value.isEmpty ? null : controller.repeatOption.value,
                   items: controller.repeatOptions
                       .map((opt) => DropdownMenuItem(
                             value: opt,
                             child: Text(opt),
                           ))
                       .toList(),
-                  decoration: InputDecoration(labelText: 'Repetir'),
+                  onChanged: (val) {
+                    if (val != null) controller.setRepeatOption(val);
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Repetir:',
+                  ),
                 )),
+            SizedBox(height: 16),
+
+            // Termina (condicional)
             Obx(() {
-              if (controller.repeatOption.value == 'Mensalmente') {
-                return Column(
-                  children: [
-                    SizedBox(height: 10),
-                    DropdownButtonFormField<int>(
-                      value: controller.repeatInterval.value,
-                      onChanged: (val) {
-                        if (val != null) controller.repeatInterval.value = val;
-                      },
-                      items: List.generate(12, (i) => i + 1)
-                          .map((val) => DropdownMenuItem(
-                                value: val,
-                                child: Text('A cada $val mês(es)'),
-                              ))
-                          .toList(),
-                      decoration: InputDecoration(
-                          labelText: 'Intervalo de repetição (mensal)'),
-                    ),
-                  ],
-                );
+              if (controller.isSingleDateOnly) return SizedBox.shrink();
+              return DropdownButtonFormField<String>(
+                value: controller.endOption.value.isEmpty ? null : controller.endOption.value,
+                items: controller.endOptions
+                    .map((opt) => DropdownMenuItem(
+                          value: opt,
+                          child: Text(opt),
+                        ))
+                    .toList(),
+                onChanged: (val) {
+                  if (val != null) {
+                    controller.setEndOption(val);
+                    if (val == 'Na data...') {
+                      controller.pickEndDate();
+                    }
+                  }
+                },
+                decoration: InputDecoration(
+                  labelText: 'Termina:',
+                ),
+              );
+            }),
+            SizedBox(height: 16),
+
+            // Mostrar a data de término selecionada, se aplicável
+            Obx(() {
+              if (controller.isSingleDateOnly || controller.endDate.value == null) {
+                return SizedBox.shrink();
               }
-              return SizedBox();
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Data do término:', style: TextStyle(fontSize: 16)),
+                  Text(
+                    DateFormat('dd/MM/yyyy').format(controller.endDate.value!),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              );
             }),
             SizedBox(height: 32),
+
+            // Botão Salvar
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -124,7 +160,7 @@ class AddSchedulePage extends StatelessWidget {
                 label: Text('Salvar'),
                 onPressed: controller.saveSchedule,
               ),
-            )
+            ),
           ],
         ),
       ),
