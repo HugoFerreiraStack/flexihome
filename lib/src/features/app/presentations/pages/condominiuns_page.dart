@@ -10,19 +10,21 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ElevatedButton(
+          floatingActionButton: ElevatedButton(
           onPressed: () => Get.to(RegisterCondominiumPage()),
           onLongPress: () => Get.snackbar('Botão', 'Adicionar Condomínio',
               snackPosition: SnackPosition.BOTTOM),
-          style: ElevatedButton.styleFrom(
+        style: ElevatedButton.styleFrom(
               shape: CircleBorder(),
               backgroundColor: AppColors.primary,
-              padding: EdgeInsets.all(24)),
-          child: Icon(
+              elevation: 4,
+              padding: EdgeInsets.all(20)),
+        child: Icon(
             Icons.add,
             color: Colors.white,
-          )),
-      body: Container(
+          ),
+        ),  
+        body: Container(
         width: double.infinity,
         height: Get.height,
         decoration: BoxDecoration(

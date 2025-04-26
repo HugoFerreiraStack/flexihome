@@ -10,7 +10,7 @@ class UnitiesPage extends GetView<RegisterUnityController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ElevatedButton(
+          floatingActionButton: ElevatedButton(
           onPressed: () {
             controller.getCondominiums();
             Get.to(RegisterUnityPage());
@@ -18,13 +18,15 @@ class UnitiesPage extends GetView<RegisterUnityController> {
           onLongPress: () => Get.snackbar('Botão', 'Adicionar Unidade',
               snackPosition: SnackPosition.BOTTOM),
           style: ElevatedButton.styleFrom(
-              shape: CircleBorder(),
-              backgroundColor: AppColors.primary,
-              padding: EdgeInsets.all(24)),
+                shape: CircleBorder(),
+                backgroundColor: AppColors.primary,
+                elevation: 4,
+                padding: EdgeInsets.all(20)),
           child: Icon(
-            Icons.add,
-            color: Colors.white,
-          )),
+              Icons.add,
+              color: Colors.white,
+            ),
+          ),  
       body: Container(
         width: double.infinity,
         height: Get.height,
