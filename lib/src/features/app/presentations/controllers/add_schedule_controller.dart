@@ -122,11 +122,11 @@ class AddScheduleController extends GetxController {
   void onInit() {
     super.onInit();
     getEventsByImobiliaria(AuthService.to.host!.idImobiliaria!);
-    _buildRepeatOptions();
+    buildRepeatOptions();
     getCondominiums();
   }
 
-  void _buildRepeatOptions() {
+  void buildRepeatOptions() {
     final date = selectedDate.value;
     final formattedDate =
         '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
@@ -141,6 +141,7 @@ class AddScheduleController extends GetxController {
     ]);
 
     repeatOption.value = repeatOptions.first;
+    
   }
 
   void setRepeatOption(String value) {
@@ -316,6 +317,13 @@ class AddScheduleController extends GetxController {
           .doc(event.id)
           .set(event.toJson());
 
+      await FirebaseFirestore.instance
+          .collection(Constants.collectionUnidade)
+          .doc(selectedUnit!.id)
+          .update({
+        'eventos': FieldValue.arrayUnion([event.toJson()]),
+      });
+
       log('Evento salvo com sucesso!');
       for (var date in datesToAdd) {
         final normalizedDate = DateTime(date.year, date.month, date.day);
@@ -324,12 +332,18 @@ class AddScheduleController extends GetxController {
       }
 
       calendarController.refreshEvents();
+      typeEvent = null;
+      selectedCondominium = null;
+      selectedUnit = null;
+      
       Get.back();
     } catch (e) {
       log('Erro ao salvar evento: $e');
       showErrorDialog('Erro ao salvar o evento. Tente novamente.');
     }
   }
+
+  
 
   Future<void> getEventsByImobiliaria(String idImobiliaria) async {
     try {
@@ -340,16 +354,16 @@ class AddScheduleController extends GetxController {
           .where('condominium.idImobiliaria', isEqualTo: idImobiliaria)
           .get();
 
-      log('Eventos encontrados: ${querySnapshot.docs.first}');
-
       // Limpa os eventos existentes antes de adicionar os novos
       eventos.clear();
       final calendarController = Get.find<CalendarController>();
+      calendarController.events.clear();
       // Adiciona os eventos recuperados ao mapa de eventos do TableCalendar
       for (var element in querySnapshot.docs) {
         final event = Event.fromJson(element.data() as Map<String, dynamic>);
 
         // Adiciona cada data do evento ao mapa de eventos
+
         for (var date in event.dates ?? []) {
           final normalizedDate = DateTime(date.year, date.month, date.day);
 
@@ -358,6 +372,7 @@ class AddScheduleController extends GetxController {
       }
 
       log('Eventos carregados com sucesso: ${eventos.length}');
+      calendarController.refreshEvents();
     } catch (e) {
       log('Erro ao buscar eventos: $e');
     }

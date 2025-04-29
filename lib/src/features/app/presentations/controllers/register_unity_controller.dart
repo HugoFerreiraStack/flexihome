@@ -164,6 +164,7 @@ class RegisterUnityController extends GetxController {
       unity.usuarios?.add(AuthService.to.host?.id ?? '');
     }
     unity.usuarios = unity.usuarios?.toSet().toList();
+    unity.eventos = [];
     for (var condominio in condominiums) {
       log('ID condominio: ${condominio.id}');
       condominio.usuarios = unity.usuarios;

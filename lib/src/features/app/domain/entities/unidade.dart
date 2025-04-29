@@ -1,5 +1,6 @@
 import 'package:flexihome/src/features/app/domain/entities/condominio.dart';
 import 'package:flexihome/src/features/app/domain/entities/endereco.dart';
+import 'package:flexihome/src/features/app/domain/entities/event.dart';
 
 class Unidade {
   String? id;
@@ -13,6 +14,7 @@ class Unidade {
   String? criadoPor;
   DateTime? criadoEm;
   List<String>? usuarios; 
+  List<Event>? eventos;
 
   Unidade({
     this.id,
@@ -25,7 +27,8 @@ class Unidade {
     this.criadoPor,
     this.criadoEm,
     this.usuarios,
-    this.numberAp
+    this.numberAp,
+    this.eventos,
   });
 
   factory Unidade.fromJson(Map<String, dynamic> json) {
@@ -41,6 +44,9 @@ class Unidade {
       criadoEm: DateTime.parse(json['criadoEm']),
       numberAp: json['numberAp'],
       usuarios: List<String>.from(json['usuarios'] ?? []),
+      eventos: (json['eventos'] as List<dynamic>?)
+          ?.map((e) => Event.fromJson(e))
+          .toList(),
     );
   }
 
@@ -57,6 +63,7 @@ class Unidade {
       'criadoEm': criadoEm?.toIso8601String(),
       'usuarios': usuarios,
       'numberAp': numberAp,
+      'eventos': eventos?.map((e) => e.toJson()).toList(),
     };
   }
 }

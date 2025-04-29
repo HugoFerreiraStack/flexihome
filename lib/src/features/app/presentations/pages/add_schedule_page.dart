@@ -155,7 +155,10 @@ class AddSchedulePage extends StatelessWidget {
                       firstDate: now,
                       lastDate: DateTime(2100),
                     );
-                    if (picked != null) controller.selectedDate.value = picked;
+                    if (picked != null) {
+                      controller.selectedDate.value = picked;
+                      controller.buildRepeatOptions();
+                    }
                   },
                 )),
 
