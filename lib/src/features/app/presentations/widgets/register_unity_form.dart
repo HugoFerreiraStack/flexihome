@@ -19,43 +19,44 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
           spacing: 18,
           children: [
             Obx(() => DropdownButtonFormField<Condominio>(
-                dropdownColor: AppColors.primary,
-                decoration: InputDecoration(
-                  labelText: 'Condomínio',
-                  labelStyle: TextStyle(color: Colors.white),
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.3),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                  dropdownColor: AppColors.primary,
+                  
+                  decoration: InputDecoration(
+                    labelText: 'Condomínio',
+                    labelStyle: TextStyle(color: Colors.white),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.3),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                ),
-                hint: Text(
-                  'Selecione o condomínio',
+                  hint: Text(
+                    'Selecione o condomínio',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   style: TextStyle(color: Colors.white),
-                ),
-                style: TextStyle(color: Colors.white),
-                value: controller.selectedCondominium,
-                items: controller.condominiums
-                    .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(
-                          e.nome!,
-                          style: TextStyle(color: Colors.white),
+                  value: controller.selectedCondominium,
+                  items: controller.condominiums
+                      .map(
+                        (e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(
+                            e.nome!,
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
-                      ),
-                    )
-                    .toList(),
-                onChanged: (Condominio? newValue) {
-             controller.setSelectedCondominio(newValue!);
-                },
-                validator: (value) {
-                  if (value == null) {
-                    return 'Por favor, selecione o tipo de usuário';
-                  }
-                  return null;
-                },
-              )),
+                      )
+                      .toList(),
+                  onChanged: (Condominio? newValue) {
+                    controller.setSelectedCondominio(newValue!);
+                  },
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Por favor, selecione o tipo de usuário';
+                    }
+                    return null;
+                  },
+                )),
             TextFormField(
               controller: controller.nameController,
               keyboardType: TextInputType.name,
@@ -67,12 +68,12 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                 filled: true,
                 fillColor: Colors.white.withOpacity(0.3),
                 enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide.none, 
-              ),
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
               ),
               style: TextStyle(color: Colors.white),
               validator: (value) {
@@ -97,12 +98,12 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                 filled: true,
                 fillColor: Colors.white.withOpacity(0.3),
                 enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide.none, 
-              ),
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
               ),
               style: TextStyle(color: Colors.white),
               focusNode: controller.cepFocus,
@@ -124,12 +125,12 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                 filled: true,
                 fillColor: Colors.white.withOpacity(0.3),
                 enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide.none, 
-              ),
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
               ),
               style: TextStyle(color: Colors.white),
               validator: (value) {
@@ -150,12 +151,12 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                 filled: true,
                 fillColor: Colors.white.withOpacity(0.3),
                 enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide.none, 
-              ),
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
               ),
               style: TextStyle(color: Colors.white),
               validator: (value) {
@@ -176,12 +177,12 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                 filled: true,
                 fillColor: Colors.white.withOpacity(0.3),
                 enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide.none, 
-              ),
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
               ),
               style: TextStyle(color: Colors.white),
               validator: (value) {
@@ -205,12 +206,12 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.3),
                       enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none, 
-                    ),
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
                     ),
                     style: TextStyle(color: Colors.white),
                     validator: (value) {
@@ -234,12 +235,12 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.3),
                       enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none, 
-                    ),
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                      ),
                     ),
                     style: TextStyle(color: Colors.white),
                     validator: (value) {
@@ -252,7 +253,36 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                 ),
               ],
             ),
-            SizedBox(   
+            TextFormField(
+              controller: controller.complementoController,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                labelText: 'Apartamento',
+                hintText: 'Numero do Apartamento',
+                hintStyle: TextStyle(color: AppColors.flexGrey),
+                labelStyle: TextStyle(color: Colors.white),
+                filled: true,
+                fillColor: Colors.white.withOpacity(0.3),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              style: TextStyle(color: Colors.white),
+              onChanged: (value) {
+                controller.unity.endereco?.complemento = value;
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Por favor, insira o numero do apartamento';
+                }
+                return null;
+              },
+            ),
+            SizedBox(
               height: 40,
               width: double.infinity,
               child: ElevatedButton(
@@ -261,7 +291,10 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                   backgroundColor: AppColors.primary,
                   textStyle: TextStyle(fontSize: 18),
                 ),
-                child: Text('Salvar', style: TextStyle(color: Colors.white),),
+                child: Text(
+                  'Salvar',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ],

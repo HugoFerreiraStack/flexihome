@@ -16,7 +16,8 @@ class CondominiumRepositoryImpl implements CondominiumRepository {
     try {
       await FirebaseFirestore.instance
           .collection(Constants.collectionCondominio)
-          .add(params.toJson());
+          .doc(params.id)
+          .set(params.toJson());
       return Right(true);
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));

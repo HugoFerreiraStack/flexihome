@@ -22,7 +22,7 @@ class AppPage extends GetView<AppController> {
           selectedItemColor: AppColors.secondary,
           unselectedItemColor: AppColors.flexGrey,
           onTap: (value) {
-            controller.currentIndex = value;
+            controller.onTapAppBar(value);
           },
         ),
       ),

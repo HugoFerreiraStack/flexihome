@@ -25,6 +25,7 @@ class UserApp {
   UserTypeEnum? userType;
   Timestamp? expirationDate;
   List<String>? corretores;
+  String? idImobiliaria;
 
   UserApp.fromJson(Map<String, dynamic> json) {
     expirationDate = json['expirationDate'];
@@ -36,6 +37,7 @@ class UserApp {
     cnpj = json['cnpj'];
     fantasyName = json['fantasyName'];
     socialReason = json['socialReason'];
+    idImobiliaria = json['idImobiliaria'];
     userType = userTypeEnumFromJson(json['userType']);
     if (json['corretores'] != null) {
       corretores = <String>[];
@@ -57,6 +59,7 @@ class UserApp {
     _data['socialReason'] = socialReason;
     _data['userType'] = userType!.name;
     _data['expirationDate'] = expirationDate;
+    _data['idImobiliaria'] = idImobiliaria;
     if (corretores != null) {
       _data['corretores'] = corretores!.map((v) => v).toList();
     }else{ 

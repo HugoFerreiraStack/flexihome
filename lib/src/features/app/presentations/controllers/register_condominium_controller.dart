@@ -4,6 +4,7 @@ import 'package:flexihome/src/core/extensions/constants.dart';
 import 'package:flexihome/src/core/services/auth/auth_service.dart';
 import 'package:flexihome/src/features/app/domain/entities/condominio.dart';
 import 'package:flexihome/src/features/app/domain/entities/endereco.dart';
+import 'package:flexihome/src/features/app/domain/entities/user_type_enum.dart';
 import 'package:flexihome/src/features/app/domain/usecases/cep_usecase.dart';
 import 'package:flexihome/src/features/app/domain/usecases/register_condominium_usecase.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,10 @@ class RegisterCondominiumController extends GetxController {
 
   final formkey = GlobalKey<FormState>();
   final FocusNode cepFocus = FocusNode();
+
+  final _anfitrioesId = <String>[].obs;
+  List<String> get anfitrioesId => _anfitrioesId;
+  set anfitrioesId(List<String> value) => _anfitrioesId.value = value;
 
   final _condominiums = <Condominio>[].obs;
   List<Condominio> get condominiums => _condominiums;
@@ -107,16 +112,39 @@ class RegisterCondominiumController extends GetxController {
         condominium.logradouro = endereco.logradouro;
         condominium.bairro = endereco.bairro;
         condominium.cep = endereco.cep;
-        
 
         isloading = false;
       }),
     );
   }
 
+  Future<void> getUsersByImobiliaria(String idImobiliaria) async {
+    try {
+      anfitrioesId.clear();
+
+      CollectionReference usuariosCollection =
+          FirebaseFirestore.instance.collection(Constants.collectionHost);
+
+      QuerySnapshot querySnapshot = await usuariosCollection
+          .where('idImobiliaria', isEqualTo: idImobiliaria)
+          .get();
+
+      // Adiciona os resultados à lista de usuários
+      for (var element in querySnapshot.docs) {
+        anfitrioesId.add(element['id'] as String);
+      }
+
+      log('Usuários encontrados: ${anfitrioesId.length}');
+    } catch (e) {
+      log('Erro ao buscar usuários: $e');
+    }
+  }
+
   Future<void> registerCondominium() async {
-    if(nameController.text.isEmpty) {
-      Get.snackbar('Atenção', 'Preencha o nome do condomínio', 
+    if (nameController.text.isEmpty) {
+      Get.snackbar(
+        'Atenção',
+        'Preencha o nome do condomínio',
         backgroundColor: Colors.red,
         colorText: Colors.white,
         duration: const Duration(seconds: 2),
@@ -129,8 +157,14 @@ class RegisterCondominiumController extends GetxController {
       return;
     }
     condominium.nome = nameController.text;
-    condominium.numero=numberController.text;
+    condominium.numero = numberController.text;
     condominium.id = Uuid().v4();
+    condominium.totalUnitys = 0;
+
+    condominium.idImobiliaria = AuthService.to.host?.idImobiliaria;
+    condominium.usuarios = anfitrioesId;
+    condominium.usuarios?.add(AuthService.to.host?.id ?? '');
+    condominium.usuarios = condominium.usuarios?.toSet().toList();
 
     final response = await setCondominioUsecase.execute(condominium);
     response.fold(

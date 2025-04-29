@@ -8,9 +8,11 @@ class Condominio {
   String? cidade;
   String? estado;
   String? numero;
-  String? criadoPor; // ID do usuário (imobiliária ou corretor) que cadastrou
-  List<String>? usuarios; // IDs dos usuários associados
+  String? criadoPor; 
+  List<String>? usuarios; 
   DateTime? criadoEm;
+  int? totalUnitys;
+  String? idImobiliaria;
 
   Condominio({
     this.id,
@@ -24,6 +26,8 @@ class Condominio {
     this.logradouro,
     this.bairro,
     this.cep,
+    this.totalUnitys,
+    this.idImobiliaria,
 
   });
 
@@ -40,11 +44,14 @@ class Condominio {
       criadoPor: json['criadoPor'],
       usuarios: List<String>.from(json['usuarios'] ?? []),
       criadoEm: DateTime.parse(json['criadoEm']),
+      totalUnitys: json['totalUnitys'],
+      idImobiliaria: json['idImobiliaria'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'nome': nome,
       'cidade': cidade,
       'estado': estado,
@@ -55,6 +62,8 @@ class Condominio {
       'usuarios': usuarios,
       'numero': numero,
       'criadoEm': criadoEm?.toIso8601String(),
+      'totalUnitys': totalUnitys,
+      'idImobiliaria': idImobiliaria,
     };
   }
 }

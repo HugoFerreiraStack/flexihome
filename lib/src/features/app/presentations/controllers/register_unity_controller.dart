@@ -58,7 +58,6 @@ class RegisterUnityController extends GetxController {
 
   final searchController = TextEditingController();
 
-
   final _isloading = false.obs;
   bool get isloading => _isloading.value;
   set isloading(bool value) => _isloading.value = value;
@@ -66,10 +65,12 @@ class RegisterUnityController extends GetxController {
   void setSelectedCondominio(Condominio value) {
     selectedCondominium = value;
     cepController.text = value.cep!;
+    numberController.text = value.numero!;
+
     searchCep();
   }
 
-  Future<void> getUnitys()async{
+  Future<void> getUnitys() async {
     unitys.clear();
     try {
       CollectionReference unitysColection =
@@ -97,7 +98,9 @@ class RegisterUnityController extends GetxController {
         Constants.collectionCondominio,
       );
 
-      QuerySnapshot querySnapshot = await condominiosColection.get();
+      QuerySnapshot querySnapshot = await condominiosColection
+          .where('idImobiliaria', isEqualTo: AuthService.to.host?.idImobiliaria)
+          .get();
 
       for (var element in querySnapshot.docs) {
         condominiums.add(Condominio.fromJson(
@@ -142,15 +145,33 @@ class RegisterUnityController extends GetxController {
   }
 
   Future<void> registerunity() async {
-    unity.endereco = endereco;
-    unity.endereco!.complemento = complementoController.text;
-    unity.condominio = selectedCondominium;
+    final unityId = FirebaseFirestore.instance
+        .collection(Constants.collectionUnidade)
+        .doc()
+        .id;
 
-    if (AuthService.to.host?.userType == UserTypeEnum.IMOBILIARIA) {
-      unity.idImobiliaria = AuthService.to.host?.id;
-    } else {
-      unity.idHost = AuthService.to.host?.id;
+    unity.id = unityId;
+    unity.endereco = endereco;
+    unity.endereco?.complemento = complementoController.text;
+    unity.condominio = selectedCondominium;
+    unity.criadoPor = AuthService.to.host?.email?.toLowerCase();
+    unity.idHost = AuthService.to.host?.id;
+    unity.usuarios = selectedCondominium?.usuarios;
+    if (AuthService.to.host?.userType == UserTypeEnum.ANFITRIAO) {
+      unity.usuarios?.add(AuthService.to.host?.id ?? '');
     }
+    unity.usuarios = unity.usuarios?.toSet().toList();
+    for (var condominio in condominiums) {
+      log('ID condominio: ${condominio.id}');
+      condominio.usuarios = unity.usuarios;
+      condominio.totalUnitys = (condominio.totalUnitys ?? 0) + 1;
+      await FirebaseFirestore.instance
+          .collection(Constants.collectionCondominio)
+          .doc(condominio.id)
+          .update(condominio.toJson());
+    }
+    unity.criadoEm = DateTime.now();
+    unity.idImobiliaria = AuthService.to.host?.idImobiliaria;
 
     final response = await setunityUsecase.execute(unity);
     response.fold(

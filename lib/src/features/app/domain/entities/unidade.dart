@@ -9,6 +9,9 @@ class Unidade {
   String? idHost;
   int? qtdQuartos;
   int? qtdBanheiros;
+  String? criadoPor;
+  DateTime? criadoEm;
+  List<String>? usuarios; 
 
   Unidade({
     this.id,
@@ -18,6 +21,9 @@ class Unidade {
     this.idHost,
     this.qtdQuartos,
     this.qtdBanheiros,
+    this.criadoPor,
+    this.criadoEm,
+    this.usuarios,
   });
 
   factory Unidade.fromJson(Map<String, dynamic> json) {
@@ -29,6 +35,9 @@ class Unidade {
       idHost: json['idHost'],
       qtdBanheiros: json['qtdBanheiros'],
       qtdQuartos: json['qtdQuartos'],
+      criadoPor: json['criadoPor'],
+      criadoEm: DateTime.parse(json['criadoEm']),
+      usuarios: List<String>.from(json['usuarios'] ?? []),
     );
   }
 
@@ -41,6 +50,9 @@ class Unidade {
       'idHost': idHost,
       'qtdQuartos': qtdQuartos,
       'qtdBanheiros': qtdBanheiros,
+      'criadoPor': criadoPor,
+      'criadoEm': criadoEm?.toIso8601String(),
+      'usuarios': usuarios,
     };
   }
 }

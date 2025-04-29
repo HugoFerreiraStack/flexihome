@@ -1,12 +1,18 @@
+import 'package:flexihome/src/config/themes/app_assets.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CardCondominium extends StatelessWidget {
   const CardCondominium(
-      {super.key, this.title, this.description, this.address});
+      {super.key,
+      this.title,
+      this.description,
+      this.address,
+      this.totalUnitys = 0});
   final String? title;
   final String? description;
   final String? address;
+  final int? totalUnitys;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +20,7 @@ class CardCondominium extends StatelessWidget {
       color: Colors.transparent,
       borderRadius: BorderRadius.circular(20),
       child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          padding: const EdgeInsets.symmetric(vertical: 6.0),
           child: InkWell(
             onTap: () {
               //    Get.snackbar('title', 'sub');
@@ -36,11 +42,10 @@ class CardCondominium extends StatelessWidget {
                     height: 110,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        // TODO ADC IMAGEM CONDOMINIO
-                        image: NetworkImage('https://aamincorporadora.com.br/wp-content/uploads/2021/05/logo-myspace.png'),
+                        image: AssetImage(AppAssets.condominios),
                         fit: BoxFit.cover,
                       ),
-                      color: Colors.grey,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),
@@ -55,7 +60,6 @@ class CardCondominium extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  // todo adc o titulo da CONDOMINIO
                                   title ?? 'My Space',
                                   style: TextStyle(
                                     color: AppColors.primary,
@@ -73,23 +77,19 @@ class CardCondominium extends StatelessWidget {
                               ),
                             ],
                           ),
-
-                          Expanded(
-                            child: Text(
-                              // todo adc o texto importante
-                              description ??
-                                  'Adicionar alguns dados que podem ser importantes para o corretor',
-                              style: TextStyle(
-                                color: AppColors.flexGrey,
-                                fontSize: 14,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-
+                          SizedBox(height: 8),
                           Text(
-                            // todo adc a rua dO CONDOMINIO
+                            description ??
+                                'Apartamentos registrados: $totalUnitys',
+                            style: TextStyle(
+                              color: AppColors.flexGrey,
+                              fontSize: 14,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                          SizedBox(height: 8),
+                          Text(
                             address ?? '',
                             style: TextStyle(
                               color: AppColors.primary,
