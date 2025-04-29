@@ -1,6 +1,5 @@
 import 'package:flexihome/src/config/themes/app_assets.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
-import 'package:flexihome/src/core/services/auth/auth_service.dart';
 import 'package:flexihome/src/features/login/presentations/controllers/login_controller.dart';
 import 'package:flexihome/src/features/login/presentations/widgets/login_form.dart';
 import 'package:flutter/material.dart';
@@ -76,8 +75,7 @@ class LoginPage extends GetView<LoginController> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.snackbar('Email enviado', controller.emailController.text.toLowerCase(), colorText: Colors.white, backgroundColor: AppColors.primary, snackPosition: SnackPosition.TOP, duration: Duration(seconds: 3));
-                        AuthService().sendPasswordResetEmail(controller.emailController.text);
+                        controller.resetPassword();
                       },
                       child: Text(
                         'Esqueci a senha',
