@@ -57,7 +57,9 @@ class AddScheduleController extends GetxController {
   void setSelectedCondominium(Condominio? value) {
     selectedCondominium = value;
     if (value != null) {
-      unitys.clear();
+      selectedUnit = null; // Redefine a unidade selecionada
+      unitys.clear(); // Limpa a lista de unidades
+      getUnitsByCondominium(value.id!); // Busca as unidades do novo condomínio
     }
   }
 
@@ -81,8 +83,6 @@ class AddScheduleController extends GetxController {
           .where('idImobiliaria', isEqualTo: idImobiliaria)
           .get();
 
-      log('Condomínios encontrados: ${querySnapshot.docs.first}');
-
       // Adiciona os resultados à lista de condomínios
       for (var element in querySnapshot.docs) {
         condominiums.add(Condominio.fromJson(
@@ -98,6 +98,7 @@ class AddScheduleController extends GetxController {
 
   Future<void> getUnitsByCondominium(String condominiumId) async {
     unitys.clear();
+    selectedUnit = null; // Zera a unidade selecionada
     try {
       CollectionReference unidadesCollection =
           FirebaseFirestore.instance.collection(Constants.collectionUnidade);
@@ -116,6 +117,21 @@ class AddScheduleController extends GetxController {
     } catch (e) {
       log('Erro ao buscar unidades: $e');
     }
+  }
+
+  void resetFields() {
+    typeEvent = null; // Zera o tipo de evento
+    _selectedCondominium.value = null; // Zera o condomínio selecionado
+    _unitys.clear(); // Limpa a lista de unidades
+    _selectedUnit.value = null; // Zera a unidade selecionada
+    _eventos.clear(); // Limpa a lista de eventos
+    selectedDate.value =
+        DateTime.now(); // Redefine a data selecionada para a data atual
+    selectedTime.value =
+        TimeOfDay.now(); // Redefine o horário selecionado para o horário atual
+    repeatOption.value = ''; // Zera a opção de repetição
+    endOption.value = ''; // Zera a opção de término
+    endDate.value = null; // Zera a data de término
   }
 
   @override
@@ -141,7 +157,6 @@ class AddScheduleController extends GetxController {
     ]);
 
     repeatOption.value = repeatOptions.first;
-    
   }
 
   void setRepeatOption(String value) {
@@ -332,18 +347,18 @@ class AddScheduleController extends GetxController {
       }
 
       calendarController.refreshEvents();
-      typeEvent = null;
-      selectedCondominium = null;
-      selectedUnit = null;
-      
+      calendarController.refresh();
+
       Get.back();
+      resetFields();
+      calendarController.focusedDay.value = DateTime.now();
+      calendarController.selectedDay.value = DateTime.now();
+      calendarController.refreshEvents();
     } catch (e) {
       log('Erro ao salvar evento: $e');
-      showErrorDialog('Erro ao salvar o evento. Tente novamente.');
+      showErrorDialog('Erro ao salvar o evento. Tente novamente. $e');
     }
   }
-
-  
 
   Future<void> getEventsByImobiliaria(String idImobiliaria) async {
     try {

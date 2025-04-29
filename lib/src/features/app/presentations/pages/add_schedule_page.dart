@@ -21,12 +21,15 @@ class AddSchedulePage extends StatelessWidget {
     final controller = Get.find<AddScheduleController>();
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(automaticallyImplyLeading: false,
         title: Text('Novo Agendamento'),
         actions: [
           IconButton(
             icon: Icon(Icons.close),
-            onPressed: () => Get.back(),
+            onPressed: () {
+              controller.resetFields();
+              Get.back();
+            },
           )
         ],
       ),
@@ -121,10 +124,10 @@ class AddSchedulePage extends StatelessWidget {
                   value: controller.selectedUnit,
                   items: controller.unitys
                       .map(
-                        (e) => DropdownMenuItem(
+                        (e) => DropdownMenuItem<Unidade>(
                           value: e,
                           child: Text(
-                            e.numberAp!,
+                            e.numberAp?? '',
                             style: TextStyle(color: Colors.black),
                           ),
                         ),

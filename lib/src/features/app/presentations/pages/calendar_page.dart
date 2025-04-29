@@ -231,8 +231,8 @@ void _toggleExpand() {
                                                 //     _getStatusIcon(event.status);
                                                 return ListTile(
                                                   leading: CircleAvatar(
-                                                    backgroundColor: AppColors.tertiary,
-                                                    child: Icon(Icons.work,
+                                                    backgroundColor: AppColors.primary,
+                                                    child: Icon(Icons.calendar_today,
                                                         color: Colors.white),
                                                   ),
                                                   title: Text(
@@ -241,10 +241,10 @@ void _toggleExpand() {
                                                         color: Colors.white,
                                                         fontWeight: FontWeight.bold),
                                                   ),
-                                                  // subtitle: Text(
-                                                  //     '${event.time} - ${event.status}',
-                                                  //     style: TextStyle(
-                                                  //         color: Colors.white)),
+                                                  subtitle: Text(
+                                                      '${event.unit?.numberAp}',
+                                                      style: TextStyle(
+                                                          color: Colors.white)),
                                                 );
                                               },
                                             ),
