@@ -88,7 +88,7 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return CardCondominium(
-                          title: controller.condominiums[index].name,
+                          title: controller.condominiums[index].nome,
                           address: controller.condominiums[index].endereco?.logradouro,  
                         );
                       },

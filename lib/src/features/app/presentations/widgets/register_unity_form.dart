@@ -40,7 +40,7 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                       (e) => DropdownMenuItem(
                         value: e,
                         child: Text(
-                          e.name!,
+                          e.nome!,
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

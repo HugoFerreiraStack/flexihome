@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 class AddSchedulePage extends StatelessWidget {
   final DateTime initialDate;
 
-  AddSchedulePage({required this.initialDate, Key? key}) : super(key: key) {
+  AddSchedulePage({required this.initialDate, super.key}) {
     final controller = Get.put(AddScheduleController());
     controller.selectedDate.value = initialDate;
   }
@@ -65,15 +65,20 @@ class AddSchedulePage extends StatelessWidget {
             Obx(() => ListTile(
                   title: Text('Data: ${DateFormat('dd/MM/yyyy').format(controller.selectedDate.value)}'),
                   trailing: Icon(Icons.calendar_today),
-                  onTap: () async {
-                    final picked = await showDatePicker(
-                      context: context,
-                      initialDate: controller.selectedDate.value,
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2100),
-                    );
-                    if (picked != null) controller.selectedDate.value = picked;
-                  },
+        onTap: () async {
+  final now = DateTime.now();
+  final initialDate = controller.selectedDate.value.isBefore(now)
+      ? now
+      : controller.selectedDate.value;
+
+  final picked = await showDatePicker(
+    context: context,
+    initialDate: initialDate,
+    firstDate: now,
+    lastDate: DateTime(2100),
+  );
+  if (picked != null) controller.selectedDate.value = picked;
+},
                 )),
 
             // Hora

@@ -1,21 +1,19 @@
-
-
-import 'package:flexihome/src/features/app/domain/entities/unidade.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flexihome/src/features/app/domain/entities/user_type_enum.dart';
 
 class Host {
-  Host({
-     this.blocked,
-     this.email,
-    this.id,
-     this.name,
-     this.phone,
-    this.cnpj,
-    this.fantasyName,
-    this.socialReason,
-     this.userType,
-    this.unidades,
-  });
+  Host(
+      {this.blocked,
+      this.email,
+      this.id,
+      this.name,
+      this.phone,
+      this.cnpj,
+      this.fantasyName,
+      this.socialReason,
+      this.userType,
+      this.corretores,
+      this.expirationDate});
   late final bool? blocked;
   late final String? email;
   late String? id;
@@ -25,9 +23,11 @@ class Host {
   late final String? fantasyName;
   late final String? socialReason;
   late final UserTypeEnum? userType;
-  late List<Unidade>? unidades;
+  late final Timestamp? expirationDate;
+  late final List<String>? corretores;
 
   Host.fromJson(Map<String, dynamic> json) {
+    expirationDate = json['expirationDate'];
     blocked = json['blocked'];
     email = json['email'];
     id = json['id'];
@@ -37,10 +37,10 @@ class Host {
     fantasyName = json['fantasyName'];
     socialReason = json['socialReason'];
     userType = userTypeEnumFromJson(json['userType']);
-    if (json['unidades'] != null) {
-      unidades = <Unidade>[];
-      json['unidades'].forEach((v) {
-        unidades!.add(Unidade.fromJson(v));
+    if (json['corretores'] != null) {
+      corretores = <String>[];
+      json['corretores'].forEach((v) {
+        corretores!.add(v);
       });
     }
   }
@@ -56,8 +56,9 @@ class Host {
     _data['fantasyName'] = fantasyName;
     _data['socialReason'] = socialReason;
     _data['userType'] = userType!.name;
-    if (unidades != null) {
-      _data['unidades'] = unidades!.map((v) => v.toJson()).toList();
+    _data['expirationDate'] = expirationDate;
+    if (corretores != null) {
+      _data['corretores'] = corretores!.map((v) => v).toList();
     }
 
     return _data;

@@ -76,7 +76,7 @@ class LoginPage extends GetView<LoginController> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.snackbar('foi', '${controller.emailController.text}');
+                        Get.snackbar('Email enviado', controller.emailController.text.toLowerCase(), colorText: Colors.white, backgroundColor: AppColors.primary, snackPosition: SnackPosition.TOP, duration: Duration(seconds: 3));
                         AuthService().sendPasswordResetEmail(controller.emailController.text);
                       },
                       child: Text(

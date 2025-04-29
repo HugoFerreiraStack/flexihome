@@ -102,7 +102,7 @@ class RegisterCondominiumController extends GetxController {
   }
 
   Future<void> registerCondominium() async {
-    condominium.name = nameController.text;
+    condominium.nome = nameController.text;
     condominium.id = Uuid().v4();
 
     final response = await setCondominioUsecase.execute(condominium);

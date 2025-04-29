@@ -1,7 +1,6 @@
 import 'package:flexihome/src/features/app/presentations/pages/calendar_page.dart';
 import 'package:flexihome/src/features/app/presentations/pages/condominiuns_page.dart';
 import 'package:flexihome/src/features/app/presentations/pages/unities_page.dart';
-import 'package:flexihome/src/features/app/presentations/widgets/card_unity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
