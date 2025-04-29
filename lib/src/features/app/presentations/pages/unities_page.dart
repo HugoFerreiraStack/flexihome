@@ -10,23 +10,23 @@ class UnitiesPage extends GetView<RegisterUnityController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          floatingActionButton: ElevatedButton(
-          onPressed: () {
-            controller.getCondominiums();
-            Get.to(RegisterUnityPage());
-          },
-          onLongPress: () => Get.snackbar('Botão', 'Adicionar Unidade',
-              snackPosition: SnackPosition.BOTTOM),
-          style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                backgroundColor: AppColors.primary,
-                elevation: 4,
-                padding: EdgeInsets.all(20)),
-          child: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),  
+      floatingActionButton: ElevatedButton(
+        onPressed: () {
+          controller.getCondominiums();
+          Get.to(RegisterUnityPage());
+        },
+        onLongPress: () => Get.snackbar('Botão', 'Adicionar Unidade',
+            snackPosition: SnackPosition.BOTTOM),
+        style: ElevatedButton.styleFrom(
+            shape: CircleBorder(),
+            backgroundColor: AppColors.primary,
+            elevation: 4,
+            padding: EdgeInsets.all(20)),
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
       body: Container(
         width: double.infinity,
         height: Get.height,
@@ -38,7 +38,7 @@ class UnitiesPage extends GetView<RegisterUnityController> {
         ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal:  16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -87,14 +87,20 @@ class UnitiesPage extends GetView<RegisterUnityController> {
                 ),
                 // lista unidades
                 Obx(() => Expanded(
-                  child: ListView.builder(
-                      itemCount: controller.unitys.length,
-                      shrinkWrap: true,
-                      itemBuilder: (_, index) {
-                        return CardUnity(title: controller.unitys[index].endereco?.logradouro,);
-                      },
-                    ),
-                ))
+                      child: ListView.builder(
+                        itemCount: controller.unitys.length,
+                        shrinkWrap: true,
+                        itemBuilder: (_, index) {
+                          return CardUnity(
+                            title:
+                                "${controller.unitys[index].endereco!.logradouro!} - ${controller.unitys[index].numberAp}",
+                            agendamentos: controller
+                                .unitys[index].eventos!.length
+                                .toString(),
+                          );
+                        },
+                      ),
+                    ))
               ],
             ),
           ),

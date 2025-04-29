@@ -20,8 +20,9 @@ class AppPage extends GetView<AppController> {
           items: controller.bottomNavitems,
           currentIndex: controller.currentIndex,
           selectedItemColor: AppColors.secondary,
+          unselectedItemColor: AppColors.flexGrey,
           onTap: (value) {
-            controller.currentIndex = value;
+            controller.onTapAppBar(value);
           },
         ),
       ),

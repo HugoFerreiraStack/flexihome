@@ -10,21 +10,21 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          floatingActionButton: ElevatedButton(
-          onPressed: () => Get.to(RegisterCondominiumPage()),
-          onLongPress: () => Get.snackbar('Botão', 'Adicionar Condomínio',
-              snackPosition: SnackPosition.BOTTOM),
+      floatingActionButton: ElevatedButton(
+        onPressed: () => Get.to(() => RegisterCondominiumPage()),
+        onLongPress: () => Get.snackbar('Botão', 'Adicionar Condomínio',
+            snackPosition: SnackPosition.BOTTOM),
         style: ElevatedButton.styleFrom(
-              shape: CircleBorder(),
-              backgroundColor: AppColors.primary,
-              elevation: 4,
-              padding: EdgeInsets.all(20)),
+            shape: CircleBorder(),
+            backgroundColor: AppColors.primary,
+            elevation: 4,
+            padding: EdgeInsets.all(20)),
         child: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-        ),  
-        body: Container(
+          Icons.add,
+          color: Colors.white,
+        ),
+      ),
+      body: Container(
         width: double.infinity,
         height: Get.height,
         decoration: BoxDecoration(
@@ -35,7 +35,7 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
         ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal:  16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               children: [
                 Padding(
@@ -56,7 +56,7 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
                     controller: null,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
-                      labelText: 'Procure um condomínio',
+                      labelText: 'Pesquisar condomínio',
                       hintText: 'Digite o nome do condomínio',
                       hintStyle: TextStyle(color: AppColors.flexGrey),
                       labelStyle: TextStyle(color: Colors.white),
@@ -81,19 +81,22 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
                     onChanged: null,
                   ),
                 ),
+                SizedBox(height: 10),
                 // todo lista condominios
                 Obx(() => Expanded(
-                  child: ListView.builder(
-                      itemCount: controller.condominiums.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return CardCondominium(
-                          title: controller.condominiums[index].nome,
-                          address: controller.condominiums[index].endereco?.logradouro,  
-                        );
-                      },
-                    ),
-                ))
+                      child: ListView.builder(
+                        itemCount: controller.condominiums.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return CardCondominium(
+                            title: controller.condominiums[index].nome,
+                            totalUnitys: controller.condominiums[index].totalUnitys,
+                            address:
+                                "${controller.condominiums[index].logradouro!} / ${controller.condominiums[index].numero!} / ${controller.condominiums[index].bairro!}",
+                          );
+                        },
+                      ),
+                    ))
               ],
             ),
           ),

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flexihome/src/core/extensions/constants.dart';
+import 'package:flexihome/src/core/services/auth/auth_service.dart';
 import 'package:flexihome/src/features/app/domain/entities/condominio.dart';
 import 'package:flexihome/src/features/app/domain/entities/endereco.dart';
 import 'package:flexihome/src/features/app/domain/usecases/cep_usecase.dart';
@@ -22,6 +23,10 @@ class RegisterCondominiumController extends GetxController {
 
   final formkey = GlobalKey<FormState>();
   final FocusNode cepFocus = FocusNode();
+
+  final _anfitrioesId = <String>[].obs;
+  List<String> get anfitrioesId => _anfitrioesId;
+  set anfitrioesId(List<String> value) => _anfitrioesId.value = value;
 
   final _condominiums = <Condominio>[].obs;
   List<Condominio> get condominiums => _condominiums;
@@ -48,22 +53,35 @@ class RegisterCondominiumController extends GetxController {
   final stateController = TextEditingController();
 
   Future<void> getCondominiums() async {
-    condominiums.clear();
+    condominiums.clear(); // Limpa a lista antes de buscar
     try {
-      CollectionReference condominiosColection =
-          FirebaseFirestore.instance.collection(
-        Constants.collectionCondominio,
-      );
+      // Referência à coleção "condominios"
+      CollectionReference condominiosCollection =
+          FirebaseFirestore.instance.collection(Constants.collectionCondominio);
 
-      QuerySnapshot querySnapshot = await condominiosColection.get();
+      // Recupera o ID da imobiliária do usuário atual
+      final String? idImobiliaria = AuthService.to.host?.idImobiliaria;
 
+      if (idImobiliaria == null) {
+        log('Erro: ID da imobiliária não encontrado.');
+        return;
+      }
+
+      // Consulta para buscar documentos onde "idImobiliaria" seja igual ao ID do usuário
+      QuerySnapshot querySnapshot = await condominiosCollection
+          .where('idImobiliaria', isEqualTo: idImobiliaria)
+          .get();
+
+      // Adiciona os resultados à lista de condomínios
       for (var element in querySnapshot.docs) {
         condominiums.add(Condominio.fromJson(
           element.data() as Map<String, dynamic>,
         ));
       }
+
+      log('Condomínios encontrados: ${condominiums.length}');
     } catch (e) {
-      log('Error: $e');
+      log('Erro ao buscar condomínios: $e');
     }
   }
 
@@ -94,16 +112,71 @@ class RegisterCondominiumController extends GetxController {
         cityController.text = endereco.cidade!;
         cepController.text = endereco.cep!;
         stateController.text = endereco.estado!;
-        condominium.endereco = endereco;
+
+        condominium.cidade = endereco.cidade;
+        condominium.estado = endereco.estado;
+        condominium.nome = nameController.text;
+        condominium.id = Uuid().v4();
+        condominium.criadoPor = AuthService.to.host?.email;
+        condominium.criadoEm = DateTime.now();
+        condominium.usuarios = [AuthService.to.host!.id!];
+        condominium.numero = numberController.text;
+        condominium.logradouro = endereco.logradouro;
+        condominium.bairro = endereco.bairro;
+        condominium.cep = endereco.cep;
 
         isloading = false;
       }),
     );
   }
 
+  Future<void> getUsersByImobiliaria(String idImobiliaria) async {
+    try {
+      anfitrioesId.clear();
+
+      CollectionReference usuariosCollection =
+          FirebaseFirestore.instance.collection(Constants.collectionHost);
+
+      QuerySnapshot querySnapshot = await usuariosCollection
+          .where('idImobiliaria', isEqualTo: idImobiliaria)
+          .get();
+
+      // Adiciona os resultados à lista de usuários
+      for (var element in querySnapshot.docs) {
+        anfitrioesId.add(element['id'] as String);
+      }
+
+      log('Usuários encontrados: ${anfitrioesId.length}');
+    } catch (e) {
+      log('Erro ao buscar usuários: $e');
+    }
+  }
+
   Future<void> registerCondominium() async {
+    if (nameController.text.isEmpty) {
+      Get.snackbar(
+        'Atenção',
+        'Preencha o nome do condomínio',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 2),
+      );
+      return;
+    }
+    if (formkey.currentState!.validate()) {
+      isloading = true;
+    } else {
+      return;
+    }
     condominium.nome = nameController.text;
+    condominium.numero = numberController.text;
     condominium.id = Uuid().v4();
+    condominium.totalUnitys = 0;
+
+    condominium.idImobiliaria = AuthService.to.host?.idImobiliaria;
+    condominium.usuarios = anfitrioesId;
+    condominium.usuarios?.add(AuthService.to.host?.id ?? '');
+    condominium.usuarios = condominium.usuarios?.toSet().toList();
 
     final response = await setCondominioUsecase.execute(condominium);
     response.fold(

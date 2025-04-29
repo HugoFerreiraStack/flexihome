@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flexihome/src/config/themes/app_colors.dart';
+import 'package:flexihome/src/features/app/domain/entities/agendamento_type_enum.dart';
 import 'package:flexihome/src/features/app/domain/entities/event.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/calendar_controller.dart';
 import 'package:flutter/material.dart';
@@ -15,33 +16,44 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMixin {
   final CalendarController controller = Get.put(CalendarController());
-  final DraggableScrollableController _draggableController = DraggableScrollableController();
-  late AnimationController _iconController;
+ final DraggableScrollableController _draggableController = DraggableScrollableController();
+late AnimationController _iconController;
+bool _isAnimating = false; // Variável de controle para evitar ciclos
 
-  @override
-  void initState() {
-    super.initState();
-    _iconController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    controller.isBottomSheetExpanded.listen((isExpanded) {
-      final targetExtent = isExpanded ? 0.9 : 0.35;
-      _draggableController.animateTo(
-        targetExtent,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-      isExpanded ? _iconController.forward() : _iconController.reverse();
+@override
+void initState() {
+  super.initState();
+  _iconController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+  controller.isBottomSheetExpanded.listen((isExpanded) {
+    if (_isAnimating) return; // Evita ciclos durante a animação
+
+    final targetExtent = isExpanded ? 0.9 : 0.35;
+    _isAnimating = true; // Marca que a animação está em andamento
+    _draggableController.animateTo(
+      targetExtent,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    ).then((_) {
+      _isAnimating = false; // Marca que a animação terminou
     });
-  }
 
-  @override
-  void dispose() {
-    _iconController.dispose();
-    super.dispose();
-  }
+    if (isExpanded) {
+      _iconController.forward();
+    } else {
+      _iconController.reverse();
+    }
+  });
+}
 
-  void _toggleExpand() {
-    controller.isBottomSheetExpanded.value = !controller.isBottomSheetExpanded.value;
-  }
+@override
+void dispose() {
+  _iconController.dispose();
+  super.dispose();
+}
+
+void _toggleExpand() {
+  controller.isBottomSheetExpanded.value = !controller.isBottomSheetExpanded.value;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -214,24 +226,23 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
                                               itemBuilder: (context, index) {
                                                 final event = controller.getEventsForDay(
                                                     controller.selectedDay.value)[index];
-                                                final color =
-                                                    _getStatusColor(event.status);
-                                                final icon =
-                                                    _getStatusIcon(event.status);
+                                            
+                                                // final icon =
+                                                //     _getStatusIcon(event.status);
                                                 return ListTile(
                                                   leading: CircleAvatar(
-                                                    backgroundColor: color,
-                                                    child: Icon(icon,
+                                                    backgroundColor: AppColors.primary,
+                                                    child: Icon(Icons.calendar_today,
                                                         color: Colors.white),
                                                   ),
                                                   title: Text(
-                                                    '${event.title}-${event.unidade} sa',
+                                                    '-${event.type?.description} ',
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight: FontWeight.bold),
                                                   ),
                                                   subtitle: Text(
-                                                      '${event.time} - ${event.status}',
+                                                      '${event.unit?.numberAp}',
                                                       style: TextStyle(
                                                           color: Colors.white)),
                                                 );
@@ -255,31 +266,31 @@ class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMix
     );
   }
 
-  Color _getStatusColor(String status) {
-    switch (status) {
-      case 'Concluído':
-        return Colors.green;
-      case 'Em progresso':
-        return Colors.orange;
-      case 'Pendente':
-        return Colors.redAccent;
-      default:
-        return Colors.grey;
-    }
-  }
+  // Color _getStatusColor(String status) {
+  //   switch (status) {
+  //     case 'Concluído':
+  //       return Colors.green;
+  //     case 'Em progresso':
+  //       return Colors.orange;
+  //     case 'Pendente':
+  //       return Colors.redAccent;
+  //     default:
+  //       return Colors.grey;
+  //   }
+  // }
 
-  IconData _getStatusIcon(String status) {
-    switch (status) {
-      case 'Concluído':
-        return Icons.check_circle;
-      case 'Em progresso':
-        return Icons.timelapse;
-      case 'Pendente':
-        return Icons.warning_amber_rounded;
-      default:
-        return Icons.info_outline;
-    }
-  }
+  // IconData _getStatusIcon(String status) {
+  //   switch (status) {
+  //     case 'Concluído':
+  //       return Icons.check_circle;
+  //     case 'Em progresso':
+  //       return Icons.timelapse;
+  //     case 'Pendente':
+  //       return Icons.warning_amber_rounded;
+  //     default:
+  //       return Icons.info_outline;
+  //   }
+  // }
 
   String _monthName(int month) {
     const months = [

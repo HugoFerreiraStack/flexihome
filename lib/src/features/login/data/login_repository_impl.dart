@@ -7,7 +7,7 @@ import 'package:flexihome/src/features/login/domain/repositories/login_repositor
 
 class LoginRepositoryImpl implements LoginRepository {
   @override
-  Future<Either<Failure, Host>> getUserData(String params) async {
+  Future<Either<Failure, UserApp>> getUserData(String params) async {
     try {
       CollectionReference users = FirebaseFirestore.instance.collection(
         Constants.collectionHost,
@@ -19,7 +19,7 @@ class LoginRepositoryImpl implements LoginRepository {
       if (querySnapshot.docs.isNotEmpty) {
         DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
         return Right(
-          Host.fromJson(documentSnapshot.data() as Map<String, dynamic>),
+          UserApp.fromJson(documentSnapshot.data() as Map<String, dynamic>),
         );
       } else {
         return Left(ServerFailure(message: 'User not found'));

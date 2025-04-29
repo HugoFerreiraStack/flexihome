@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flexihome/src/features/app/domain/entities/user_type_enum.dart';
 
-class Host {
-  Host(
+class UserApp {
+  UserApp(
       {this.blocked,
       this.email,
       this.id,
@@ -14,19 +14,20 @@ class Host {
       this.userType,
       this.corretores,
       this.expirationDate});
-  late final bool? blocked;
-  late final String? email;
-  late String? id;
-  late final String? name;
-  late final String? phone;
-  late final String? cnpj;
-  late final String? fantasyName;
-  late final String? socialReason;
-  late final UserTypeEnum? userType;
-  late final Timestamp? expirationDate;
-  late final List<String>? corretores;
+  bool? blocked;
+  String? email;
+  String? id;
+  String? name;
+  String? phone;
+  String? cnpj;
+  String? fantasyName;
+  String? socialReason;
+  UserTypeEnum? userType;
+  Timestamp? expirationDate;
+  List<String>? corretores;
+  String? idImobiliaria;
 
-  Host.fromJson(Map<String, dynamic> json) {
+  UserApp.fromJson(Map<String, dynamic> json) {
     expirationDate = json['expirationDate'];
     blocked = json['blocked'];
     email = json['email'];
@@ -36,6 +37,7 @@ class Host {
     cnpj = json['cnpj'];
     fantasyName = json['fantasyName'];
     socialReason = json['socialReason'];
+    idImobiliaria = json['idImobiliaria'];
     userType = userTypeEnumFromJson(json['userType']);
     if (json['corretores'] != null) {
       corretores = <String>[];
@@ -57,8 +59,11 @@ class Host {
     _data['socialReason'] = socialReason;
     _data['userType'] = userType!.name;
     _data['expirationDate'] = expirationDate;
+    _data['idImobiliaria'] = idImobiliaria;
     if (corretores != null) {
       _data['corretores'] = corretores!.map((v) => v).toList();
+    }else{ 
+      _data['corretores'] = [];
     }
 
     return _data;

@@ -9,7 +9,7 @@ class RegisterUnityPage extends GetView<RegisterUnityController> {
 
   @override
   Widget build(BuildContext context) {
- return Scaffold(
+    return Scaffold(
       body: Container(
         width: double.infinity,
         height: Get.height,
@@ -29,7 +29,17 @@ class RegisterUnityPage extends GetView<RegisterUnityController> {
                   padding: const EdgeInsets.symmetric(vertical: 12.0),
                   child: Row(
                     children: [
-                      IconButton(onPressed: () => Get.back(), icon: Icon(Icons.chevron_left_rounded, color: Colors.white,)),
+                      IconButton(
+                          onPressed: () {
+                            Get.back();
+                            controller.condominiums.clear();
+                            controller.clearFields();
+                            controller.selectedCondominium = null;
+                          },
+                          icon: Icon(
+                            Icons.chevron_left_rounded,
+                            color: Colors.white,
+                          )),
                       Text(
                         'Cadastrar Unidade',
                         style: TextStyle(

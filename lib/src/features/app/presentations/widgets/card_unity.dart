@@ -36,8 +36,8 @@ class CardUnity extends StatelessWidget {
                     height: 110,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        // TODO ADC IMAGEM UNIDADE
-                        image: NetworkImage('https://assets.tecnisa.com.br/content/assets/client/blog/wp-content/uploads/2021/11/Florear-Studios-na-Vila-Clementino-1024x770.jpg'),
+                        image: NetworkImage(
+                            'https://assets.tecnisa.com.br/content/assets/client/blog/wp-content/uploads/2021/11/Florear-Studios-na-Vila-Clementino-1024x770.jpg'),
                         fit: BoxFit.cover,
                       ),
                       color: Colors.grey,
@@ -61,7 +61,7 @@ class CardUnity extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   // todo adc o titulo da unidade
-                                  title ?? '403 Genebra',
+                                  title ?? '',
                                   style: TextStyle(
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.bold,
@@ -79,20 +79,20 @@ class CardUnity extends StatelessWidget {
                             ],
                           ),
 
-                          Expanded(
-                            child: Text(
-                              // todo adc o texto importante
-                              text ??
-                                  'Adicionar alguns dados que podem ser importantes para o corretor',
-                              style: TextStyle(
-                                color: AppColors.flexGrey,
-                                fontSize: 14,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ),
-
+                          // Expanded(
+                          //   child: Text(
+                          //     // todo adc o texto importante
+                          //     text ??
+                          //         'Adicionar alguns dados que podem ser importantes para o corretor',
+                          //     style: TextStyle(
+                          //       color: AppColors.flexGrey,
+                          //       fontSize: 14,
+                          //     ),
+                          //     overflow: TextOverflow.ellipsis,
+                          //     maxLines: 2,
+                          //   ),
+                          // ),
+                          SizedBox(height: 15),
                           Row(
                             children: [
                               Container(
@@ -104,7 +104,7 @@ class CardUnity extends StatelessWidget {
                                     color: AppColors.primary),
                                 child: Text(
                                   // todo adc afazeres
-                                  '3',
+                                  agendamentos!,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
