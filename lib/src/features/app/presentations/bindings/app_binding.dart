@@ -5,6 +5,7 @@ import 'package:flexihome/src/features/app/domain/usecases/cep_usecase.dart';
 import 'package:flexihome/src/features/app/domain/usecases/register_condominium_usecase.dart';
 import 'package:flexihome/src/features/app/domain/usecases/set_unity_usecase.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/app_controller.dart';
+import 'package:flexihome/src/features/app/presentations/controllers/profile_controller.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/register_condominium_controller.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/register_unity_controller.dart';
 import 'package:get/get.dart';
@@ -35,5 +36,7 @@ class AppBinding implements Bindings {
         setunityUsecase: setunityUsecase,
       ),
     );
+
+    Get.put<ProfileController>(ProfileController());
   }
 }

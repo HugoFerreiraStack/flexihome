@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flexihome/src/core/extensions/constants.dart';
+import 'package:flexihome/src/core/services/auth/auth_service.dart';
 import 'package:flexihome/src/features/app/domain/entities/condominio.dart';
 import 'package:flexihome/src/features/app/domain/entities/endereco.dart';
 import 'package:flexihome/src/features/app/domain/usecases/cep_usecase.dart';
@@ -94,7 +95,19 @@ class RegisterCondominiumController extends GetxController {
         cityController.text = endereco.cidade!;
         cepController.text = endereco.cep!;
         stateController.text = endereco.estado!;
-        condominium.endereco = endereco;
+
+        condominium.cidade = endereco.cidade;
+        condominium.estado = endereco.estado;
+        condominium.nome = nameController.text;
+        condominium.id = Uuid().v4();
+        condominium.criadoPor = AuthService.to.host?.email;
+        condominium.criadoEm = DateTime.now();
+        condominium.usuarios = [AuthService.to.host!.id!];
+        condominium.numero = numberController.text;
+        condominium.logradouro = endereco.logradouro;
+        condominium.bairro = endereco.bairro;
+        condominium.cep = endereco.cep;
+        
 
         isloading = false;
       }),
@@ -102,7 +115,21 @@ class RegisterCondominiumController extends GetxController {
   }
 
   Future<void> registerCondominium() async {
+    if(nameController.text.isEmpty) {
+      Get.snackbar('Atenção', 'Preencha o nome do condomínio', 
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 2),
+      );
+      return;
+    }
+    if (formkey.currentState!.validate()) {
+      isloading = true;
+    } else {
+      return;
+    }
     condominium.nome = nameController.text;
+    condominium.numero=numberController.text;
     condominium.id = Uuid().v4();
 
     final response = await setCondominioUsecase.execute(condominium);

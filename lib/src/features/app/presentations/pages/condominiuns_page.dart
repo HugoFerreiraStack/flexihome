@@ -11,7 +11,7 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
   Widget build(BuildContext context) {
     return Scaffold(
           floatingActionButton: ElevatedButton(
-          onPressed: () => Get.to(RegisterCondominiumPage()),
+          onPressed: () => Get.to(()=> RegisterCondominiumPage()),
           onLongPress: () => Get.snackbar('Botão', 'Adicionar Condomínio',
               snackPosition: SnackPosition.BOTTOM),
         style: ElevatedButton.styleFrom(
@@ -89,7 +89,7 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
                       itemBuilder: (context, index) {
                         return CardCondominium(
                           title: controller.condominiums[index].nome,
-                          address: controller.condominiums[index].endereco?.logradouro,  
+                          address: controller.condominiums[index].logradouro,  
                         );
                       },
                     ),

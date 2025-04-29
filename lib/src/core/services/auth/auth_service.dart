@@ -90,6 +90,7 @@ class AuthService extends GetxService {
       await _auth.signOut();
       log('User signed out');
       storage.write('rememberMe', false);
+      Get.offAllNamed(AppRoutes.LOGIN);
     } catch (e) {
       log('Error signing out: $e');
     }

@@ -65,7 +65,7 @@ class RegisterUnityController extends GetxController {
 
   void setSelectedCondominio(Condominio value) {
     selectedCondominium = value;
-    cepController.text = value.endereco!.cep!;
+    cepController.text = value.cep!;
     searchCep();
   }
 

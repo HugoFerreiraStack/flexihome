@@ -15,33 +15,44 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMixin {
   final CalendarController controller = Get.put(CalendarController());
-  final DraggableScrollableController _draggableController = DraggableScrollableController();
-  late AnimationController _iconController;
+ final DraggableScrollableController _draggableController = DraggableScrollableController();
+late AnimationController _iconController;
+bool _isAnimating = false; // Variável de controle para evitar ciclos
 
-  @override
-  void initState() {
-    super.initState();
-    _iconController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    controller.isBottomSheetExpanded.listen((isExpanded) {
-      final targetExtent = isExpanded ? 0.9 : 0.35;
-      _draggableController.animateTo(
-        targetExtent,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-      isExpanded ? _iconController.forward() : _iconController.reverse();
+@override
+void initState() {
+  super.initState();
+  _iconController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+  controller.isBottomSheetExpanded.listen((isExpanded) {
+    if (_isAnimating) return; // Evita ciclos durante a animação
+
+    final targetExtent = isExpanded ? 0.9 : 0.35;
+    _isAnimating = true; // Marca que a animação está em andamento
+    _draggableController.animateTo(
+      targetExtent,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    ).then((_) {
+      _isAnimating = false; // Marca que a animação terminou
     });
-  }
 
-  @override
-  void dispose() {
-    _iconController.dispose();
-    super.dispose();
-  }
+    if (isExpanded) {
+      _iconController.forward();
+    } else {
+      _iconController.reverse();
+    }
+  });
+}
 
-  void _toggleExpand() {
-    controller.isBottomSheetExpanded.value = !controller.isBottomSheetExpanded.value;
-  }
+@override
+void dispose() {
+  _iconController.dispose();
+  super.dispose();
+}
+
+void _toggleExpand() {
+  controller.isBottomSheetExpanded.value = !controller.isBottomSheetExpanded.value;
+}
 
   @override
   Widget build(BuildContext context) {
