@@ -1,3 +1,5 @@
+import 'package:flexihome/src/core/services/auth/auth_service.dart';
+import 'package:flexihome/src/features/app/presentations/controllers/add_schedule_controller.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/register_condominium_controller.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/register_unity_controller.dart';
 import 'package:flexihome/src/features/app/presentations/pages/calendar_page.dart';
@@ -21,7 +23,11 @@ class AppController extends GetxController {
     ProfilePage()
   ];
 
-  void getEvents() {}
+  void getEvents() {
+    AddScheduleController.to
+        .getEventsByImobiliaria(AuthService.to.host!.idImobiliaria!);
+    AddScheduleController.to.getCondominiums();
+  }
 
   void getCondominiums() {
     RegisterCondominiumController.to.getCondominiums();

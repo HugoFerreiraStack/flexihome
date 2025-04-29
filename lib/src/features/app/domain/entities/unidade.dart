@@ -3,6 +3,7 @@ import 'package:flexihome/src/features/app/domain/entities/endereco.dart';
 
 class Unidade {
   String? id;
+  String? numberAp;
   Endereco? endereco;
   Condominio? condominio;
   String? idImobiliaria;
@@ -24,6 +25,7 @@ class Unidade {
     this.criadoPor,
     this.criadoEm,
     this.usuarios,
+    this.numberAp
   });
 
   factory Unidade.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class Unidade {
       qtdQuartos: json['qtdQuartos'],
       criadoPor: json['criadoPor'],
       criadoEm: DateTime.parse(json['criadoEm']),
+      numberAp: json['numberAp'],
       usuarios: List<String>.from(json['usuarios'] ?? []),
     );
   }
@@ -53,6 +56,7 @@ class Unidade {
       'criadoPor': criadoPor,
       'criadoEm': criadoEm?.toIso8601String(),
       'usuarios': usuarios,
+      'numberAp': numberAp,
     };
   }
 }

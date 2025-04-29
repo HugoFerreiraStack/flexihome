@@ -84,6 +84,8 @@ class RegisterUnityController extends GetxController {
         unitys.add(Unidade.fromJson(
           element.data() as Map<String, dynamic>,
         ));
+
+        log('Unidade: ${element.data()}');
       }
     } catch (e) {
       log('Error: $e');
@@ -151,6 +153,7 @@ class RegisterUnityController extends GetxController {
         .id;
 
     unity.id = unityId;
+    unity.numberAp = nameController.text;
     unity.endereco = endereco;
     unity.endereco?.complemento = complementoController.text;
     unity.condominio = selectedCondominium;

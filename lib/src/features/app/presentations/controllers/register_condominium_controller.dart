@@ -4,7 +4,6 @@ import 'package:flexihome/src/core/extensions/constants.dart';
 import 'package:flexihome/src/core/services/auth/auth_service.dart';
 import 'package:flexihome/src/features/app/domain/entities/condominio.dart';
 import 'package:flexihome/src/features/app/domain/entities/endereco.dart';
-import 'package:flexihome/src/features/app/domain/entities/user_type_enum.dart';
 import 'package:flexihome/src/features/app/domain/usecases/cep_usecase.dart';
 import 'package:flexihome/src/features/app/domain/usecases/register_condominium_usecase.dart';
 import 'package:flutter/material.dart';
@@ -54,22 +53,35 @@ class RegisterCondominiumController extends GetxController {
   final stateController = TextEditingController();
 
   Future<void> getCondominiums() async {
-    condominiums.clear();
+    condominiums.clear(); // Limpa a lista antes de buscar
     try {
-      CollectionReference condominiosColection =
-          FirebaseFirestore.instance.collection(
-        Constants.collectionCondominio,
-      );
+      // Referência à coleção "condominios"
+      CollectionReference condominiosCollection =
+          FirebaseFirestore.instance.collection(Constants.collectionCondominio);
 
-      QuerySnapshot querySnapshot = await condominiosColection.get();
+      // Recupera o ID da imobiliária do usuário atual
+      final String? idImobiliaria = AuthService.to.host?.idImobiliaria;
 
+      if (idImobiliaria == null) {
+        log('Erro: ID da imobiliária não encontrado.');
+        return;
+      }
+
+      // Consulta para buscar documentos onde "idImobiliaria" seja igual ao ID do usuário
+      QuerySnapshot querySnapshot = await condominiosCollection
+          .where('idImobiliaria', isEqualTo: idImobiliaria)
+          .get();
+
+      // Adiciona os resultados à lista de condomínios
       for (var element in querySnapshot.docs) {
         condominiums.add(Condominio.fromJson(
           element.data() as Map<String, dynamic>,
         ));
       }
+
+      log('Condomínios encontrados: ${condominiums.length}');
     } catch (e) {
-      log('Error: $e');
+      log('Erro ao buscar condomínios: $e');
     }
   }
 

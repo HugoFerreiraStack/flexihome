@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flexihome/src/config/themes/app_colors.dart';
+import 'package:flexihome/src/features/app/domain/entities/agendamento_type_enum.dart';
 import 'package:flexihome/src/features/app/domain/entities/event.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/calendar_controller.dart';
 import 'package:flutter/material.dart';
@@ -225,26 +226,25 @@ void _toggleExpand() {
                                               itemBuilder: (context, index) {
                                                 final event = controller.getEventsForDay(
                                                     controller.selectedDay.value)[index];
-                                                final color =
-                                                    _getStatusColor(event.status);
-                                                final icon =
-                                                    _getStatusIcon(event.status);
+                                            
+                                                // final icon =
+                                                //     _getStatusIcon(event.status);
                                                 return ListTile(
                                                   leading: CircleAvatar(
-                                                    backgroundColor: color,
-                                                    child: Icon(icon,
+                                                    backgroundColor: AppColors.tertiary,
+                                                    child: Icon(Icons.work,
                                                         color: Colors.white),
                                                   ),
                                                   title: Text(
-                                                    '${event.title}-${event.unidade} sa',
+                                                    '-${event.type?.description} ',
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight: FontWeight.bold),
                                                   ),
-                                                  subtitle: Text(
-                                                      '${event.time} - ${event.status}',
-                                                      style: TextStyle(
-                                                          color: Colors.white)),
+                                                  // subtitle: Text(
+                                                  //     '${event.time} - ${event.status}',
+                                                  //     style: TextStyle(
+                                                  //         color: Colors.white)),
                                                 );
                                               },
                                             ),
@@ -266,31 +266,31 @@ void _toggleExpand() {
     );
   }
 
-  Color _getStatusColor(String status) {
-    switch (status) {
-      case 'Concluído':
-        return Colors.green;
-      case 'Em progresso':
-        return Colors.orange;
-      case 'Pendente':
-        return Colors.redAccent;
-      default:
-        return Colors.grey;
-    }
-  }
+  // Color _getStatusColor(String status) {
+  //   switch (status) {
+  //     case 'Concluído':
+  //       return Colors.green;
+  //     case 'Em progresso':
+  //       return Colors.orange;
+  //     case 'Pendente':
+  //       return Colors.redAccent;
+  //     default:
+  //       return Colors.grey;
+  //   }
+  // }
 
-  IconData _getStatusIcon(String status) {
-    switch (status) {
-      case 'Concluído':
-        return Icons.check_circle;
-      case 'Em progresso':
-        return Icons.timelapse;
-      case 'Pendente':
-        return Icons.warning_amber_rounded;
-      default:
-        return Icons.info_outline;
-    }
-  }
+  // IconData _getStatusIcon(String status) {
+  //   switch (status) {
+  //     case 'Concluído':
+  //       return Icons.check_circle;
+  //     case 'Em progresso':
+  //       return Icons.timelapse;
+  //     case 'Pendente':
+  //       return Icons.warning_amber_rounded;
+  //     default:
+  //       return Icons.info_outline;
+  //   }
+  // }
 
   String _monthName(int month) {
     const months = [
