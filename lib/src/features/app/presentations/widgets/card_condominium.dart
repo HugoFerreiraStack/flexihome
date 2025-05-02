@@ -43,9 +43,9 @@ class CardCondominium extends StatelessWidget {
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(AppAssets.condominios),
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       ),
-                      color: Colors.white,
+                      color: AppColors.grey,
                       borderRadius: BorderRadius.circular(20),
                     ),
                   ),

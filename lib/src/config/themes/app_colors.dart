@@ -6,4 +6,5 @@ class AppColors {
   static const tertiary = Color(0xFF0B151F);
   static const quaternary = Color(0xFF5277A5);
   static const flexGrey = Color(0xFF383838);
+  static const grey = Color(0XFF517781);
 }

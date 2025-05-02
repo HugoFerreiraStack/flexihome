@@ -1,3 +1,4 @@
+import 'package:flexihome/src/config/themes/app_assets.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -36,8 +37,7 @@ class CardUnity extends StatelessWidget {
                     height: 110,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage(
-                            'https://assets.tecnisa.com.br/content/assets/client/blog/wp-content/uploads/2021/11/Florear-Studios-na-Vila-Clementino-1024x770.jpg'),
+                        image: AssetImage(AppAssets.unidade),
                         fit: BoxFit.cover,
                       ),
                       color: Colors.grey,
