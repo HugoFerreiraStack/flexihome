@@ -1,6 +1,6 @@
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/register_condominium_controller.dart';
-import 'package:flexihome/src/features/app/presentations/widgets/register_condominio_form.dart';
+import 'package:flexihome/src/features/app/presentations/widgets/condominio_form.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -42,7 +42,7 @@ class RegisterCondominiumPage extends GetView<RegisterCondominiumController> {
                 ],
               ),
             ),
-                RegisterCondominioForm(),
+                CondominiumForm(),
               ],
             ),
           ),

@@ -89,10 +89,11 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return CardCondominium(
-                            title: controller.condominiums[index].nome,
-                            totalUnitys: controller.condominiums[index].totalUnitys,
-                            address:
-                                "${controller.condominiums[index].logradouro!} / ${controller.condominiums[index].numero!} / ${controller.condominiums[index].bairro!}",
+                            condominium: controller.condominiums[index],
+                            // title: controller.condominiums[index].nome,
+                            // totalUnitys: controller.condominiums[index].totalUnitys,
+                            // address:
+                            //     "${controller.condominiums[index].logradouro!} / ${controller.condominiums[index].numero!} / ${controller.condominiums[index].bairro!}",
                           );
                         },
                       ),

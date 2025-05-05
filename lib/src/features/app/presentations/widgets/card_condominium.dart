@@ -1,18 +1,15 @@
 import 'package:flexihome/src/config/themes/app_assets.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
+import 'package:flexihome/src/features/app/domain/entities/condominio.dart';
+import 'package:flexihome/src/features/app/presentations/pages/condominium_detail_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CardCondominium extends StatelessWidget {
   const CardCondominium(
       {super.key,
-      this.title,
-      this.description,
-      this.address,
-      this.totalUnitys = 0});
-  final String? title;
-  final String? description;
-  final String? address;
-  final int? totalUnitys;
+      this.condominium});
+  final Condominio? condominium;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +20,7 @@ class CardCondominium extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 6.0),
           child: InkWell(
             onTap: () {
-              //    Get.snackbar('title', 'sub');
+              Get.to(() => CondominiumDetailPage(condominium: condominium));
             },
             // todo ajustar cor no dispositivo
             splashColor: AppColors.primary,
@@ -60,7 +57,7 @@ class CardCondominium extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  title ?? 'My Space',
+                                  condominium?.nome ?? 'My Space',
                                   style: TextStyle(
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.bold,
@@ -79,8 +76,7 @@ class CardCondominium extends StatelessWidget {
                           ),
                           SizedBox(height: 8),
                           Text(
-                            description ??
-                                'Apartamentos registrados: $totalUnitys',
+                                'Apartamentos registrados: ${condominium?.totalUnitys ?? 0}',
                             style: TextStyle(
                               color: AppColors.flexGrey,
                               fontSize: 14,
@@ -90,7 +86,7 @@ class CardCondominium extends StatelessWidget {
                           ),
                           SizedBox(height: 8),
                           Text(
-                            address ?? '',
+                            "${condominium?.logradouro} / ${condominium?.numero} / ${condominium?.bairro}",
                             style: TextStyle(
                               color: AppColors.primary,
                               fontWeight: FontWeight.bold,

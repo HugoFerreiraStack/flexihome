@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
-class RegisterCondominioForm extends GetView<RegisterCondominiumController> {
-  const RegisterCondominioForm({super.key});
+class CondominiumForm extends GetView<RegisterCondominiumController> {
+  const CondominiumForm({super.key});
 
   @override
   Widget build(BuildContext context) {
