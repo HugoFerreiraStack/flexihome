@@ -21,13 +21,26 @@ class ProfilePage extends GetView<ProfileController> {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0,),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Botão central
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10.0),
+                  child: Text(
+                    'Configurações',
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                      decorationColor: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
                 Center(
                   child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: controller.buttons
                         .map((b) => Padding(
                               padding: EdgeInsets.symmetric(vertical: 8),

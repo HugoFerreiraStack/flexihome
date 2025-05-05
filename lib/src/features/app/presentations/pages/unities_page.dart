@@ -92,11 +92,7 @@ class UnitiesPage extends GetView<RegisterUnityController> {
                         shrinkWrap: true,
                         itemBuilder: (_, index) {
                           return CardUnity(
-                            title:
-                                "${controller.unitys[index].endereco!.logradouro!} - ${controller.unitys[index].numberAp}",
-                            agendamentos: controller
-                                .unitys[index].eventos!.length
-                                .toString(),
+                            unity: controller.unitys[index],
                           );
                         },
                       ),

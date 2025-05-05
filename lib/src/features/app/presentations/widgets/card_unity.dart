@@ -1,15 +1,13 @@
+import 'package:flexihome/src/config/routes/app_pages.dart';
 import 'package:flexihome/src/config/themes/app_assets.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
+import 'package:flexihome/src/features/app/domain/entities/unidade.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CardUnity extends StatelessWidget {
-  const CardUnity(
-      {super.key, this.title, this.text, this.image, this.agendamentos});
-
-  final String? title;
-  final String? text;
-  final String? image;
-  final String? agendamentos;
+  const CardUnity({super.key, required this.unity});
+  final Unidade unity;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +17,9 @@ class CardUnity extends StatelessWidget {
       child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 4.0),
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Get.toNamed(AppRoutes.DETAILS_UNITY, arguments: unity);
+            },
             // todo ajustar cor no dispositivo
             splashColor: AppColors.primary,
             borderRadius: BorderRadius.circular(20),
@@ -61,7 +61,7 @@ class CardUnity extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   // todo adc o titulo da unidade
-                                  title ?? '',
+                                  "${unity.endereco?.logradouro} -  ${unity.numberAp!}",
                                   style: TextStyle(
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.bold,
@@ -104,7 +104,7 @@ class CardUnity extends StatelessWidget {
                                     color: AppColors.primary),
                                 child: Text(
                                   // todo adc afazeres
-                                  agendamentos!,
+                                  unity.eventos!.length.toString(),
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,

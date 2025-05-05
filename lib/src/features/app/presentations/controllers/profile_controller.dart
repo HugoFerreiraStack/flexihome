@@ -16,7 +16,11 @@ class ProfileController extends GetxController {
         onPressed: () {
           AuthService.to.signOut();
         },
-        child: const Text('Logout'),
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+          textStyle: TextStyle(fontSize: 18),
+        ),
+        child:  Text('Logout'),
       ),
     ]);
   }
