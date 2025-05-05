@@ -30,20 +30,24 @@ class CondominiumDetailPage extends StatelessWidget {
                   onTap: () => Get.back(),
                   child: Row(
                     children: [
-                      IconButton(onPressed: ()=> Get.back(), icon: Icon(Icons.arrow_back_ios, color: Colors.white,)),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 6.0),
-                        child: Text(
-                          'Condomínio',
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white,
-                            decorationColor: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+            Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+              child: Row( 
+                children: [
+                      IconButton(onPressed: () => Get.back(), icon: Icon(Icons.chevron_left_rounded, color: Colors.white,)),
+                      Text(
+                        'Condomínio',
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          decorationColor: Colors.white,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
+                  ),
+                ),
+               ],
                   ),
                 ),
                 CondominiumForm(),
