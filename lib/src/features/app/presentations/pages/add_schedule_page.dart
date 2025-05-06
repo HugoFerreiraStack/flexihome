@@ -92,7 +92,7 @@ class AddSchedulePage extends StatelessWidget {
                         (e) => DropdownMenuItem(
                           value: e,
                           child: Text(
-                            e.nome!,
+                            e.name!,
                             style: TextStyle(color: Colors.black),
                           ),
                         ),

@@ -4,7 +4,7 @@ import 'package:flexihome/src/features/app/domain/entities/event.dart';
 
 class Unidade {
   String? id;
-  String? numberAp;
+  String? name;
   Endereco? endereco;
   Condominio? condominio;
   String? idImobiliaria;
@@ -14,10 +14,12 @@ class Unidade {
   String? criadoPor;
   DateTime? criadoEm;
   List<String>? usuarios; 
+  String? numberAp;
   List<Event>? eventos;
 
   Unidade({
     this.id,
+    this.name,
     this.endereco,
     this.condominio,
     this.idImobiliaria,
@@ -34,6 +36,7 @@ class Unidade {
   factory Unidade.fromJson(Map<String, dynamic> json) {
     return Unidade(
       id: json['id'],
+      name: json['name'],
       endereco: Endereco.fromJson(json['endereco']),
       condominio: Condominio.fromJson(json['condominio']),
       idImobiliaria: json['idImobiliaria'],
@@ -53,6 +56,7 @@ class Unidade {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
+      'name': name,
       'endereco': endereco?.toJson(),
       'condominio': condominio?.toJson(),
       'idImobiliaria': idImobiliaria,

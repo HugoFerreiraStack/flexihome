@@ -1,6 +1,6 @@
+import 'package:flexihome/src/config/routes/app_pages.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/register_condominium_controller.dart';
-import 'package:flexihome/src/features/app/presentations/pages/register_condominium_page.dart';
 import 'package:flexihome/src/features/app/presentations/widgets/card_condominium.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,7 +11,7 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: ElevatedButton(
-        onPressed: () => Get.to(() => RegisterCondominiumPage()),
+        onPressed: () => Get.toNamed(AppRoutes.REGISTER_CONDOMINIUM),
         onLongPress: () => Get.snackbar('Botão', 'Adicionar Condomínio',
             snackPosition: SnackPosition.BOTTOM),
         style: ElevatedButton.styleFrom(
@@ -81,7 +81,6 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
                     onChanged: null,
                   ),
                 ),
-                SizedBox(height: 10),
                 // todo lista condominios
                 Obx(() => Expanded(
                       child: ListView.builder(

@@ -1,6 +1,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/register_condominium_controller.dart';
+import 'package:flexihome/src/features/app/presentations/widgets/custom_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -213,18 +214,10 @@ class CondominiumForm extends GetView<RegisterCondominiumController> {
                 ),
               ],
             ),
-            SizedBox(   
-              height: 40,
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: controller.registerCondominium,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  textStyle: TextStyle(fontSize: 18),
-                ),
-                child: Text('Salvar', style: TextStyle(color: Colors.white),),
-              ),
-            ),
+            CustomButton(
+              buttonType: ButtonType.primary,
+              textButton: 'Salvar',
+              function: controller.registerCondominium)
           ],
         ),
       ),

@@ -115,7 +115,7 @@ class RegisterCondominiumController extends GetxController {
 
         condominium.cidade = endereco.cidade;
         condominium.estado = endereco.estado;
-        condominium.nome = nameController.text;
+        condominium.name = nameController.text;
         condominium.id = Uuid().v4();
         condominium.criadoPor = AuthService.to.host?.email;
         condominium.criadoEm = DateTime.now();
@@ -168,7 +168,7 @@ class RegisterCondominiumController extends GetxController {
     } else {
       return;
     }
-    condominium.nome = nameController.text;
+    condominium.name = nameController.text;
     condominium.numero = numberController.text;
     condominium.id = Uuid().v4();
     condominium.totalUnitys = 0;
@@ -185,12 +185,21 @@ class RegisterCondominiumController extends GetxController {
         isloading = false;
       },
       (r) {
+        isloading = false;
         log('Success: $r');
         clearFields();
         getCondominiums();
-        isloading = false;
+        Get.back();
+        Get.snackbar(
+          'Sucesso!',
+          'Condomínio cadastrado',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 4),
+        );
       },
     );
+
   }
 
   @override

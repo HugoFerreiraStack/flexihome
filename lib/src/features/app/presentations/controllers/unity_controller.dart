@@ -37,9 +37,9 @@ class UnityController extends GetxController {
       await RegisterUnityController.to.getUnitys().then(
         (value) {
           isLoading = false;
-          Get.back();
         },
       );
+      Get.back();
     } catch (e) {
       isLoading = false;
       Get.snackbar('Erro', 'Erro ao excluir unidade: $e',

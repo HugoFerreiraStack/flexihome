@@ -35,7 +35,7 @@ class UpcomingEventsList extends StatelessWidget {
           ),
           subtitle: Text(
             'Data: ${event.date != null ? _formatDate(event.date!) : 'Indefinida'}\n'
-            'Condomínio: ${event.condominium?.nome ?? 'Desconhecido'}\n'
+            'Condomínio: ${event.condominium?.name ?? 'Desconhecido'}\n'
             'Unidade: ${event.unit?.numberAp ?? 'Desconhecida'}',
           ),
           trailing: Icon(Icons.arrow_forward_ios, size: 16),

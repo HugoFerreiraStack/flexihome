@@ -153,7 +153,7 @@ class RegisterUnityController extends GetxController {
         .id;
 
     unity.id = unityId;
-    unity.numberAp = nameController.text;
+    unity.name = nameController.text;
     unity.endereco = endereco;
     unity.endereco?.complemento = complementoController.text;
     unity.condominio = selectedCondominium;
@@ -184,10 +184,19 @@ class RegisterUnityController extends GetxController {
         isloading = false;
       },
       (r) {
+        isloading = false;
         log('Success: $r');
         clearFields();
         getUnitys();
-        isloading = false;
+        Get.back();
+        Get.snackbar(
+          'Sucesso!',
+          'Unidade cadastrada',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+          duration: const Duration(seconds: 4),
+        );
+
       },
     );
   }

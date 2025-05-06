@@ -18,9 +18,9 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
         child: Column(
           spacing: 18,
           children: [
+            // TODO CASO ELE NÃO SELECIONE UM CONDOMÍNIO, DEVE HABILITAR O NÚMERO DO ENDEREÇO
             Obx(() => DropdownButtonFormField<Condominio>(
                   dropdownColor: AppColors.primary,
-                  
                   decoration: InputDecoration(
                     labelText: 'Condomínio',
                     labelStyle: TextStyle(color: Colors.white),
@@ -41,7 +41,7 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                         (e) => DropdownMenuItem(
                           value: e,
                           child: Text(
-                            e.nome!,
+                            e.name!,
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

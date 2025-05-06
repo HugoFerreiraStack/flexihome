@@ -2,6 +2,7 @@ import 'package:flexihome/src/config/routes/app_pages.dart';
 import 'package:flexihome/src/config/themes/app_assets.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flexihome/src/features/app/domain/entities/unidade.dart';
+import 'package:flexihome/src/features/app/presentations/widgets/maps_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -40,20 +41,16 @@ class CardUnity extends StatelessWidget {
                         image: AssetImage(AppAssets.unidade),
                         fit: BoxFit.cover,
                       ),
-                      color: Colors.grey,
+                      color: AppColors.grey,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    // child: Icon(
-                    //   Icons.image_not_supported,
-                    //   color: Colors.white,
-                    //   size: 30,
-                    // ),
                   ),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(12),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // Título
                           Row(
@@ -61,7 +58,8 @@ class CardUnity extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   // todo adc o titulo da unidade
-                                  "${unity.endereco?.logradouro} -  ${unity.numberAp!}",
+                                  // "${unity.endereco?.logradouro} -  ${unity.numberAp!}",
+                                  "${unity.name}",
                                   style: TextStyle(
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.bold,
@@ -78,21 +76,7 @@ class CardUnity extends StatelessWidget {
                               ),
                             ],
                           ),
-
-                          // Expanded(
-                          //   child: Text(
-                          //     // todo adc o texto importante
-                          //     text ??
-                          //         'Adicionar alguns dados que podem ser importantes para o corretor',
-                          //     style: TextStyle(
-                          //       color: AppColors.flexGrey,
-                          //       fontSize: 14,
-                          //     ),
-                          //     overflow: TextOverflow.ellipsis,
-                          //     maxLines: 2,
-                          //   ),
-                          // ),
-                          SizedBox(height: 15),
+                          // EVENTOS
                           Row(
                             children: [
                               Container(
@@ -125,6 +109,18 @@ class CardUnity extends StatelessWidget {
                               ),
                             ],
                           ),
+                          Text(
+                                '${unity.endereco?.logradouro}, ${unity.endereco?.bairro}',
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                          // TODO DESENVOLVER FUNCIONALIDADE DE MAPA
+                          // MapsButton(address: "${unity.endereco?.logradouro}, ${unity.endereco?.cidade}")
                         ],
                       ),
                     ),

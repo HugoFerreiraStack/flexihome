@@ -81,8 +81,12 @@ class LoginController extends GetxController {
       (storage.read('rememberMe') != null) ? storage.read('rememberMe') : null;
 
   Future<void> login() async {
-    final email = emailController.text;
-    final password = passwordController.text;
+    // TODO PARA PROD
+    // final email = emailController.text;
+    // final password = passwordController.text;
+    // TODO PARA DEV
+    final email = emailController.text.isEmpty ? 'Hugo.flutterdev@gmail.com' : emailController.text;
+    final password = passwordController.text.isEmpty ? '123456' : passwordController.text;
     if (rememberMe) {
       storage.write('rememberMe', rememberMe);
     }

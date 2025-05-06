@@ -1,7 +1,7 @@
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/unity_controller.dart';
-import 'package:flexihome/src/features/app/presentations/widgets/upcoming_events.dart';
+import 'package:flexihome/src/features/app/presentations/widgets/custom_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -12,21 +12,20 @@ class DetailsUnity extends GetView<UnityController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(
-            "${controller.unity.endereco!.logradouro!} ${controller.unity.numberAp!}"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.close),
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
             onPressed: () {
               Get.back();
             },
-          )
-        ],
+          ),
+        title: Text(
+          "${controller.unity.name}"),
+            // "${controller.unity.endereco!.logradouro!} ${controller.unity.numberAp!}"),
       ),
-      body: SingleChildScrollView(
-        child: Container(
+      body: Container(
           width: double.infinity,
           height: Get.height,
           decoration: BoxDecoration(
@@ -36,7 +35,8 @@ class DetailsUnity extends GetView<UnityController> {
             AppColors.secondary
           ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
           child: SafeArea(
-            child: Padding(
+            child: SingleChildScrollView(
+             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
               child: Column(
@@ -198,40 +198,25 @@ class DetailsUnity extends GetView<UnityController> {
                     ),
                     style: TextStyle(color: Colors.white),
                   ),
-                  SizedBox(
-                    height: 40,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => controller.createEvent(controller.unity),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.secondary,
-                        textStyle: TextStyle(fontSize: 18),
-                      ),
-                      child: Text(
-                        'Adicionar agendamento',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () => controller.deleteUnity(controller.unity),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        textStyle: TextStyle(fontSize: 18),
-                      ),
-                      child: Text(
-                        'Deletar unidade',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                      height: 200,
-                      child:
-                          UpcomingEventsList(events: controller.unity.eventos!))
+                  CustomButton(
+                    buttonType: ButtonType.tertiary,
+                    textButton: 'Adicionar agendamento',
+                    function:  () => controller.createEvent(controller.unity)),
+                  // TODO ADICIONAR INVENTÁRIO
+                  CustomButton(
+                    // TODO QUANDO CRIAR O INVENTÁRIO, TROCAR O TYPE PARA SECONDARY
+                    buttonType: ButtonType.custom,
+                    textButton: 'Adicionar inventário',
+                    function:  () => Get.snackbar('NÃO SE PREOCUPE 🚧', 'Estamos desenvolvendo isto, em breve estará disponível!', backgroundColor: Colors.white, snackPosition: SnackPosition.BOTTOM)),
+                  CustomButton(
+                    buttonType: ButtonType.primary,
+                    textButton: 'Deletar unidade',
+                    function:  () => controller.deleteUnity(controller.unity)),
+                  // TODO AINDA NÃO ESTÁ CARREGANDO NENHUM AGENDAMENTO PRÓXIMO
+                  // SizedBox(
+                  //     height: 50,
+                  //     child:
+                  //         UpcomingEventsList(events: controller.unity.eventos ?? []))
                 ],
               ),
             ),
