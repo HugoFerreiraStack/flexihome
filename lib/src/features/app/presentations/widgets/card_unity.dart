@@ -80,23 +80,23 @@ class CardUnity extends StatelessWidget {
                           Row(
                             children: [
                               Container(
-                                width: 25,
+                                width: 30,
                                 height: 20,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(8.0),
                                     color: AppColors.primary),
                                 child: Text(
                                   // todo adc afazeres
-                                  unity.eventos!.length.toString(),
+                                   unity.eventos?.length.toString() ??'0',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 12,
-                                  ),
+                                  ),textAlign: TextAlign.center,
                                 ),
                               ),
-                              SizedBox(width: 2),
+                              SizedBox(width: 4),
                               Text(
                                 'Eventos próximos',
                                 style: TextStyle(

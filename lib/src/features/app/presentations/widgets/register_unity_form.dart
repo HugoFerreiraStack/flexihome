@@ -41,14 +41,16 @@ class RegisterUnityForm extends GetView<RegisterUnityController> {
                         (e) => DropdownMenuItem(
                           value: e,
                           child: Text(
-                            e.name!,
+                            e.name ?? '',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),
                       )
                       .toList(),
                   onChanged: (Condominio? newValue) {
-                    controller.setSelectedCondominio(newValue!);
+                    if(newValue != null) {
+                      controller.setSelectedCondominio(newValue);
+                    }
                   },
                   validator: (value) {
                     if (value == null) {

@@ -22,7 +22,7 @@ class DetailsCondominiumPage extends GetView<CondominiumController> {
           },
         ),
         title: Text(
-            "${controller.condominium.name}"),
+            "Condomínio: ${controller.condominium.name}"),
       ),
       body: Container(
           width: double.infinity,
@@ -41,9 +41,9 @@ class DetailsCondominiumPage extends GetView<CondominiumController> {
                       child: Column(
                         spacing: 18,
                         children: [
-                          Image.asset(
-                            'assets/icons/condominio.png', height: 150,
-                          ),
+                          // Image.asset(
+                          //   'assets/icons/condominio.png', height: 150,
+                          // ),
                           TextFormField(
                             initialValue: controller.condominium.cep,
                             keyboardType: TextInputType.number,
@@ -198,9 +198,24 @@ class DetailsCondominiumPage extends GetView<CondominiumController> {
                             style: TextStyle(color: Colors.white),
                           ),
                           CustomButton(
+                            buttonType: ButtonType.secondary,
+                            textButton: 'Unidades do condomínio',
+                            function:  () => controller.getUnitysByIdCondominium()),
+                          CustomButton(
                             buttonType: ButtonType.primary,
                             textButton: 'Deletar condomínio',
-                            function:  () => controller.deleteCondominium(controller.condominium))
+                            function:  () {
+                              Get.defaultDialog(
+                                title: 'Excluir',
+                                middleText: 'Você tem certeza que deseja excluir este condomínio?',
+                                textCancel: 'Não',
+                                textConfirm: 'Sim',
+                                buttonColor: AppColors.primary,
+                                cancelTextColor: Colors.red,
+                                onCancel: () {},
+                                onConfirm: () => controller.deleteCondominium(controller.condominium)
+                              );
+                            })
                         ],
                       ),
                     ),

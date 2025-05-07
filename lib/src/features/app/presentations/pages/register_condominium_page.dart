@@ -19,32 +19,42 @@ class RegisterCondominiumPage extends GetView<RegisterCondominiumController> {
           AppColors.primary,
           AppColors.secondary
         ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                SizedBox(height: 40),
-            Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: Row( 
-                children: [
-                  IconButton(onPressed: () => Get.back(), icon: Icon(Icons.chevron_left_rounded, color: Colors.white,)),
-                  Text(
-                    'Cadastrar Condomínio',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: Colors.white,
-                      decorationColor: Colors.white,
-                      fontWeight: FontWeight.bold,
+        child: SafeArea(
+          child: Column(
+            children: [          
+              Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    child: Row( 
+                      children: [
+                        IconButton(onPressed: () => Get.back(), icon: Icon(Icons.chevron_left_rounded, color: Colors.white,)),
+                        Text(
+                          'Cadastrar Condomínio',
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white,
+                            decorationColor: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-                CondominiumForm(),
-              ],
-            ),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            Image.asset(
+                              'assets/icons/condominio.png', height: 150,
+                            ), 
+                            CondominiumForm(),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+            ],
           ),
         ),
       ),

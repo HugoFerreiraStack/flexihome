@@ -19,42 +19,52 @@ class RegisterUnityPage extends GetView<RegisterUnityController> {
           AppColors.primary,
           AppColors.secondary
         ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                SizedBox(height: 40),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12.0),
-                  child: Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {
-                            Get.back();
-                            controller.condominiums.clear();
-                            controller.clearFields();
-                            controller.selectedCondominium = null;
-                          },
-                          icon: Icon(
-                            Icons.chevron_left_rounded,
-                            color: Colors.white,
-                          )),
-                      Text(
-                        'Cadastrar Unidade',
-                        style: TextStyle(
-                          fontSize: 24,
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 12.0),
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Get.back();
+                          controller.condominiums.clear();
+                          controller.clearFields();
+                          controller.selectedCondominium = null;
+                        },
+                        icon: Icon(
+                          Icons.chevron_left_rounded,
                           color: Colors.white,
-                          decorationColor: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        )),
+                    Text(
+                      'Cadastrar Unidade',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                        decorationColor: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal:  16.0),
+                    child: Column(
+                      children: [
+                        Image.asset(
+                              'assets/icons/unidade.png', height: 150,
+                            ), 
+                        RegisterUnityForm(),
+                      ],
+                    ),
                   ),
                 ),
-                RegisterUnityForm(),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

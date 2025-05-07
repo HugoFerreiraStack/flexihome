@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flexihome/src/config/routes/app_pages.dart';
 import 'package:flexihome/src/core/extensions/constants.dart';
 import 'package:flexihome/src/features/app/domain/entities/unidade.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/add_schedule_controller.dart';
@@ -39,7 +40,9 @@ class UnityController extends GetxController {
           isLoading = false;
         },
       );
-      Get.back();
+      // TODO REMOVER UMA UNIDADE DO CONDOMÍNIO
+      // condominio.totalUnitys = (condominio.totalUnitys ?? 0) - 1;
+      Get.offAllNamed(AppRoutes.APP);
     } catch (e) {
       isLoading = false;
       Get.snackbar('Erro', 'Erro ao excluir unidade: $e',

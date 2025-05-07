@@ -2,6 +2,7 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/unity_controller.dart';
 import 'package:flexihome/src/features/app/presentations/widgets/custom_buttons.dart';
+import 'package:flexihome/src/features/app/presentations/widgets/upcoming_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -22,7 +23,7 @@ class DetailsUnity extends GetView<UnityController> {
             },
           ),
         title: Text(
-          "${controller.unity.name}"),
+          "Unidade: ${controller.unity.name}"),
             // "${controller.unity.endereco!.logradouro!} ${controller.unity.numberAp!}"),
       ),
       body: Container(
@@ -42,9 +43,6 @@ class DetailsUnity extends GetView<UnityController> {
               child: Column(
                 spacing: 18,
                 children: [
-                  SizedBox(
-                    height: 20,
-                  ),
                   TextFormField(
                     initialValue: controller.unity.endereco!.cep,
                     keyboardType: TextInputType.number,
@@ -211,7 +209,19 @@ class DetailsUnity extends GetView<UnityController> {
                   CustomButton(
                     buttonType: ButtonType.primary,
                     textButton: 'Deletar unidade',
-                    function:  () => controller.deleteUnity(controller.unity)),
+                    function:  () {
+                              Get.defaultDialog(
+                                title: 'Excluir',
+                                middleText: 'Você tem certeza que deseja excluir esta unidade?',
+                                textCancel: 'Não',
+                                textConfirm: 'Sim',
+                                buttonColor: AppColors.primary,
+                                cancelTextColor: Colors.red,
+                                onCancel: () {},
+                                onConfirm: () => controller.deleteUnity(controller.unity),
+                              );
+                            }
+                  )      
                   // TODO AINDA NÃO ESTÁ CARREGANDO NENHUM AGENDAMENTO PRÓXIMO
                   // SizedBox(
                   //     height: 50,

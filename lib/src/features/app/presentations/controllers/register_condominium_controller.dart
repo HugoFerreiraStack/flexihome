@@ -107,11 +107,11 @@ class RegisterCondominiumController extends GetxController {
       ((info) {
         endereco = Endereco.fromCep(info.toJson());
 
-        streetController.text = endereco.logradouro!;
-        neighborhoodController.text = endereco.bairro!;
-        cityController.text = endereco.cidade!;
-        cepController.text = endereco.cep!;
-        stateController.text = endereco.estado!;
+        streetController.text = endereco.logradouro ?? '';
+        neighborhoodController.text = endereco.bairro ?? '';
+        cityController.text = endereco.cidade ?? '';
+        cepController.text = endereco.cep ?? '';
+        stateController.text = endereco.estado ?? '';
 
         condominium.cidade = endereco.cidade;
         condominium.estado = endereco.estado;

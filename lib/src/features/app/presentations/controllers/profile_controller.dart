@@ -5,29 +5,23 @@ import 'package:get/get.dart';
 class ProfileController extends GetxController {
   static ProfileController get to => Get.find();
 
-  final _buttons = <Widget>[].obs;
-  List<Widget> get buttons => _buttons;
-  set buttons(value) => _buttons.value = value;
+    final formkey = GlobalKey<FormState>();
 
-  void generateButtons() {
-    buttons.clear();
-    buttons.addAll([
-      ElevatedButton(
-        onPressed: () {
-          AuthService.to.signOut();
-        },
-        style: ElevatedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-          textStyle: TextStyle(fontSize: 18),
-        ),
-        child:  Text('Logout'),
-      ),
-    ]);
+  final nameController = TextEditingController();
+  final cepController = TextEditingController();
+  final streetController = TextEditingController();
+  final numberController = TextEditingController();
+  final neighborhoodController = TextEditingController();
+  final cityController = TextEditingController();
+  final stateController = TextEditingController();
+
+  void buttonLogout(){
+    AuthService.to.signOut();
   }
 
   @override
   void onInit() {
     super.onInit();
-    generateButtons();
+    // generateButtons();
   }
 }
