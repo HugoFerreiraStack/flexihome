@@ -165,14 +165,17 @@ class RegisterUnityController extends GetxController {
     }
     unity.usuarios = unity.usuarios?.toSet().toList();
     unity.eventos = [];
-    for (var condominio in condominiums) {
-      log('ID condominio: ${condominio.id}');
-      condominio.usuarios = unity.usuarios;
-      condominio.totalUnitys = (condominio.totalUnitys ?? 0) + 1;
+    for (var c in condominiums) {
+      log('ID condominio: ${c.id}');
+      if (c.id == selectedCondominium?.id) {
+        c.totalUnitys = c.totalUnitys! + 1;
+      }
+      c.usuarios = unity.usuarios;
+
       await FirebaseFirestore.instance
           .collection(Constants.collectionCondominio)
-          .doc(condominio.id)
-          .update(condominio.toJson());
+          .doc(c.id)
+          .update(c.toJson());
     }
     unity.criadoEm = DateTime.now();
     unity.idImobiliaria = AuthService.to.host?.idImobiliaria;

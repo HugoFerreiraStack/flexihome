@@ -3,6 +3,7 @@ import 'package:flexihome/src/features/app/presentations/bindings/unity_binding.
 import 'package:flexihome/src/features/app/presentations/pages/app_page.dart';
 import 'package:flexihome/src/features/app/presentations/pages/condominium_detail_page.dart';
 import 'package:flexihome/src/features/app/presentations/pages/details_unity_page.dart';
+import 'package:flexihome/src/features/app/presentations/pages/register_user_page.dart';
 import 'package:flexihome/src/features/login/presentations/bindings/login_binding.dart';
 import 'package:flexihome/src/features/login/presentations/pages/login_page.dart';
 import 'package:flexihome/src/features/splash/presentations/bindings/splash_binding.dart';
@@ -25,6 +26,7 @@ abstract class AppPages {
     ),
     GetPage(name: AppRoutes.APP, page: () => AppPage(), binding: AppBinding()),
     GetPage(name: AppRoutes.CONDOMINIUMDETAILS, page: () => CondominiumDetailPage()),
-    GetPage(name: AppRoutes.DETAILS_UNITY, page: ()=> DetailsUnity(), binding: UnityBinding())
+    GetPage(name: AppRoutes.DETAILS_UNITY, page: ()=> DetailsUnity(), binding: UnityBinding()),
+    GetPage(name: AppRoutes.REGISTER_USER, page: ()=> RegisterPage(), binding: AppBinding()),
   ];
 }

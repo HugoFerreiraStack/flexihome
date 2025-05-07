@@ -6,4 +6,5 @@ abstract class AppRoutes {
   static const APP = '/app';
   static const CONDOMINIUMDETAILS = '/edit_condominium';
   static const DETAILS_UNITY= '/details-unity';
+  static const REGISTER_USER = '/register_user';
 }

@@ -83,8 +83,10 @@ class LoginController extends GetxController {
   Future<void> login() async {
     final email = emailController.text;
     final password = passwordController.text;
+    storage.write('password', password);
     if (rememberMe) {
       storage.write('rememberMe', rememberMe);
+      storage.write('password', password);
     }
 
     User? user = await AuthService.to.signInWithEmailAndPassword(
@@ -95,6 +97,20 @@ class LoginController extends GetxController {
     if (user != null) {
       AuthService.to.host = await getUserData(user.uid).then((value) {
         log('User data: ${AuthService.to.host?.toJson()}');
+
+        if (value.expirationDate != null) {
+          // Converte o Timestamp para DateTime
+          DateTime expirationDate = value.expirationDate!.toDate();
+          if (expirationDate.isBefore(DateTime.now())) {
+            value.blocked = true;
+            Get.snackbar('Atenção', 'Usuário expirado',
+                colorText: Colors.white,
+                backgroundColor: AppColors.primary,
+                snackPosition: SnackPosition.TOP,
+                duration: Duration(seconds: 3));
+            return null;
+          }
+        }
         if (value.blocked == true) {
           Get.snackbar('Atenção', 'Usuário bloqueado',
               colorText: Colors.white,
@@ -124,7 +140,6 @@ class LoginController extends GetxController {
         throw Exception('Failed to get user data');
       },
       (r) {
-
         AuthService.to.host = r;
         log('User data: ${AuthService.to.host?.toJson()}');
         return r;
