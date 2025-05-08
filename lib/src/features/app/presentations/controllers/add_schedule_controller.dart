@@ -142,6 +142,13 @@ class AddScheduleController extends GetxController {
     getCondominiums();
   }
 
+  @override
+  void onClose() {
+    FocusManager.instance.primaryFocus
+        ?.unfocus(); // Remove o foco de qualquer widget
+    super.onClose();
+  }
+
   void buildRepeatOptions() {
     final date = selectedDate.value;
     final formattedDate =
