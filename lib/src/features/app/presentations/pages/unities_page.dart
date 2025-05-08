@@ -75,24 +75,19 @@ class UnitiesPage extends GetView<RegisterUnityController> {
                       ),
                     ),
                     style: TextStyle(color: Colors.white),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira a unidade';
-                      }
-                      return null;
-                    },
+
                     // FUNC GET UNIDADE
-                    onChanged: null,
+                    onChanged: (v) => controller.searchUnity(),
                   ),
                 ),
                 // lista unidades
                 Obx(() => Expanded(
                       child: ListView.builder(
-                        itemCount: controller.unitys.length,
+                        itemCount: controller.filteredUnitys.length,
                         shrinkWrap: true,
                         itemBuilder: (_, index) {
                           return CardUnity(
-                            unity: controller.unitys[index],
+                            unity: controller.filteredUnitys[index],
                           );
                         },
                       ),

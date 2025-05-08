@@ -23,6 +23,7 @@ class RegisterCondominiumController extends GetxController {
 
   final formkey = GlobalKey<FormState>();
   final FocusNode cepFocus = FocusNode();
+  final TextEditingController searchController = TextEditingController();
 
   final _anfitrioesId = <String>[].obs;
   List<String> get anfitrioesId => _anfitrioesId;
@@ -31,6 +32,11 @@ class RegisterCondominiumController extends GetxController {
   final _condominiums = <Condominio>[].obs;
   List<Condominio> get condominiums => _condominiums;
   set condominiums(List<Condominio> value) => _condominiums.value = value;
+
+  final _filteredCondominiums = <Condominio>[].obs;
+  List<Condominio> get filteredCondominiums => _filteredCondominiums;
+  set filteredCondominiums(List<Condominio> value) =>
+      _filteredCondominiums.value = value;
 
   final _condominium = Condominio().obs;
   Condominio get condominium => _condominium.value;
@@ -80,6 +86,7 @@ class RegisterCondominiumController extends GetxController {
       }
 
       log('Condomínios encontrados: ${condominiums.length}');
+      filteredCondominiums.assignAll(condominiums);
     } catch (e) {
       log('Erro ao buscar condomínios: $e');
     }
@@ -181,11 +188,9 @@ class RegisterCondominiumController extends GetxController {
     final response = await setCondominioUsecase.execute(condominium);
     response.fold(
       (l) {
-        log('Error: $l');
         isloading = false;
       },
       (r) {
-        log('Success: $r');
         clearFields();
         getCondominiums();
         isloading = false;
@@ -193,14 +198,39 @@ class RegisterCondominiumController extends GetxController {
     );
   }
 
+  void searchCondominio() {
+    searchController.addListener(() {
+      final query = searchController.text.toLowerCase();
+
+      if (query.isEmpty) {
+        // Restaura a lista original se o texto estiver vazio
+        filteredCondominiums.assignAll(condominiums);
+      } else {
+        // Filtra a lista com base no texto digitado
+        filteredCondominiums.assignAll(
+          condominiums.where(
+              (condominium) => condominium.nome!.toLowerCase().contains(query)),
+        );
+      }
+    });
+  }
+
   @override
   void onInit() {
     getCondominiums();
+    searchCondominio();
     super.onInit();
+
     cepFocus.addListener(() {
       if (!cepFocus.hasFocus) {
         searchCep();
       }
     });
+  }
+
+  @override
+  void onClose() {
+    searchController.dispose();
+    super.onClose();
   }
 }

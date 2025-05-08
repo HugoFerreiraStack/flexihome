@@ -13,23 +13,24 @@ class Unidade {
   int? qtdBanheiros;
   String? criadoPor;
   DateTime? criadoEm;
-  List<String>? usuarios; 
+  List<String>? usuarios;
   List<Event>? eventos;
+  String? name;
 
-  Unidade({
-    this.id,
-    this.endereco,
-    this.condominio,
-    this.idImobiliaria,
-    this.idHost,
-    this.qtdQuartos,
-    this.qtdBanheiros,
-    this.criadoPor,
-    this.criadoEm,
-    this.usuarios,
-    this.numberAp,
-    this.eventos,
-  });
+  Unidade(
+      {this.id,
+      this.endereco,
+      this.condominio,
+      this.idImobiliaria,
+      this.idHost,
+      this.qtdQuartos,
+      this.qtdBanheiros,
+      this.criadoPor,
+      this.criadoEm,
+      this.usuarios,
+      this.numberAp,
+      this.eventos,
+      this.name});
 
   factory Unidade.fromJson(Map<String, dynamic> json) {
     return Unidade(
@@ -47,6 +48,9 @@ class Unidade {
       eventos: (json['eventos'] as List<dynamic>?)
           ?.map((e) => Event.fromJson(e))
           .toList(),
+      name: json['endereco'] != null && json['numberAp'] != null
+          ? '${Endereco.fromJson(json['endereco']).logradouro} ${json['numberAp']}'
+          : null,
     );
   }
 

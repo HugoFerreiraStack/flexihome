@@ -14,46 +14,58 @@ class CalendarPage extends StatefulWidget {
   State<CalendarPage> createState() => _CalendarPageState();
 }
 
-class _CalendarPageState extends State<CalendarPage> with TickerProviderStateMixin {
+class _CalendarPageState extends State<CalendarPage>
+    with TickerProviderStateMixin {
   final CalendarController controller = Get.put(CalendarController());
- final DraggableScrollableController _draggableController = DraggableScrollableController();
-late AnimationController _iconController;
-bool _isAnimating = false; // Variável de controle para evitar ciclos
+  final DraggableScrollableController _draggableController =
+      DraggableScrollableController();
+  late AnimationController _iconController;
+  bool _isAnimating = false; // Variável de controle para evitar ciclos
 
-@override
-void initState() {
-  super.initState();
-  _iconController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-  controller.isBottomSheetExpanded.listen((isExpanded) {
-    if (_isAnimating) return; // Evita ciclos durante a animação
-
-    final targetExtent = isExpanded ? 0.9 : 0.35;
-    _isAnimating = true; // Marca que a animação está em andamento
-    _draggableController.animateTo(
-      targetExtent,
-      duration: Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    ).then((_) {
-      _isAnimating = false; // Marca que a animação terminou
+  @override
+  void initState() {
+    super.initState();
+    _iconController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _draggableController.jumpTo(0.35); // Define o estado inicial como fechado
+      controller.isBottomSheetExpanded.value =
+          false; // Garante que o estado inicial seja fechado
+          controller.update();
     });
+    controller.isBottomSheetExpanded.listen((isExpanded) {
+      if (_isAnimating) return; // Evita ciclos durante a animação
 
-    if (isExpanded) {
-      _iconController.forward();
-    } else {
-      _iconController.reverse();
-    }
-  });
-}
+      final targetExtent = isExpanded ? 0.9 : 0.35;
+      _isAnimating = true; // Marca que a animação está em andamento
+      _draggableController
+          .animateTo(
+        targetExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      )
+          .then((_) {
+        _isAnimating = false; // Marca que a animação terminou
+      });
 
-@override
-void dispose() {
-  _iconController.dispose();
-  super.dispose();
-}
+      if (isExpanded) {
+        _iconController.forward();
+      } else {
+        _iconController.reverse();
+      }
+    });
+  }
 
-void _toggleExpand() {
-  controller.isBottomSheetExpanded.value = !controller.isBottomSheetExpanded.value;
-}
+  @override
+  void dispose() {
+    _iconController.dispose();
+    super.dispose();
+  }
+
+  void _toggleExpand() {
+    controller.isBottomSheetExpanded.value =
+        !controller.isBottomSheetExpanded.value;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +138,8 @@ void _toggleExpand() {
                                       color: AppColors.secondary.withAlpha(20),
                                     ),
                                     selectedDecoration: BoxDecoration(
-                                      color: AppColors.primary,shape: BoxShape.circle
-                                    ),
+                                        color: AppColors.primary,
+                                        shape: BoxShape.circle),
                                     cellMargin: EdgeInsets.zero,
                                   ),
                                   focusedDay: _clampDate(
@@ -135,9 +147,10 @@ void _toggleExpand() {
                                     DateTime.utc(2020, 1, 1),
                                     DateTime.utc(2030, 12, 31),
                                   ),
-                                  selectedDayPredicate: (day) =>
-                                      isSameDay(controller.selectedDay.value, day),
-                                  calendarFormat: controller.calendarFormat.value,
+                                  selectedDayPredicate: (day) => isSameDay(
+                                      controller.selectedDay.value, day),
+                                  calendarFormat:
+                                      controller.calendarFormat.value,
                                   eventLoader: controller.getEventsForDay,
                                   onDaySelected: controller.onDaySelected,
                                   onFormatChanged: controller.onFormatChanged,
@@ -151,12 +164,14 @@ void _toggleExpand() {
                                                 horizontal: 6, vertical: 2),
                                             decoration: BoxDecoration(
                                               color: Colors.blueAccent,
-                                              borderRadius: BorderRadius.circular(4),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
                                             ),
                                             child: Text(
                                               '${events.length}',
                                               style: TextStyle(
-                                                  color: Colors.white, fontSize: 10),
+                                                  color: Colors.white,
+                                                  fontSize: 10),
                                             ),
                                           ),
                                         );
@@ -171,8 +186,9 @@ void _toggleExpand() {
                         ),
                         NotificationListener<DraggableScrollableNotification>(
                           onNotification: (notification) {
-                            final percent = ((notification.extent - 0.4) / (0.91 - 0.4))
-                                .clamp(0.0, 1.0);
+                            final percent =
+                                ((notification.extent - 0.4) / (0.91 - 0.4))
+                                    .clamp(0.0, 1.0);
                             _iconController.value = percent;
                             controller.isBottomSheetExpanded.value =
                                 notification.extent > 0.4;
@@ -181,15 +197,17 @@ void _toggleExpand() {
                           child: Obx(() => DraggableScrollableSheet(
                                 controller: _draggableController,
                                 initialChildSize:
-                                    controller.isBottomSheetExpanded.value ? 0.91 : 0.4,
+                                    controller.isBottomSheetExpanded.value
+                                        ? 0.91
+                                        : 0.4,
                                 minChildSize: 0.4,
                                 maxChildSize: 0.91,
                                 builder: (_, scrollController) {
                                   return Container(
                                     decoration: BoxDecoration(
                                       color: AppColors.quaternary,
-                                      borderRadius:
-                                          BorderRadius.vertical(top: Radius.circular(40)),
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(40)),
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -199,10 +217,14 @@ void _toggleExpand() {
                                             onTap: _toggleExpand,
                                             child: AnimatedBuilder(
                                               animation: _iconController,
-                                              builder: (_, __) => Transform.rotate(
-                                                angle: _iconController.value * pi,
-                                                child: Icon(Icons.keyboard_arrow_up,
-                                                    color: Colors.white, size: 28),
+                                              builder: (_, __) =>
+                                                  Transform.rotate(
+                                                angle:
+                                                    _iconController.value * pi,
+                                                child: Icon(
+                                                    Icons.keyboard_arrow_up,
+                                                    color: Colors.white,
+                                                    size: 28),
                                               ),
                                             ),
                                           ),
@@ -220,26 +242,31 @@ void _toggleExpand() {
                                             child: ListView.builder(
                                               controller: scrollController,
                                               itemCount: controller
-                                                  .getEventsForDay(
-                                                      controller.selectedDay.value)
+                                                  .getEventsForDay(controller
+                                                      .selectedDay.value)
                                                   .length,
                                               itemBuilder: (context, index) {
-                                                final event = controller.getEventsForDay(
-                                                    controller.selectedDay.value)[index];
-                                            
+                                                final event = controller
+                                                    .getEventsForDay(controller
+                                                        .selectedDay
+                                                        .value)[index];
+
                                                 // final icon =
                                                 //     _getStatusIcon(event.status);
                                                 return ListTile(
                                                   leading: CircleAvatar(
-                                                    backgroundColor: AppColors.primary,
-                                                    child: Icon(Icons.calendar_today,
+                                                    backgroundColor:
+                                                        AppColors.primary,
+                                                    child: Icon(
+                                                        Icons.calendar_today,
                                                         color: Colors.white),
                                                   ),
                                                   title: Text(
                                                     '-${event.type?.description} ',
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontWeight: FontWeight.bold),
+                                                        fontWeight:
+                                                            FontWeight.bold),
                                                   ),
                                                   subtitle: Text(
                                                       '${event.unit?.numberAp}',

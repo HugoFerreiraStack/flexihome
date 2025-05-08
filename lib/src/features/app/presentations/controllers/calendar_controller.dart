@@ -39,9 +39,10 @@ class CalendarController extends GetxController {
       events[normalized] = [event];
     }
     update(); // Atualiza o Obx
-    selectedDay.value = date;
-    focusedDay.value = date;
-    isBottomSheetExpanded.value = true; // Força expansão após salvar
+    selectedDay.value = DateTime.now();
+    focusedDay.value = DateTime.now();
+
+    //isBottomSheetExpanded.value = true; // Força expansão após salvar
   }
 
   void refreshEvents() {

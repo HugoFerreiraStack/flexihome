@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flexihome/src/core/extensions/constants.dart';
 import 'package:flexihome/src/features/app/domain/entities/unidade.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/add_schedule_controller.dart';
+import 'package:flexihome/src/features/app/presentations/controllers/app_controller.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/register_unity_controller.dart';
 import 'package:flexihome/src/features/app/presentations/pages/add_schedule_page.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,9 @@ class UnityController extends GetxController {
   Future<void> createEvent(Unidade unity) async {
     AddScheduleController.to.selectedUnit = unity;
     Get.to(() => AddSchedulePage(initialDate: DateTime.now()));
+    AppController.to.getCondominiums();
+    AppController.to.getUnities();
+    AppController.to.getEvents();
   }
 
   Future<void> deleteUnity(Unidade unity) async {

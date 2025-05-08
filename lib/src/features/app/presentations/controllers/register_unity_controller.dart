@@ -25,10 +25,15 @@ class RegisterUnityController extends GetxController {
 
   final formkey = GlobalKey<FormState>();
   final FocusNode cepFocus = FocusNode();
+  final TextEditingController searchController = TextEditingController();
 
   final _unitys = <Unidade>[].obs;
   List<Unidade> get unitys => _unitys;
   set unitys(List<Unidade> value) => _unitys.value = value;
+
+  final _filteredUnitys = <Unidade>[].obs;
+  List<Unidade> get filteredUnitys => _filteredUnitys;
+  set filteredUnitys(List<Unidade> value) => _filteredUnitys.value = value;
 
   final _condominiums = <Condominio>[].obs;
   List<Condominio> get condominiums => _condominiums;
@@ -56,8 +61,6 @@ class RegisterUnityController extends GetxController {
   final stateController = TextEditingController();
   final complementoController = TextEditingController();
 
-  final searchController = TextEditingController();
-
   final _isloading = false.obs;
   bool get isloading => _isloading.value;
   set isloading(bool value) => _isloading.value = value;
@@ -84,9 +87,8 @@ class RegisterUnityController extends GetxController {
         unitys.add(Unidade.fromJson(
           element.data() as Map<String, dynamic>,
         ));
-
-        log('Unidade: ${element.data()}');
       }
+      filteredUnitys.assignAll(unitys);
     } catch (e) {
       log('Error: $e');
     }
@@ -112,6 +114,21 @@ class RegisterUnityController extends GetxController {
     } catch (e) {
       log('Error: $e');
     }
+  }
+
+  void searchUnity() {
+    searchController.addListener(() {
+      final query = searchController.text.toLowerCase();
+
+      if (query.isEmpty) {
+        filteredUnitys.assignAll(unitys);
+      } else {
+        // Filtra a lista com base no texto digitado
+        filteredUnitys.assignAll(
+          unitys.where((u) => u.name!.toLowerCase().contains(query)),
+        );
+      }
+    });
   }
 
   Future<void> searchCep() async {
@@ -197,8 +214,9 @@ class RegisterUnityController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     getCondominiums();
     getUnitys();
+    searchUnity();
+    super.onInit();
   }
 }

@@ -53,7 +53,7 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 6.0),
                   child: TextFormField(
-                    controller: null,
+                    controller: controller.searchController,
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       labelText: 'Pesquisar condomínio',
@@ -71,25 +71,22 @@ class CondominiunsPage extends GetView<RegisterCondominiumController> {
                       ),
                     ),
                     style: TextStyle(color: Colors.white),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira a unidade';
-                      }
-                      return null;
-                    },
+
                     // FUNC GET UNIDADE
-                    onChanged: null,
+                    onChanged: (v) {
+                      controller.searchCondominio();
+                    },
                   ),
                 ),
                 SizedBox(height: 10),
                 // todo lista condominios
                 Obx(() => Expanded(
                       child: ListView.builder(
-                        itemCount: controller.condominiums.length,
+                        itemCount: controller.filteredCondominiums.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           return CardCondominium(
-                            condominium: controller.condominiums[index],
+                            condominium: controller.filteredCondominiums[index],
                             // title: controller.condominiums[index].nome,
                             // totalUnitys: controller.condominiums[index].totalUnitys,
                             // address:

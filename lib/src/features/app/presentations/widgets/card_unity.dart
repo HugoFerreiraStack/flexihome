@@ -61,7 +61,7 @@ class CardUnity extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   // todo adc o titulo da unidade
-                                  "${unity.endereco?.logradouro} -  ${unity.numberAp!}",
+                                  "${unity.name}",
                                   style: TextStyle(
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.bold,
