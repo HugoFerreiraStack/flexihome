@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flexihome/src/core/extensions/constants.dart';
 import 'package:flexihome/src/core/services/auth/auth_service.dart';
+import 'package:flexihome/src/core/services/notification_service.dart';
 import 'package:flexihome/src/features/app/domain/entities/agendamento_type_enum.dart';
 import 'package:flexihome/src/features/app/domain/entities/condominio.dart';
 import 'package:flexihome/src/features/app/domain/entities/unidade.dart';
@@ -351,6 +352,21 @@ class AddScheduleController extends GetxController {
         final normalizedDate = DateTime(date.year, date.month, date.day);
 
         calendarController.addEvent(normalizedDate, event);
+
+        final dayBefore = normalizedDate.subtract(Duration(days: 1));
+        if (dayBefore.isAfter(DateTime.now())) {
+          await NotificationService().scheduleNotification(
+            'Lembrete',
+            'O agendamento do ${event.type!.name} está agendado para amanhã! Para a unidade ${event.unit!.name}',
+            dayBefore,
+          );
+        }
+
+        await NotificationService().scheduleNotification(
+          'Hoje é o dia!',
+          'O evento "${event.type?.name}" está agendado para hoje. Para a unidade ${event.unit?.name}',
+          normalizedDate,
+        );
       }
 
       calendarController.refreshEvents();

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flexihome/src/features/app/domain/entities/event.dart';
 import 'package:flutter/material.dart';
 
@@ -43,7 +45,7 @@ class UpcomingEventsList extends StatelessWidget {
           trailing: Icon(Icons.arrow_forward_ios, size: 16),
           onTap: () {
             // Ação ao clicar no evento
-            print('Evento selecionado: ${event.id}');
+            log('Evento selecionado: ${event.id}');
           },
         );
       },
