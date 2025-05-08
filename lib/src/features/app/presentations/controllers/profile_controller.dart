@@ -201,4 +201,16 @@ class ProfileController extends GetxController {
     super.onInit();
     generateButtons();
   }
+
+  @override
+  void onClose() {
+    nameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    cnpjController.dispose();
+    razaoSocialController.dispose();
+    fantasyNameController.dispose();
+
+    super.onClose();
+  }
 }

@@ -231,6 +231,15 @@ class RegisterCondominiumController extends GetxController {
   @override
   void onClose() {
     searchController.dispose();
+    nameController.dispose();
+    cepController.dispose();
+    streetController.dispose();
+    numberController.dispose();
+    neighborhoodController.dispose();
+    cityController.dispose();
+    stateController.dispose();
+    cepFocus.dispose();
+    
     super.onClose();
   }
 }

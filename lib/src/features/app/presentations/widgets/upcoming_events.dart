@@ -10,7 +10,8 @@ class UpcomingEventsList extends StatelessWidget {
   Widget build(BuildContext context) {
     // Ordena os eventos pela data mais próxima
     final upcomingEvents = events
-        .where((event) => event.date != null && event.date!.isAfter(DateTime.now()))
+        .where((event) =>
+            event.date != null && event.date!.isAfter(DateTime.now()))
         .toList()
       ..sort((a, b) => a.date!.compareTo(b.date!));
 
@@ -28,15 +29,16 @@ class UpcomingEventsList extends StatelessWidget {
       itemBuilder: (context, index) {
         final event = upcomingEvents[index];
         return ListTile(
-          leading: Icon(Icons.event, color: Colors.blue),
+          leading: Icon(Icons.event, color: Colors.white),
           title: Text(
             event.type?.name ?? 'Evento',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           ),
           subtitle: Text(
             'Data: ${event.date != null ? _formatDate(event.date!) : 'Indefinida'}\n'
             'Condomínio: ${event.condominium?.nome ?? 'Desconhecido'}\n'
             'Unidade: ${event.unit?.numberAp ?? 'Desconhecida'}',
+            style: TextStyle(color: Colors.white),
           ),
           trailing: Icon(Icons.arrow_forward_ios, size: 16),
           onTap: () {
