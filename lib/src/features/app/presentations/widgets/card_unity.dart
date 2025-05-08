@@ -2,7 +2,6 @@ import 'package:flexihome/src/config/routes/app_pages.dart';
 import 'package:flexihome/src/config/themes/app_assets.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flexihome/src/features/app/domain/entities/unidade.dart';
-import 'package:flexihome/src/features/app/presentations/widgets/maps_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

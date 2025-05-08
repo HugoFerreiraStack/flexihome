@@ -46,10 +46,10 @@ class CondominiumController extends GetxController {
     }
   }
 
-  // TODO BUSCAR AS UNIDADES REFERENTES AQUELE CONDOMÍNIO.
-  // REMOVER O () DA CHAMADA DA FUNÇÃO PARA FUNCIONAR COM O RETURN
   getUnitysByIdCondominium(){
-    Get.snackbar('NÃO SE PREOCUPE 🚧', 'Estamos desenvolvendo isto, em breve estará disponível!', backgroundColor: Colors.white, snackPosition: SnackPosition.BOTTOM);
+    // TODO BUSCAR AS UNIDADES REFERENTES AQUELE CONDOMÍNIO.
+
+    Get.toNamed(AppRoutes.CONDOMINIUM_UNITIES_PAGE);
   }
 
   @override

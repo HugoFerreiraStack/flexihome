@@ -202,8 +202,10 @@ class DetailsCondominiumPage extends GetView<CondominiumController> {
                             textButton: 'Unidades do condomínio',
                             function:  () => controller.getUnitysByIdCondominium()),
                           CustomButton(
-                            buttonType: ButtonType.primary,
+                            buttonType: ButtonType.custom,
                             textButton: 'Deletar condomínio',
+                            customButtonBackgroundColor: Colors.white,
+                            customButtonTextColor: Colors.red,
                             function:  () {
                               Get.defaultDialog(
                                 title: 'Excluir',

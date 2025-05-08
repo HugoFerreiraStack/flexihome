@@ -2,7 +2,6 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/unity_controller.dart';
 import 'package:flexihome/src/features/app/presentations/widgets/custom_buttons.dart';
-import 'package:flexihome/src/features/app/presentations/widgets/upcoming_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

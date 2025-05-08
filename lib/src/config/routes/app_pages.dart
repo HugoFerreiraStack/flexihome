@@ -2,7 +2,7 @@ import 'package:flexihome/src/features/app/presentations/bindings/app_binding.da
 import 'package:flexihome/src/features/app/presentations/bindings/condominium_binding.dart';
 import 'package:flexihome/src/features/app/presentations/bindings/unity_binding.dart';
 import 'package:flexihome/src/features/app/presentations/pages/app_page.dart';
-import 'package:flexihome/src/features/app/presentations/pages/condominiuns_page.dart';
+import 'package:flexihome/src/features/app/presentations/pages/condominium_unities_page.dart';
 import 'package:flexihome/src/features/app/presentations/pages/details_condominium_page.dart';
 import 'package:flexihome/src/features/app/presentations/pages/details_unity_page.dart';
 import 'package:flexihome/src/features/app/presentations/pages/register_condominium_page.dart';
@@ -41,6 +41,9 @@ abstract class AppPages {
     GetPage(
       name: AppRoutes.DETAILS_UNITY,
       page: ()=> DetailsUnity(),
-      binding: UnityBinding())
+      binding: UnityBinding()),
+    GetPage(
+      name: AppRoutes.CONDOMINIUM_UNITIES_PAGE,
+      page: ()=> CondominiumUnitiesPage()),
   ];
 }

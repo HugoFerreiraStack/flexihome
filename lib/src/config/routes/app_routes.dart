@@ -8,4 +8,5 @@ abstract class AppRoutes {
   static const REGISTER_CONDOMINIUM = '/register-condominium';
   static const CONDOMINIUM_DETAILS = '/edit-condominium';
   static const DETAILS_UNITY= '/details-unity';
+  static const  CONDOMINIUM_UNITIES_PAGE= '/condominium-unities-page';
 }

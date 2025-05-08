@@ -13,213 +13,210 @@ class CondominiumForm extends GetView<RegisterCondominiumController> {
   Widget build(BuildContext context) {
     return Form(
       key: controller.formkey,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          spacing: 18,
-          children: [
-            TextFormField(
-              controller: controller.nameController,
-              keyboardType: TextInputType.name,
-              decoration: InputDecoration(
-                labelText: 'Qual o melhor nome para este local?',
-                hintText: 'Nome do condomínio',
-                hintStyle: TextStyle(color: AppColors.flexGrey),
-                labelStyle: TextStyle(color: Colors.white),
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.3),
-                enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide.none, 
-              ),
-              ),
-              style: TextStyle(color: Colors.white),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, insira o nome';
-                }
-                return null;
-              },
+      child: Column(
+        spacing: 18,
+        children: [
+          TextFormField(
+            controller: controller.nameController,
+            keyboardType: TextInputType.name,
+            decoration: InputDecoration(
+              labelText: 'Qual o melhor nome para este local?',
+              hintText: 'Nome do condomínio',
+              hintStyle: TextStyle(color: AppColors.flexGrey),
+              labelStyle: TextStyle(color: Colors.white),
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.3),
+              enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
             ),
-            TextFormField(
-              controller: controller.cepController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                CepInputFormatter()
-              ],
-              decoration: InputDecoration(
-                labelText: 'CEP',
-                hintText: 'Digite o CEP',
-                hintStyle: TextStyle(color: AppColors.flexGrey),
-                labelStyle: TextStyle(color: Colors.white),
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.3),
-                enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide.none, 
-              ),
-              ),
-              style: TextStyle(color: Colors.white),
-              focusNode: controller.cepFocus,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, insira o CEP';
-                }
-                return null;
-              },
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide.none, 
             ),
-            TextFormField(
-              controller: controller.streetController,
-              keyboardType: TextInputType.name,
-              decoration: InputDecoration(
-                labelText: 'Logradouro',
-                hintText: 'Nome da rua',
-                hintStyle: TextStyle(color: AppColors.flexGrey),
-                labelStyle: TextStyle(color: Colors.white),
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.3),
-                enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide.none, 
-              ),
-              ),
-              style: TextStyle(color: Colors.white),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, insira o nome da rua';
-                }
-                return null;
-              },
             ),
-            TextFormField(
-              controller: controller.neighborhoodController,
-              keyboardType: TextInputType.name,
-              decoration: InputDecoration(
-                labelText: 'Bairro',
-                hintText: 'Nome do bairro',
-                hintStyle: TextStyle(color: AppColors.flexGrey),
-                labelStyle: TextStyle(color: Colors.white),
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.3),
-                enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide.none, 
-              ),
-              ),
-              style: TextStyle(color: Colors.white),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, insira o nome do bairro';
-                }
-                return null;
-              },
+            style: TextStyle(color: Colors.white),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Por favor, insira o nome';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: controller.cepController,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              CepInputFormatter()
+            ],
+            decoration: InputDecoration(
+              labelText: 'CEP',
+              hintText: 'Digite o CEP',
+              hintStyle: TextStyle(color: AppColors.flexGrey),
+              labelStyle: TextStyle(color: Colors.white),
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.3),
+              enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
             ),
-            TextFormField(
-              controller: controller.cityController,
-              keyboardType: TextInputType.name,
-              decoration: InputDecoration(
-                labelText: 'Cidade',
-                hintText: 'Nome da cidade',
-                hintStyle: TextStyle(color: AppColors.flexGrey),
-                labelStyle: TextStyle(color: Colors.white),
-                filled: true,
-                fillColor: Colors.white.withOpacity(0.3),
-                enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide.none, 
-              ),
-              ),
-              style: TextStyle(color: Colors.white),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, insira o nome da cidade';
-                }
-                return null;
-              },
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide.none, 
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: controller.stateController,
-                    keyboardType: TextInputType.name,
-                    decoration: InputDecoration(
-                      labelText: 'UF',
-                      hintText: 'Sigla do estado',
-                      hintStyle: TextStyle(color: AppColors.flexGrey),
-                      labelStyle: TextStyle(color: Colors.white),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.3),
-                      enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none, 
-                    ),
-                    ),
-                    style: TextStyle(color: Colors.white),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira a sigla do estado';
-                      }
-                      return null;
-                    },
+            ),
+            style: TextStyle(color: Colors.white),
+            focusNode: controller.cepFocus,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Por favor, insira o CEP';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: controller.streetController,
+            keyboardType: TextInputType.name,
+            decoration: InputDecoration(
+              labelText: 'Logradouro',
+              hintText: 'Nome da rua',
+              hintStyle: TextStyle(color: AppColors.flexGrey),
+              labelStyle: TextStyle(color: Colors.white),
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.3),
+              enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide.none, 
+            ),
+            ),
+            style: TextStyle(color: Colors.white),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Por favor, insira o nome da rua';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: controller.neighborhoodController,
+            keyboardType: TextInputType.name,
+            decoration: InputDecoration(
+              labelText: 'Bairro',
+              hintText: 'Nome do bairro',
+              hintStyle: TextStyle(color: AppColors.flexGrey),
+              labelStyle: TextStyle(color: Colors.white),
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.3),
+              enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide.none, 
+            ),
+            ),
+            style: TextStyle(color: Colors.white),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Por favor, insira o nome do bairro';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: controller.cityController,
+            keyboardType: TextInputType.name,
+            decoration: InputDecoration(
+              labelText: 'Cidade',
+              hintText: 'Nome da cidade',
+              hintStyle: TextStyle(color: AppColors.flexGrey),
+              labelStyle: TextStyle(color: Colors.white),
+              filled: true,
+              fillColor: Colors.white.withOpacity(0.3),
+              enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide.none, 
+            ),
+            ),
+            style: TextStyle(color: Colors.white),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Por favor, insira o nome da cidade';
+              }
+              return null;
+            },
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: controller.stateController,
+                  keyboardType: TextInputType.name,
+                  decoration: InputDecoration(
+                    labelText: 'UF',
+                    hintText: 'Sigla do estado',
+                    hintStyle: TextStyle(color: AppColors.flexGrey),
+                    labelStyle: TextStyle(color: Colors.white),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.3),
+                    enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
                   ),
-                ),
-                SizedBox(width: 12),
-                Expanded(
-                  child: TextFormField(
-                    controller: controller.numberController,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: 'Número',
-                      hintText: 'Número do condominio',
-                      hintStyle: TextStyle(color: AppColors.flexGrey),
-                      labelStyle: TextStyle(color: Colors.white),
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.3),
-                      enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none, 
-                    ),
-                    ),
-                    style: TextStyle(color: Colors.white),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira o numero';
-                      }
-                      return null;
-                    },
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none, 
                   ),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira a sigla do estado';
+                    }
+                    return null;
+                  },
                 ),
-              ],
-            ),
-            CustomButton(
-              buttonType: ButtonType.primary,
-              textButton: 'Salvar',
-              function: controller.registerCondominium)
-          ],
-        ),
+              ),
+              SizedBox(width: 12),
+              Expanded(
+                child: TextFormField(
+                  controller: controller.numberController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    labelText: 'Número',
+                    hintText: 'Número do condominio',
+                    hintStyle: TextStyle(color: AppColors.flexGrey),
+                    labelStyle: TextStyle(color: Colors.white),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.3),
+                    enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none, 
+                  ),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira o numero';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ],
+          ),
+          CustomButton(
+            buttonType: ButtonType.primary,
+            textButton: 'Salvar',
+            function: controller.registerCondominium)
+        ],
       ),
     );
   }

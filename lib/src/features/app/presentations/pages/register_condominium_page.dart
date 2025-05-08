@@ -1,6 +1,7 @@
 import 'package:flexihome/src/config/themes/app_colors.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/register_condominium_controller.dart';
 import 'package:flexihome/src/features/app/presentations/widgets/condominio_form.dart';
+import 'package:flexihome/src/features/app/presentations/widgets/custom_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +24,7 @@ class RegisterCondominiumPage extends GetView<RegisterCondominiumController> {
           child: Column(
             children: [          
               Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    padding: const EdgeInsets.only(top: 12),
                     child: Row( 
                       children: [
                         IconButton(onPressed: () => Get.back(), icon: Icon(Icons.chevron_left_rounded, color: Colors.white,)),
@@ -42,7 +43,7 @@ class RegisterCondominiumPage extends GetView<RegisterCondominiumController> {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Column(
                           children: [
                             Image.asset(
