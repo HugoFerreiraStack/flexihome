@@ -36,8 +36,17 @@ class UnityController extends GetxController {
           .collection(Constants.collectionUnidade)
           .doc(unity.id)
           .delete();
+
+      final condominium = unity.condominio;
+      condominium!.totalUnitys = condominium.totalUnitys! - 1;
+
+      await FirebaseFirestore.instance
+          .collection(Constants.collectionCondominio)
+          .doc(condominium.id)
+          .update(condominium.toJson());
       Get.snackbar('Sucesso', 'Unidade excluída com sucesso',
           backgroundColor: Colors.green, colorText: Colors.white);
+
       await RegisterUnityController.to.getUnitys().then(
         (value) {
           isLoading = false;

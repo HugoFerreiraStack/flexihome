@@ -48,9 +48,7 @@ class Unidade {
       eventos: (json['eventos'] as List<dynamic>?)
           ?.map((e) => Event.fromJson(e))
           .toList(),
-      name: json['endereco'] != null && json['numberAp'] != null
-          ? '${Endereco.fromJson(json['endereco']).logradouro} ${json['numberAp']}'
-          : null,
+      name: json['name'] 
     );
   }
 
@@ -68,6 +66,7 @@ class Unidade {
       'usuarios': usuarios,
       'numberAp': numberAp,
       'eventos': eventos?.map((e) => e.toJson()).toList(),
+      'name': name
     };
   }
 }

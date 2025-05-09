@@ -170,8 +170,8 @@ class RegisterUnityController extends GetxController {
         .id;
 
     unity.id = unityId;
-    unity.numberAp = nameController.text;
-    unity.endereco = endereco;
+    unity.numberAp = numberController.text;
+
     unity.endereco?.complemento = complementoController.text;
     unity.condominio = selectedCondominium;
     unity.criadoPor = AuthService.to.host?.email?.toLowerCase();
@@ -196,6 +196,19 @@ class RegisterUnityController extends GetxController {
     }
     unity.criadoEm = DateTime.now();
     unity.idImobiliaria = AuthService.to.host?.idImobiliaria;
+    unity.name = nameController.text;
+
+    if (endereco.logradouro == null) {
+      endereco.logradouro = streetController.text;
+      endereco.bairro = neighborhoodController.text;
+      endereco.cidade = cityController.text;
+      endereco.estado = stateController.text;
+      endereco.cep = cepController.text;
+      endereco.complemento = complementoController.text;
+      unity.endereco = endereco;
+    }else{
+        unity.endereco = endereco;
+    }
 
     final response = await setunityUsecase.execute(unity);
     response.fold(
