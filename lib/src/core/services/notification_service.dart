@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -94,6 +95,9 @@ class NotificationService {
   }
 
   Future<void> requestExactAlarmPermission() async {
+    if (kIsWeb) {
+      return;
+    }
     if (Platform.isAndroid) {
       try {
         const MethodChannel platform =

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +20,9 @@ Future<void> main() async {
   await initStorage();
   await NotificationService().initialize();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+  ResponsiveSizingConfig.instance.setCustomBreakpoints(
+    ScreenBreakpoints(desktop: 800, tablet: 550, watch: 200),
+  );
 
   runApp(const MyApp()); // Só roda após a formatação estar pronta
 }
@@ -28,18 +32,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      getPages: AppPages.pages,
-      initialRoute: AppRoutes.SPLASH,
-      locale: Get.deviceLocale,
-      theme: AppTheme.themeData,
-      initialBinding: AuthBinding(),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-    );
+    return ResponsiveApp(builder: (context) {
+      return GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        getPages: AppPages.pages,
+        initialRoute: AppRoutes.SPLASH,
+        locale: Get.deviceLocale,
+        theme: AppTheme.themeData,
+        initialBinding: AuthBinding(),
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+      );
+    });
   }
 }

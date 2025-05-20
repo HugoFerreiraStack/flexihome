@@ -1,7 +1,7 @@
 name: flexihome
 description: "Projeto para gerenciamento de apartamentos para locação"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+2
+version: 1.0.3+3
 
 environment:
   sdk: ^3.6.2
@@ -29,6 +29,8 @@ dependencies:
   firebase_messaging: ^15.2.5
   flutter_local_notifications: ^19.1.0
   timezone: ^0.10.1
+  responsive_builder: ^0.7.1
+
 
  
 

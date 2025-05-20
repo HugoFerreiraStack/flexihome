@@ -6,6 +6,7 @@ import 'package:flexihome/src/features/app/domain/entities/host.dart';
 import 'package:flexihome/src/features/login/data/login_repository_impl.dart';
 import 'package:flexihome/src/features/login/domain/usecases/login_usecase.dart';
 import 'package:flexihome/src/features/login/presentations/controllers/login_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -27,7 +28,10 @@ class AuthService extends GetxService {
     final isUserLoged = getRememberMe();
     log('LOGADO: $isUserLoged');
     if (isUserLoged == null) {
-      signOut();
+      if (!kIsWeb) {
+        signOut();
+      }
+
       return null;
     }
 
@@ -99,6 +103,9 @@ class AuthService extends GetxService {
   @override
   void onInit() {
     super.onInit();
+    if (kIsWeb) {
+      _auth.setPersistence(Persistence.LOCAL);
+    }
     checkStateUser();
   }
 }
