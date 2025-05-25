@@ -10,6 +10,7 @@ import 'package:flexihome/src/features/app/domain/usecases/send_email_usecase.da
 import 'package:flexihome/src/features/app/domain/usecases/set_unity_usecase.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/add_schedule_controller.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/app_controller.dart';
+import 'package:flexihome/src/features/app/presentations/controllers/calendar_controller.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/profile_controller.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/register_condominium_controller.dart';
 import 'package:flexihome/src/features/app/presentations/controllers/register_unity_controller.dart';
@@ -38,6 +39,7 @@ class AppBinding implements Bindings {
     );
 
     Get.put<AppController>(AppController());
+    Get.put<CalendarController>(CalendarController());
 
     Get.put<RegisterCondominiumController>(
       RegisterCondominiumController(

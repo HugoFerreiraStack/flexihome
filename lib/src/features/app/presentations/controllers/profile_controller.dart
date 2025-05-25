@@ -93,6 +93,7 @@ class ProfileController extends GetxController {
           fantasyName: fantasyNameController.text,
           socialReason: razaoSocialController.text,
           cnpj: cnpjController.text,
+          idImobiliaria: AuthService.to.host?.idImobiliaria,
         ),
       );
 
@@ -108,6 +109,25 @@ class ProfileController extends GetxController {
           email: params.email,
           password: params.password,
         );
+
+        await saveUserData(newUser, params);
+
+        // Atualizar os documentos no Firestore
+        final querySnapshot = await FirebaseFirestore.instance
+            .collection(Constants.collectionCondominio)
+            .where('idImobiliaria', isEqualTo: params.host.idImobiliaria)
+            .get();
+
+        for (var doc in querySnapshot.docs) {
+          await FirebaseFirestore.instance
+              .collection(Constants.collectionCondominio)
+              .doc(doc.id)
+              .update({
+            'usuarios': FieldValue.arrayUnion([newUser.user!.uid]),
+          });
+
+          log('Documento atualizado: ${doc.id}');
+        }
 
         log('Novo usuário cadastrado com sucesso: ${newUser.user?.uid}');
 
@@ -125,24 +145,6 @@ class ProfileController extends GetxController {
             Get.back();
           });
           log('Sessão do usuário inicial restaurada com sucesso.');
-        }
-
-        // Atualizar os documentos no Firestore
-        final querySnapshot = await FirebaseFirestore.instance
-            .collection(Constants.collectionCondominio)
-            .where('idImobiliaria',
-                isEqualTo: AuthService.to.host?.idImobiliaria)
-            .get();
-
-        for (var doc in querySnapshot.docs) {
-          await FirebaseFirestore.instance
-              .collection(Constants.collectionCondominio)
-              .doc(doc.id)
-              .update({
-            'usuarios': FieldValue.arrayUnion([newUser.user!.uid]),
-          });
-
-          log('Documento atualizado: ${doc.id}');
         }
       } catch (e) {
         log('Erro ao cadastrar usuário: $e');

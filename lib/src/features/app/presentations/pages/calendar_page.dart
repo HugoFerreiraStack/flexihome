@@ -8,65 +8,8 @@ import 'package:get/get.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarPage extends StatefulWidget {
+class CalendarPage extends GetView<CalendarController> {
   const CalendarPage({super.key});
-
-  @override
-  State<CalendarPage> createState() => _CalendarPageState();
-}
-
-class _CalendarPageState extends State<CalendarPage>
-    with TickerProviderStateMixin {
-  final CalendarController controller = Get.put(CalendarController());
-  final DraggableScrollableController _draggableController =
-      DraggableScrollableController();
-  late AnimationController _iconController;
-  bool _isAnimating = false; // Variável de controle para evitar ciclos
-
-  @override
-  void initState() {
-    super.initState();
-    _iconController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _draggableController.jumpTo(0.35); // Define o estado inicial como fechado
-      controller.isBottomSheetExpanded.value =
-          false; // Garante que o estado inicial seja fechado
-      controller.update();
-    });
-    controller.isBottomSheetExpanded.listen((isExpanded) {
-      if (_isAnimating) return; // Evita ciclos durante a animação
-
-      final targetExtent = isExpanded ? 0.9 : 0.35;
-      _isAnimating = true; // Marca que a animação está em andamento
-      _draggableController
-          .animateTo(
-        targetExtent,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      )
-          .then((_) {
-        _isAnimating = false; // Marca que a animação terminou
-      });
-
-      if (isExpanded) {
-        _iconController.forward();
-      } else {
-        _iconController.reverse();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _iconController.dispose();
-    super.dispose();
-  }
-
-  void _toggleExpand() {
-    controller.isBottomSheetExpanded.value =
-        !controller.isBottomSheetExpanded.value;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -223,13 +166,14 @@ class _CalendarPageState extends State<CalendarPage>
                                         ((notification.extent - 0.4) /
                                                 (0.91 - 0.4))
                                             .clamp(0.0, 1.0);
-                                    _iconController.value = percent;
+                                    controller.iconController.value = percent;
                                     controller.isBottomSheetExpanded.value =
                                         notification.extent > 0.4;
                                     return true;
                                   },
                                   child: Obx(() => DraggableScrollableSheet(
-                                        controller: _draggableController,
+                                        controller:
+                                            controller.draggableController,
                                         initialChildSize: controller
                                                 .isBottomSheetExpanded.value
                                             ? 0.91
@@ -250,13 +194,15 @@ class _CalendarPageState extends State<CalendarPage>
                                               child: Column(
                                                 children: [
                                                   GestureDetector(
-                                                    onTap: _toggleExpand,
+                                                    onTap:
+                                                        controller.toggleExpand,
                                                     child: AnimatedBuilder(
-                                                      animation:
-                                                          _iconController,
+                                                      animation: controller
+                                                          .iconController,
                                                       builder: (_, __) =>
                                                           Transform.rotate(
-                                                        angle: _iconController
+                                                        angle: controller
+                                                                .iconController
                                                                 .value *
                                                             pi,
                                                         child: Icon(
@@ -267,18 +213,19 @@ class _CalendarPageState extends State<CalendarPage>
                                                       ),
                                                     ),
                                                   ),
-                                                  Text(
-                                                    'Dia selecionado: ${controller.selectedDay.value.day.toString().padLeft(2, '0')} de ${_monthName(controller.selectedDay.value.month)} de ${controller.selectedDay.value.year}',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white,
-                                                        fontSize: 16),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    textAlign: TextAlign.center,
-                                                    maxLines: 2,
-                                                  ),
+                                                  Obx(() => Text(
+                                                      'Dia selecionado: ${controller.selectedDay.value.day.toString().padLeft(2, '0')} de ${_monthName(controller.selectedDay.value.month)} de ${controller.selectedDay.value.year}',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white,
+                                                          fontSize: 16),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      maxLines: 2,
+                                                    )),
                                                   Expanded(
                                                     child: ListView.builder(
                                                       controller:
@@ -348,31 +295,6 @@ class _CalendarPageState extends State<CalendarPage>
   }
 
   // Color _getStatusColor(String status) {
-  //   switch (status) {
-  //     case 'Concluído':
-  //       return Colors.green;
-  //     case 'Em progresso':
-  //       return Colors.orange;
-  //     case 'Pendente':
-  //       return Colors.redAccent;
-  //     default:
-  //       return Colors.grey;
-  //   }
-  // }
-
-  // IconData _getStatusIcon(String status) {
-  //   switch (status) {
-  //     case 'Concluído':
-  //       return Icons.check_circle;
-  //     case 'Em progresso':
-  //       return Icons.timelapse;
-  //     case 'Pendente':
-  //       return Icons.warning_amber_rounded;
-  //     default:
-  //       return Icons.info_outline;
-  //   }
-  // }
-
   String _monthName(int month) {
     const months = [
       '',

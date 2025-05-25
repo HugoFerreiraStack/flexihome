@@ -13,7 +13,8 @@ class UserApp {
       this.socialReason,
       this.userType,
       this.corretores,
-      this.expirationDate});
+      this.expirationDate,
+      this.idImobiliaria});
   bool? blocked;
   String? email;
   String? id;

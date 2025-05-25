@@ -19,6 +19,8 @@ import '../widgets/end_date_dialog.dart';
 class AddScheduleController extends GetxController {
   static AddScheduleController get to => Get.find();
 
+  final calendarController = Get.find<CalendarController>();
+
   final Rxn<AgendamentoTypeEnum> _typeEvente = Rxn<AgendamentoTypeEnum>();
   AgendamentoTypeEnum? get typeEvent => _typeEvente.value;
   set typeEvent(AgendamentoTypeEnum? value) => _typeEvente.value = value;
@@ -222,8 +224,6 @@ class AddScheduleController extends GetxController {
   }
 
   Future<void> saveSchedule() async {
-    final calendarController = Get.find<CalendarController>();
-
     if (typeEvent == null) {
       showErrorDialog('Selecione o tipo de evento.');
       return;

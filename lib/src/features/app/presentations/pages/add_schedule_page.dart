@@ -8,18 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class AddSchedulePage extends StatelessWidget {
-  final DateTime initialDate;
-
-  AddSchedulePage({required this.initialDate, super.key}) {
-    final controller = Get.put(AddScheduleController());
-    controller.selectedDate.value = initialDate;
-  }
+class AddSchedulePage extends GetView<AddScheduleController> {
+  const AddSchedulePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<AddScheduleController>();
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -138,7 +131,7 @@ class AddSchedulePage extends StatelessWidget {
                           (e) => DropdownMenuItem<Unidade>(
                             value: e,
                             child: Text(
-                              e.endereco!.complemento ?? '',
+                              e.name ?? '',
                               style: TextStyle(color: Colors.white),
                             ),
                           ),
@@ -283,8 +276,10 @@ class AddSchedulePage extends StatelessWidget {
                     Text(
                       DateFormat('dd/MM/yyyy')
                           .format(controller.endDate.value!),
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ],
                 );

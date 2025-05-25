@@ -1,11 +1,21 @@
 // calendar_controller.dart
 
+import 'package:flexihome/src/config/routes/app_pages.dart';
 import 'package:flexihome/src/features/app/domain/entities/event.dart';
-import 'package:flexihome/src/features/app/presentations/pages/add_schedule_page.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class CalendarController extends GetxController {
+class CalendarController extends GetxController
+    with GetSingleTickerProviderStateMixin {
+  final DraggableScrollableController draggableController =
+      DraggableScrollableController();
+  late AnimationController iconController;
+
+  final _isAnimating = false.obs;
+  bool get isAnimating => _isAnimating.value;
+  set isAnimating(bool value) => _isAnimating.value = value;
+
   var selectedDay = DateTime.now().obs;
   var focusedDay = DateTime.now().obs;
   var calendarFormat = CalendarFormat.month.obs;
@@ -28,7 +38,7 @@ class CalendarController extends GetxController {
   }
 
   void openOverlayScreen() {
-    Get.to(() => AddSchedulePage(initialDate: selectedDay.value));
+    Get.toNamed(AppRoutes.ADD_SCHEDULE);
   }
 
   void addEvent(DateTime date, Event event) {
@@ -46,7 +56,55 @@ class CalendarController extends GetxController {
   }
 
   void refreshEvents() {
-  // Isso vai forçar o Obx no calendário a ser atualizado
-  selectedDay.refresh();
-}
+    // Isso vai forçar o Obx no calendário a ser atualizado
+    selectedDay.refresh();
+  }
+
+  void start() {
+    iconController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      draggableController.jumpTo(0.35); // Define o estado inicial como fechado
+      isBottomSheetExpanded.value =
+          false; // Garante que o estado inicial seja fechado
+      update();
+    });
+    isBottomSheetExpanded.listen((isExpanded) {
+      if (isAnimating) return; // Evita ciclos durante a animação
+
+      final targetExtent = isExpanded ? 0.9 : 0.35;
+      isAnimating = true; // Marca que a animação está em andamento
+      draggableController
+          .animateTo(
+        targetExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      )
+          .then((_) {
+        isAnimating = false; // Marca que a animação terminou
+      });
+
+      if (isExpanded) {
+        iconController.forward();
+      } else {
+        iconController.reverse();
+      }
+    });
+  }
+
+  void toggleExpand() {
+    isBottomSheetExpanded.value = !isBottomSheetExpanded.value;
+  }
+
+  @override
+  void onInit() {
+    start();
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    iconController.dispose();
+    super.onClose();
+  }
 }

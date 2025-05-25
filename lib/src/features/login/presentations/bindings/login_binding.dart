@@ -9,6 +9,7 @@ class LoginBinding extends Bindings {
     final LoginUsecase loginUsecase = LoginUsecase(
       repository: LoginRepositoryImpl(),
     );
-    Get.put<LoginController>(LoginController(loginUsecase: loginUsecase));
+    Get.put<LoginController>(LoginController(loginUsecase: loginUsecase),
+        permanent: true);
   }
 }
